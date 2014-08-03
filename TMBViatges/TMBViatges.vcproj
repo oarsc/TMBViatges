@@ -253,6 +253,19 @@
 				</File>
 			</File>
 			<File
+				RelativePath=".\NonWorking.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NonWorking.h"
+				FileType="3"
+				>
+				<File
+					RelativePath=".\NonWorking.resx"
+					>
+				</File>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>

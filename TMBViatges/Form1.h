@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DaySelect.h"
+#include "NonWorking.h"
 
 namespace TMBViatges {
 
@@ -26,10 +27,34 @@ namespace TMBViatges {
 		Form1(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: agregar código de constructor aquí
-			//
 		}
+
+		void updateDays(System::DateTime first_countday, int countdays)
+		{
+			this->l_initialdate->Text = L""+first_countday.ToString(L"yyyy/MM/dd");
+			this->l_lastdate->Text = L""+first_countday.AddDays(countdays).ToString(L"yyyy/MM/dd");
+			this->l_totaldays->Text = L""+countdays+" dies";
+
+			this->l_initialdatelabel->Visible = true;
+			this->l_lastdatelabel->Visible = true;
+			this->l_initialdate->Visible = true;
+			this->l_lastdate->Visible = true;
+			this->l_totaldays->Visible = true;
+			this->b_nonworkingdays->Enabled = true;
+			this->b_calculate->Enabled = true;
+
+			this->first_countday = first_countday;
+			this->countdays = countdays;
+
+		}
+		void updateNWDays(System::Windows::Forms::ListView::CheckedIndexCollection^ nwdays)
+		{
+			this->nw_days = nwdays;
+		}
+
+	private: System::DateTime first_countday;
+	private: int countdays;
+	private: System::Windows::Forms::ListView::CheckedIndexCollection^ nw_days;
 
 	protected:
 		/// <summary>
@@ -58,9 +83,17 @@ namespace TMBViatges {
 	private: System::Windows::Forms::TextBox^  tb_sab;
 	private: System::Windows::Forms::TextBox^  tb_dom;
 	private: DaySelect^  f_dayselect;
+	private: NonWorking^  f_nonworking;
 	private: System::Windows::Forms::Panel^  gb_viatgesdia;
 	private: System::Windows::Forms::Button^  b_selectdays;
-
+	private: System::Windows::Forms::Panel^  gb_days;
+	private: System::Windows::Forms::Label^  l_initialdatelabel;
+	private: System::Windows::Forms::Label^  l_lastdatelabel;
+	private: System::Windows::Forms::Label^  l_initialdate;
+	private: System::Windows::Forms::Label^  l_lastdate;
+	private: System::Windows::Forms::Label^  l_totaldays;
+	private: System::Windows::Forms::Button^  b_nonworkingdays;
+	private: System::Windows::Forms::Button^  b_calculate;
 
 	private:
 		/// <summary>
@@ -93,8 +126,17 @@ namespace TMBViatges {
 			this->tb_dom = (gcnew System::Windows::Forms::TextBox());
 			this->gb_viatgesdia = (gcnew System::Windows::Forms::Panel());
 			this->b_selectdays = (gcnew System::Windows::Forms::Button());
+			this->l_initialdatelabel = (gcnew System::Windows::Forms::Label());
+			this->l_lastdatelabel = (gcnew System::Windows::Forms::Label());
+			this->l_totaldays = (gcnew System::Windows::Forms::Label());
+			this->l_initialdate = (gcnew System::Windows::Forms::Label());
+			this->l_lastdate = (gcnew System::Windows::Forms::Label());
+			this->gb_days = (gcnew System::Windows::Forms::Panel());
+			this->b_nonworkingdays = (gcnew System::Windows::Forms::Button());
+			this->b_calculate = (gcnew System::Windows::Forms::Button());
 			this->gb_preus->SuspendLayout();
 			this->gb_viatgesdia->SuspendLayout();
+			this->gb_days->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// gb_preus
@@ -116,22 +158,25 @@ namespace TMBViatges {
 			// 
 			this->tb_tjove->Location = System::Drawing::Point(71, 79);
 			this->tb_tjove->Name = L"tb_tjove";
-			this->tb_tjove->Size = System::Drawing::Size(100, 20);
+			this->tb_tjove->Size = System::Drawing::Size(132, 20);
 			this->tb_tjove->TabIndex = 5;
+			this->tb_tjove->Text = L"105.00";
 			// 
 			// tb_t50
 			// 
 			this->tb_t50->Location = System::Drawing::Point(71, 52);
 			this->tb_t50->Name = L"tb_t50";
-			this->tb_t50->Size = System::Drawing::Size(100, 20);
+			this->tb_t50->Size = System::Drawing::Size(132, 20);
 			this->tb_t50->TabIndex = 4;
+			this->tb_t50->Text = L"42.50";
 			// 
 			// tb_t10
 			// 
 			this->tb_t10->Location = System::Drawing::Point(71, 25);
 			this->tb_t10->Name = L"tb_t10";
-			this->tb_t10->Size = System::Drawing::Size(100, 20);
+			this->tb_t10->Size = System::Drawing::Size(132, 20);
 			this->tb_t10->TabIndex = 3;
+			this->tb_t10->Text = L"10.30";
 			// 
 			// l_tjove
 			// 
@@ -172,63 +217,77 @@ namespace TMBViatges {
 			// tb_lun
 			// 
 			this->tb_lun->Location = System::Drawing::Point(88, 13);
+			this->tb_lun->MaxLength = 1;
 			this->tb_lun->Name = L"tb_lun";
 			this->tb_lun->Size = System::Drawing::Size(12, 20);
 			this->tb_lun->TabIndex = 2;
 			this->tb_lun->Text = L"2";
 			this->tb_lun->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_lun->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_mar
 			// 
 			this->tb_mar->Location = System::Drawing::Point(106, 13);
+			this->tb_mar->MaxLength = 1;
 			this->tb_mar->Name = L"tb_mar";
 			this->tb_mar->Size = System::Drawing::Size(12, 20);
 			this->tb_mar->TabIndex = 3;
 			this->tb_mar->Text = L"2";
 			this->tb_mar->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_mar->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_mie
 			// 
 			this->tb_mie->Location = System::Drawing::Point(124, 13);
+			this->tb_mie->MaxLength = 1;
 			this->tb_mie->Name = L"tb_mie";
 			this->tb_mie->Size = System::Drawing::Size(12, 20);
 			this->tb_mie->TabIndex = 4;
 			this->tb_mie->Text = L"2";
 			this->tb_mie->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_mie->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_jue
 			// 
 			this->tb_jue->Location = System::Drawing::Point(142, 13);
+			this->tb_jue->MaxLength = 1;
 			this->tb_jue->Name = L"tb_jue";
 			this->tb_jue->Size = System::Drawing::Size(12, 20);
 			this->tb_jue->TabIndex = 5;
 			this->tb_jue->Text = L"2";
 			this->tb_jue->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_jue->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_vie
 			// 
 			this->tb_vie->Location = System::Drawing::Point(160, 13);
+			this->tb_vie->MaxLength = 1;
 			this->tb_vie->Name = L"tb_vie";
 			this->tb_vie->Size = System::Drawing::Size(12, 20);
 			this->tb_vie->TabIndex = 6;
 			this->tb_vie->Text = L"2";
 			this->tb_vie->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_vie->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_sab
 			// 
 			this->tb_sab->Location = System::Drawing::Point(178, 13);
+			this->tb_sab->MaxLength = 1;
 			this->tb_sab->Name = L"tb_sab";
 			this->tb_sab->Size = System::Drawing::Size(12, 20);
 			this->tb_sab->TabIndex = 7;
 			this->tb_sab->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_sab->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// tb_dom
 			// 
 			this->tb_dom->Location = System::Drawing::Point(196, 13);
+			this->tb_dom->MaxLength = 1;
 			this->tb_dom->Name = L"tb_dom";
 			this->tb_dom->Size = System::Drawing::Size(12, 20);
 			this->tb_dom->TabIndex = 8;
 			this->tb_dom->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->tb_dom->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::digitsOnly);
 			// 
 			// gb_viatgesdia
 			// 
@@ -247,37 +306,144 @@ namespace TMBViatges {
 			// 
 			// b_selectdays
 			// 
-			this->b_selectdays->Location = System::Drawing::Point(29, 200);
+			this->b_selectdays->Location = System::Drawing::Point(82, 3);
 			this->b_selectdays->Name = L"b_selectdays";
 			this->b_selectdays->Size = System::Drawing::Size(101, 23);
 			this->b_selectdays->TabIndex = 10;
-			this->b_selectdays->Text = L"Seleccionar dia";
+			this->b_selectdays->Text = L"Seleccionar dies";
 			this->b_selectdays->UseVisualStyleBackColor = true;
 			this->b_selectdays->Click += gcnew System::EventHandler(this, &Form1::b_selectdays_Click);
+			// 
+			// l_initialdatelabel
+			// 
+			this->l_initialdatelabel->AutoSize = true;
+			this->l_initialdatelabel->Enabled = false;
+			this->l_initialdatelabel->Location = System::Drawing::Point(74, 33);
+			this->l_initialdatelabel->Name = L"l_initialdatelabel";
+			this->l_initialdatelabel->Size = System::Drawing::Size(62, 13);
+			this->l_initialdatelabel->TabIndex = 11;
+			this->l_initialdatelabel->Text = L"Data inicial:";
+			this->l_initialdatelabel->Visible = false;
+			// 
+			// l_lastdatelabel
+			// 
+			this->l_lastdatelabel->AutoSize = true;
+			this->l_lastdatelabel->Enabled = false;
+			this->l_lastdatelabel->Location = System::Drawing::Point(81, 46);
+			this->l_lastdatelabel->Name = L"l_lastdatelabel";
+			this->l_lastdatelabel->Size = System::Drawing::Size(55, 13);
+			this->l_lastdatelabel->TabIndex = 12;
+			this->l_lastdatelabel->Text = L"Data final:";
+			this->l_lastdatelabel->Visible = false;
+			// 
+			// l_totaldays
+			// 
+			this->l_totaldays->AutoSize = true;
+			this->l_totaldays->Enabled = false;
+			this->l_totaldays->Location = System::Drawing::Point(134, 59);
+			this->l_totaldays->Name = L"l_totaldays";
+			this->l_totaldays->Size = System::Drawing::Size(35, 13);
+			this->l_totaldays->TabIndex = 13;
+			this->l_totaldays->Text = L"0 dies";
+			this->l_totaldays->Visible = false;
+			// 
+			// l_initialdate
+			// 
+			this->l_initialdate->AutoSize = true;
+			this->l_initialdate->Enabled = false;
+			this->l_initialdate->Location = System::Drawing::Point(134, 33);
+			this->l_initialdate->Name = L"l_initialdate";
+			this->l_initialdate->Size = System::Drawing::Size(65, 13);
+			this->l_initialdate->TabIndex = 14;
+			this->l_initialdate->Text = L"0000/00/00";
+			this->l_initialdate->Visible = false;
+			// 
+			// l_lastdate
+			// 
+			this->l_lastdate->AutoSize = true;
+			this->l_lastdate->Enabled = false;
+			this->l_lastdate->Location = System::Drawing::Point(134, 46);
+			this->l_lastdate->Name = L"l_lastdate";
+			this->l_lastdate->Size = System::Drawing::Size(65, 13);
+			this->l_lastdate->TabIndex = 15;
+			this->l_lastdate->Text = L"0000/00/00";
+			this->l_lastdate->Visible = false;
+			// 
+			// gb_days
+			// 
+			this->gb_days->Controls->Add(this->b_selectdays);
+			this->gb_days->Controls->Add(this->l_lastdate);
+			this->gb_days->Controls->Add(this->l_initialdatelabel);
+			this->gb_days->Controls->Add(this->l_initialdate);
+			this->gb_days->Controls->Add(this->l_lastdatelabel);
+			this->gb_days->Controls->Add(this->l_totaldays);
+			this->gb_days->Location = System::Drawing::Point(12, 190);
+			this->gb_days->Name = L"gb_days";
+			this->gb_days->Size = System::Drawing::Size(253, 79);
+			this->gb_days->TabIndex = 16;
+			// 
+			// b_nonworkingdays
+			// 
+			this->b_nonworkingdays->Enabled = false;
+			this->b_nonworkingdays->Location = System::Drawing::Point(71, 275);
+			this->b_nonworkingdays->Name = L"b_nonworkingdays";
+			this->b_nonworkingdays->Size = System::Drawing::Size(149, 23);
+			this->b_nonworkingdays->TabIndex = 16;
+			this->b_nonworkingdays->Text = L"Seleccionar dies de festa";
+			this->b_nonworkingdays->UseVisualStyleBackColor = true;
+			this->b_nonworkingdays->Click += gcnew System::EventHandler(this, &Form1::b_nonworkingdays_Click);
+			// 
+			// b_calculate
+			// 
+			this->b_calculate->Enabled = false;
+			this->b_calculate->Location = System::Drawing::Point(94, 304);
+			this->b_calculate->Name = L"b_calculate";
+			this->b_calculate->Size = System::Drawing::Size(101, 23);
+			this->b_calculate->TabIndex = 17;
+			this->b_calculate->Text = L"Calcular";
+			this->b_calculate->UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(277, 331);
-			this->Controls->Add(this->b_selectdays);
+			this->ClientSize = System::Drawing::Size(277, 340);
+			this->Controls->Add(this->b_calculate);
+			this->Controls->Add(this->b_nonworkingdays);
+			this->Controls->Add(this->gb_days);
 			this->Controls->Add(this->gb_viatgesdia);
 			this->Controls->Add(this->gb_preus);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->MaximizeBox = false;
 			this->Name = L"Form1";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"PreusTMB";
 			this->gb_preus->ResumeLayout(false);
 			this->gb_preus->PerformLayout();
 			this->gb_viatgesdia->ResumeLayout(false);
 			this->gb_viatgesdia->PerformLayout();
+			this->gb_days->ResumeLayout(false);
+			this->gb_days->PerformLayout();
 			this->ResumeLayout(false);
+
 		}
 			
 #pragma endregion
 private: System::Void b_selectdays_Click(System::Object^  sender, System::EventArgs^  e)
 		 {
-			 this->f_dayselect = (gcnew DaySelect());
-			 this->f_dayselect->Show();
+			 this->f_dayselect = gcnew DaySelect(this);
+			 this->f_dayselect->ShowDialog();
+		 }
+private: System::Void digitsOnly(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e)
+		 {
+			 ( (System::Windows::Forms::TextBox^)sender )->Text = L"";
+			 e->Handled = !(isdigit(e->KeyChar));
+		 }
+private: System::Void b_nonworkingdays_Click(System::Object^  sender, System::EventArgs^  e)
+		 {
+			this->f_nonworking = gcnew NonWorking(this,this->first_countday,this->countdays,this->nw_days);
+			this->f_nonworking->ShowDialog();
 		 }
 };
 }
