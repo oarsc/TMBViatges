@@ -230,6 +230,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Calculation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Calculation.h"
+				FileType="3"
+				>
+				<File
+					RelativePath=".\Calculation.resx"
+					>
+				</File>
+			</File>
+			<File
 				RelativePath=".\DaySelect.cpp"
 				>
 			</File>

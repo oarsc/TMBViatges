@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DaySelect.h"
+#include "Calculation.h"
 #include "NonWorking.h"
 
 namespace TMBViatges {
@@ -32,7 +33,7 @@ namespace TMBViatges {
 		void updateDays(System::DateTime first_countday, int countdays)
 		{
 			this->l_initialdate->Text = L""+first_countday.ToString(L"yyyy/MM/dd");
-			this->l_lastdate->Text = L""+first_countday.AddDays(countdays).ToString(L"yyyy/MM/dd");
+			this->l_lastdate->Text = L""+first_countday.AddDays(countdays-1).ToString(L"yyyy/MM/dd");
 			this->l_totaldays->Text = L""+countdays+" dies";
 
 			this->l_initialdatelabel->Visible = true;
@@ -45,16 +46,14 @@ namespace TMBViatges {
 
 			this->first_countday = first_countday;
 			this->countdays = countdays;
-
-		}
-		void updateNWDays(System::Windows::Forms::ListView::CheckedIndexCollection^ nwdays)
-		{
-			this->nw_days = nwdays;
 		}
 
-	private: System::DateTime first_countday;
-	private: int countdays;
-	private: System::Windows::Forms::ListView::CheckedIndexCollection^ nw_days;
+	public: static int* trips_day;
+	public: static float price10;
+	public: static float price50;
+	public: static float price90;
+	public: static System::DateTime first_countday;
+	public: static int countdays;
 
 	protected:
 		/// <summary>
@@ -84,6 +83,7 @@ namespace TMBViatges {
 	private: System::Windows::Forms::TextBox^  tb_dom;
 	private: DaySelect^  f_dayselect;
 	private: NonWorking^  f_nonworking;
+	private: Calculation^  f_calculation;
 	private: System::Windows::Forms::Panel^  gb_viatgesdia;
 	private: System::Windows::Forms::Button^  b_selectdays;
 	private: System::Windows::Forms::Panel^  gb_days;
@@ -160,7 +160,7 @@ namespace TMBViatges {
 			this->tb_tjove->Name = L"tb_tjove";
 			this->tb_tjove->Size = System::Drawing::Size(132, 20);
 			this->tb_tjove->TabIndex = 5;
-			this->tb_tjove->Text = L"105.00";
+			this->tb_tjove->Text = L"105,00";
 			// 
 			// tb_t50
 			// 
@@ -168,7 +168,7 @@ namespace TMBViatges {
 			this->tb_t50->Name = L"tb_t50";
 			this->tb_t50->Size = System::Drawing::Size(132, 20);
 			this->tb_t50->TabIndex = 4;
-			this->tb_t50->Text = L"42.50";
+			this->tb_t50->Text = L"42,50";
 			// 
 			// tb_t10
 			// 
@@ -176,7 +176,7 @@ namespace TMBViatges {
 			this->tb_t10->Name = L"tb_t10";
 			this->tb_t10->Size = System::Drawing::Size(132, 20);
 			this->tb_t10->TabIndex = 3;
-			this->tb_t10->Text = L"10.30";
+			this->tb_t10->Text = L"10,30";
 			// 
 			// l_tjove
 			// 
@@ -402,6 +402,7 @@ namespace TMBViatges {
 			this->b_calculate->TabIndex = 17;
 			this->b_calculate->Text = L"Calcular";
 			this->b_calculate->UseVisualStyleBackColor = true;
+			this->b_calculate->Click += gcnew System::EventHandler(this, &Form1::b_calculate_Click);
 			// 
 			// Form1
 			// 
@@ -442,8 +443,27 @@ private: System::Void digitsOnly(System::Object^  sender, System::Windows::Forms
 		 }
 private: System::Void b_nonworkingdays_Click(System::Object^  sender, System::EventArgs^  e)
 		 {
-			this->f_nonworking = gcnew NonWorking(this,this->first_countday,this->countdays,this->nw_days);
+
+			this->f_nonworking = gcnew NonWorking();
 			this->f_nonworking->ShowDialog();
+		 }
+private: System::Void b_calculate_Click(System::Object^  sender, System::EventArgs^  e)
+		 {
+			int days[7];
+			days[0] = (this->tb_dom->Text==L"")?0:int::Parse(this->tb_dom->Text);
+			days[1] = (this->tb_lun->Text==L"")?0:int::Parse(this->tb_lun->Text);
+			days[2] = (this->tb_mar->Text==L"")?0:int::Parse(this->tb_mar->Text);
+			days[3] = (this->tb_mie->Text==L"")?0:int::Parse(this->tb_mie->Text);
+			days[4] = (this->tb_jue->Text==L"")?0:int::Parse(this->tb_jue->Text);
+			days[5] = (this->tb_vie->Text==L"")?0:int::Parse(this->tb_vie->Text);
+			days[6] = (this->tb_sab->Text==L"")?0:int::Parse(this->tb_sab->Text);
+			this->trips_day = days;
+			this->price10 = float::Parse(this->tb_t10->Text);
+			this->price50 = float::Parse(this->tb_t50->Text);
+			this->price90 = float::Parse(this->tb_tjove->Text);
+
+			this->f_calculation = gcnew Calculation();
+			this->f_calculation->ShowDialog();
 		 }
 };
 }

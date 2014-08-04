@@ -29,9 +29,9 @@ namespace TMBViatges {
 			this->parent_form = parent;
 			System::DateTime today = System::DateTime::Now.Date;
 			this->dtp_first->MinDate = today;
-			this->dtp_last->MinDate = today.AddDays(1);
+			this->dtp_last->MinDate = today;
 			this->dtp_first->Value = today;
-			this->dtp_last->Value = today.AddDays(90);
+			this->dtp_last->Value = today.AddDays(89);
 		}
 		void sendDataToMain(int val);
 	protected:
@@ -197,16 +197,22 @@ namespace TMBViatges {
 			 }
 	private: System::Void b_add_Click(System::Object^  sender, System::EventArgs^  e)
 			 {
-				 this->dtp_last->Value = this->dtp_first->Value.AddDays(int::Parse(this->tb_days->Text));
+				 int val = int::Parse(this->tb_days->Text)-1;
+				 if (val<0)
+				 {
+					this->tb_days->Text = L"1";
+					val = (val<1)?0:val;
+				 }
+				 this->dtp_last->Value = this->dtp_first->Value.AddDays(val);
 			 }
 	private: System::Void dtp_first_ValueChanged(System::Object^  sender, System::EventArgs^  e)
 			 {
-				 this->dtp_last->MinDate = this->dtp_first->Value.AddDays(1);
+				 this->dtp_last->MinDate = this->dtp_first->Value;
 			 }
 	private: System::Void b_confirm_Click(System::Object^  sender, System::EventArgs^  e)
 			 {
 				 System::TimeSpan ts = (this->dtp_last->Value - this->dtp_first->Value);
-				 sendDataToMain((int)ts.TotalDays);
+				 sendDataToMain((int)ts.TotalDays+1);
 				 this->Close();
 			 }
 };
