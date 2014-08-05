@@ -185,7 +185,7 @@ namespace TMBViatges {
 			this->MaximizeBox = false;
 			this->Name = L"DaySelect";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
-			this->Text = L"DaySelect";
+			this->Text = L"Dies";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -211,7 +211,7 @@ namespace TMBViatges {
 			 }
 	private: System::Void b_confirm_Click(System::Object^  sender, System::EventArgs^  e)
 			 {
-				 System::TimeSpan ts = (this->dtp_last->Value - this->dtp_first->Value);
+				 TimeSpan ts = (this->dtp_last->Value - this->dtp_first->Value);
 				 sendDataToMain((int)ts.TotalDays+1);
 				 this->Close();
 			 }

@@ -32,8 +32,8 @@ namespace TMBViatges {
 
 		void updateDays(System::DateTime first_countday, int countdays)
 		{
-			this->l_initialdate->Text = L""+first_countday.ToString(L"yyyy/MM/dd");
-			this->l_lastdate->Text = L""+first_countday.AddDays(countdays-1).ToString(L"yyyy/MM/dd");
+			this->l_initialdate->Text = L""+first_countday.ToString(L"dd/MM/yyyy");
+			this->l_lastdate->Text = L""+first_countday.AddDays(countdays-1).ToString(L"dd/MM/yyyy");
 			this->l_totaldays->Text = L""+countdays+" dies";
 
 			this->l_initialdatelabel->Visible = true;
@@ -396,9 +396,11 @@ namespace TMBViatges {
 			// b_calculate
 			// 
 			this->b_calculate->Enabled = false;
-			this->b_calculate->Location = System::Drawing::Point(94, 304);
+			this->b_calculate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->b_calculate->Location = System::Drawing::Point(89, 304);
 			this->b_calculate->Name = L"b_calculate";
-			this->b_calculate->Size = System::Drawing::Size(101, 23);
+			this->b_calculate->Size = System::Drawing::Size(111, 26);
 			this->b_calculate->TabIndex = 17;
 			this->b_calculate->Text = L"Calcular";
 			this->b_calculate->UseVisualStyleBackColor = true;
@@ -438,7 +440,7 @@ private: System::Void b_selectdays_Click(System::Object^  sender, System::EventA
 		 }
 private: System::Void digitsOnly(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e)
 		 {
-			 ( (System::Windows::Forms::TextBox^)sender )->Text = L"";
+			 ( (TextBox^)sender )->Text = L"";
 			 e->Handled = !(isdigit(e->KeyChar));
 		 }
 private: System::Void b_nonworkingdays_Click(System::Object^  sender, System::EventArgs^  e)

@@ -3,12 +3,18 @@
 #include "Form1.h"
 #include "NonWorking.h"
 
+
+void TMBViatges::Calculation::addLine(String^ str)
+{
+	this->textBox1->AppendText(str + Environment::NewLine);
+}
+
 void TMBViatges::Calculation::calculatePrices()
 {
-	System::Windows::Forms::ListView::CheckedIndexCollection^ nw_days = TMBViatges::NonWorking::nw_days;
+	ListView::CheckedIndexCollection^ nw_days = TMBViatges::NonWorking::nw_days;
 	int* weektrips = TMBViatges::Form1::trips_day;
 	int days = TMBViatges::Form1::countdays;
-	System::DateTime thisDay = TMBViatges::Form1::first_countday;
+	DateTime thisDay = TMBViatges::Form1::first_countday;
 
 	float preuT10 = TMBViatges::Form1::price10;
 	float preuT50 = TMBViatges::Form1::price50;
@@ -26,21 +32,19 @@ void TMBViatges::Calculation::calculatePrices()
 	falten90 = 0;
 	cost90 = 0;
 
-	unsigned int dayCost; bool festa;
+	int dayCost; bool festa;
 	for (int i=0; i<days; i++)
 	{
 		dayCost = weektrips[(int)thisDay.DayOfWeek];
 		festa = (nw_days != nullptr && nw_days->Contains(i));
 		if (!festa && dayCost > 0)
 		{
-			
 			while (falten10 < dayCost)
 			{
 				falten10 += 10;
 				cost10 += preuT10;
 				tickets10++;
 			}
-			///
 			if ((falten30 < 1) && (falten50 > dayCost))
 			{
 				perduts50.Add(tickets50,falten50);
@@ -74,29 +78,29 @@ void TMBViatges::Calculation::calculatePrices()
 		falten90 = 0;
 }
 
-
-void addLine(System::Windows::Forms::ListView^ lv, System::String^ str)
-{
-	ListViewItem^ item = gcnew ListViewItem();
-	item->Text = str;
-	lv->Items->Add(item);
-}
-
 void TMBViatges::Calculation::showResults()
 {
-	addLine(this->listView1,L"Preus T-10");
-	addLine(this->listView1,L"Targetes: "+tickets10);
-	addLine(this->listView1,L"Preu: "+cost10+"€");
-	addLine(this->listView1,L"Sobren "+falten10+" viatges");
-	addLine(this->listView1,L"");
-	addLine(this->listView1,L"Preus T-50/30");
-	addLine(this->listView1,L"Targetes: "+tickets50);
-	addLine(this->listView1,L"Preu: "+cost50+"€");
-	addLine(this->listView1,L"######## "+perduts50.Count);
+	DateTime endDay = TMBViatges::Form1::first_countday.AddDays(TMBViatges::Form1::countdays);
+	addLine(L"Preus T-10");
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets10,cost10));
+	addLine(L"   Sobren "+falten10+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	addLine(Environment::NewLine);
 
+	addLine(L"Preus T-50/30");
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets50,cost50));
 	for each(int i in perduts50.Keys)
-	{
-		addLine(this->listView1,L"En la targeta "+i+" s'han perdut "+perduts50[i]+" viatges");
-	}
-	addLine(this->listView1,L"");
+		addLine(L"   En la targeta "+i+" s'han perdut "+perduts50[i]+" viatges");
+	addLine(L"   Sobren "+falten30+" dies i "+falten50+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	addLine(Environment::NewLine);
+
+	addLine(L"Preus T-Jove");
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets90,cost90));
+	
+	this->textBox1->AppendText(L"   Sobren "+falten90+" dies");
+
+
+	if (textBox1->Lines->Length >= 25)
+		textBox1->ScrollBars = ScrollBars::Vertical;
+	else
+		textBox1->ScrollBars = ScrollBars::None;
 }

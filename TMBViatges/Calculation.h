@@ -30,6 +30,7 @@ namespace TMBViatges {
 		}
 		void calculatePrices();
 		void showResults();
+		void addLine(System::String^ str);
 
 	protected:
 		/// <summary>
@@ -42,7 +43,7 @@ namespace TMBViatges {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::ListView^ listView1;
+
 
 
 
@@ -51,19 +52,21 @@ namespace TMBViatges {
 	private:
 		System::ComponentModel::Container ^components;
 		//T-10
-		unsigned int tickets10;
-		unsigned int falten10;
+		int tickets10;
+		int falten10;
 		float cost10;
 		//T-50/30
-		unsigned int tickets50;
-		unsigned int falten30;
-		unsigned int falten50;
+		int tickets50;
+		int falten30;
+		int falten50;
 		float cost50;
 		System::Collections::Generic::Dictionary<int,int> perduts50;
 		//T-Jove / T-Trimestre
-		unsigned int tickets90;
-		unsigned int falten90;
-		float cost90;
+		int tickets90;
+		int falten90;
+	private: System::Windows::Forms::TextBox^  textBox1;
+
+			 float cost90;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -72,40 +75,36 @@ namespace TMBViatges {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::ColumnHeader^  columnHeader1;
-			this->listView1 = (gcnew System::Windows::Forms::ListView());
-			columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Calculation::typeid));
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
-			// columnHeader1
+			// textBox1
 			// 
-			columnHeader1->Width = 1000;
-			// 
-			// listView1
-			// 
-			this->listView1->Activation = System::Windows::Forms::ItemActivation::OneClick;
-			this->listView1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(1) {columnHeader1});
-			this->listView1->Enabled = false;
-			this->listView1->FullRowSelect = true;
-			this->listView1->HeaderStyle = System::Windows::Forms::ColumnHeaderStyle::Nonclickable;
-			this->listView1->Location = System::Drawing::Point(13, 13);
-			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(344, 454);
-			this->listView1->TabIndex = 0;
-			this->listView1->UseCompatibleStateImageBehavior = false;
-			this->listView1->View = System::Windows::Forms::View::SmallIcon;
+			this->textBox1->AcceptsTab = true;
+			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox1->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->textBox1->Location = System::Drawing::Point(12, 12);
+			this->textBox1->Multiline = true;
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->ReadOnly = true;
+			this->textBox1->Size = System::Drawing::Size(372, 408);
+			this->textBox1->TabIndex = 0;
 			// 
 			// Calculation
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(369, 479);
-			this->Controls->Add(this->listView1);
+			this->ClientSize = System::Drawing::Size(390, 432);
+			this->Controls->Add(this->textBox1);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Calculation";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
-			this->Text = L"Calculation";
+			this->Text = L"Resultats";
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
