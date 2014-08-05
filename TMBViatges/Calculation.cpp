@@ -80,24 +80,40 @@ void TMBViatges::Calculation::calculatePrices()
 
 void TMBViatges::Calculation::showResults()
 {
+	String^ str;
 	DateTime endDay = TMBViatges::Form1::first_countday.AddDays(TMBViatges::Form1::countdays);
 	addLine(L"Preus T-10");
 	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets10,cost10));
-	addLine(L"   Sobren "+falten10+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	if (falten10>1)
+		addLine(L"   Sobren "+falten10+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	else if(falten10==1)
+		addLine(L"   Sobra 1 viatge a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	else
+		addLine(L"   No ha sobrat cap viatge");
 	addLine(Environment::NewLine);
 
 	addLine(L"Preus T-50/30");
 	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets50,cost50));
 	for each(int i in perduts50.Keys)
 		addLine(L"   En la targeta "+i+" s'han perdut "+perduts50[i]+" viatges");
-	addLine(L"   Sobren "+falten30+" dies i "+falten50+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	if(falten30==1)
+		str = "Sobra 1 dia";
+	else
+		str = "Sobren "+falten30+" dies";
+	if(falten50==1)
+			addLine(L"   "+str+" i 1 viatge a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
+	else
+			addLine(L"   "+str+" i "+falten50+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
 	addLine(Environment::NewLine);
 
 	addLine(L"Preus T-Jove");
 	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets90,cost90));
-	
-	this->textBox1->AppendText(L"   Sobren "+falten90+" dies");
-
+	if (falten90>1)
+		this->textBox1->AppendText(L"   Sobren "+falten90+" dies");
+	else if(falten90==1)
+		this->textBox1->AppendText(L"   Sobra 1 dia");
+	else
+		this->textBox1->AppendText(L"   No sobra cap dia");
 
 	if (textBox1->Lines->Length >= 25)
 		textBox1->ScrollBars = ScrollBars::Vertical;
