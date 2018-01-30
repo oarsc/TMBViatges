@@ -61,12 +61,20 @@ namespace TMBViatges {
 		int falten50;
 		float cost50;
 		System::Collections::Generic::Dictionary<int,int> perduts50;
-		//T-Jove / T-Trimestre
-		int tickets90;
-		int falten90;
+		//T-Jove
+		int ticketsJ;
+		int faltenJ;
+		float costJ;
+		//T-Trimestre
+		int ticketsT;
+		int faltenT;
+		float costT;
+		//T-Mes
+		int ticketsM;
+		int faltenM;
+		float costM;
 	private: System::Windows::Forms::TextBox^  textBox1;
 
-			 float cost90;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>

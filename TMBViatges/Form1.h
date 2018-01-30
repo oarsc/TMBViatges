@@ -51,7 +51,9 @@ namespace TMBViatges {
 	public: static int* trips_day;
 	public: static float price10;
 	public: static float price50;
-	public: static float price90;
+	public: static float pricejove;
+	public: static float pricemes;
+	public: static float pricetrimestre;
 	public: static System::DateTime first_countday;
 	public: static int countdays;
 
@@ -68,9 +70,13 @@ namespace TMBViatges {
 		}
 	private: System::Windows::Forms::GroupBox^  gb_preus;
 	private: System::Windows::Forms::TextBox^  tb_tjove;
+	private: System::Windows::Forms::TextBox^  tb_tmes;
+	private: System::Windows::Forms::TextBox^  tb_ttrimestre;
 	private: System::Windows::Forms::TextBox^  tb_t50;
 	private: System::Windows::Forms::TextBox^  tb_t10;
 	private: System::Windows::Forms::Label^  l_tjove;
+	private: System::Windows::Forms::Label^  l_tmes;
+	private: System::Windows::Forms::Label^  l_ttrimestre;
 	private: System::Windows::Forms::Label^  l_50;
 	private: System::Windows::Forms::Label^  l_t10;
 	private: System::Windows::Forms::Label^  l_viatgesdia;
@@ -112,8 +118,12 @@ namespace TMBViatges {
 			this->gb_preus = (gcnew System::Windows::Forms::GroupBox());
 			this->tb_tjove = (gcnew System::Windows::Forms::TextBox());
 			this->tb_t50 = (gcnew System::Windows::Forms::TextBox());
+			this->tb_tmes = (gcnew System::Windows::Forms::TextBox());
+			this->tb_ttrimestre = (gcnew System::Windows::Forms::TextBox());
 			this->tb_t10 = (gcnew System::Windows::Forms::TextBox());
 			this->l_tjove = (gcnew System::Windows::Forms::Label());
+			this->l_tmes = (gcnew System::Windows::Forms::Label());
+			this->l_ttrimestre = (gcnew System::Windows::Forms::Label());
 			this->l_50 = (gcnew System::Windows::Forms::Label());
 			this->l_t10 = (gcnew System::Windows::Forms::Label());
 			this->l_viatgesdia = (gcnew System::Windows::Forms::Label());
@@ -143,20 +153,24 @@ namespace TMBViatges {
 			// 
 			this->gb_preus->Controls->Add(this->tb_tjove);
 			this->gb_preus->Controls->Add(this->tb_t50);
+			this->gb_preus->Controls->Add(this->tb_tmes);
+			this->gb_preus->Controls->Add(this->tb_ttrimestre);
 			this->gb_preus->Controls->Add(this->tb_t10);
 			this->gb_preus->Controls->Add(this->l_tjove);
+			this->gb_preus->Controls->Add(this->l_tmes);
+			this->gb_preus->Controls->Add(this->l_ttrimestre);
 			this->gb_preus->Controls->Add(this->l_50);
 			this->gb_preus->Controls->Add(this->l_t10);
 			this->gb_preus->Location = System::Drawing::Point(29, 12);
 			this->gb_preus->Name = L"gb_preus";
-			this->gb_preus->Size = System::Drawing::Size(218, 120);
+			this->gb_preus->Size = System::Drawing::Size(218, 168);
 			this->gb_preus->TabIndex = 0;
 			this->gb_preus->TabStop = false;
 			this->gb_preus->Text = L"Preus dels bitllets";
 			// 
 			// tb_tjove
 			// 
-			this->tb_tjove->Location = System::Drawing::Point(71, 79);
+			this->tb_tjove->Location = System::Drawing::Point(71, 133);
 			this->tb_tjove->Name = L"tb_tjove";
 			this->tb_tjove->Size = System::Drawing::Size(132, 20);
 			this->tb_tjove->TabIndex = 5;
@@ -168,7 +182,23 @@ namespace TMBViatges {
 			this->tb_t50->Name = L"tb_t50";
 			this->tb_t50->Size = System::Drawing::Size(132, 20);
 			this->tb_t50->TabIndex = 4;
-			this->tb_t50->Text = L"42,50";
+			this->tb_t50->Text = L"43,50";
+			// 
+			// tb_tmes
+			// 
+			this->tb_tmes->Location = System::Drawing::Point(71, 79);
+			this->tb_tmes->Name = L"tb_tmes";
+			this->tb_tmes->Size = System::Drawing::Size(132, 20);
+			this->tb_tmes->TabIndex = 5;
+			this->tb_tmes->Text = L"54,00";
+			// 
+			// tb_ttrimestre
+			// 
+			this->tb_ttrimestre->Location = System::Drawing::Point(71, 106);
+			this->tb_ttrimestre->Name = L"tb_ttrimestre";
+			this->tb_ttrimestre->Size = System::Drawing::Size(132, 20);
+			this->tb_ttrimestre->TabIndex = 5;
+			this->tb_ttrimestre->Text = L"145,30";
 			// 
 			// tb_t10
 			// 
@@ -176,16 +206,34 @@ namespace TMBViatges {
 			this->tb_t10->Name = L"tb_t10";
 			this->tb_t10->Size = System::Drawing::Size(132, 20);
 			this->tb_t10->TabIndex = 3;
-			this->tb_t10->Text = L"10,30";
+			this->tb_t10->Text = L"10,20";
 			// 
 			// l_tjove
 			// 
 			this->l_tjove->AutoSize = true;
-			this->l_tjove->Location = System::Drawing::Point(10, 82);
+			this->l_tjove->Location = System::Drawing::Point(10, 136);
 			this->l_tjove->Name = L"l_tjove";
 			this->l_tjove->Size = System::Drawing::Size(40, 13);
 			this->l_tjove->TabIndex = 2;
 			this->l_tjove->Text = L"T-Jove";
+			// 
+			// l_tmes
+			// 
+			this->l_tmes->AutoSize = true;
+			this->l_tmes->Location = System::Drawing::Point(10, 82);
+			this->l_tmes->Name = L"l_tmes";
+			this->l_tmes->Size = System::Drawing::Size(37, 13);
+			this->l_tmes->TabIndex = 2;
+			this->l_tmes->Text = L"T-Mes";
+			// 
+			// l_ttrimestre
+			// 
+			this->l_ttrimestre->AutoSize = true;
+			this->l_ttrimestre->Location = System::Drawing::Point(10, 109);
+			this->l_ttrimestre->Name = L"l_ttrimestre";
+			this->l_ttrimestre->Size = System::Drawing::Size(60, 13);
+			this->l_ttrimestre->TabIndex = 2;
+			this->l_ttrimestre->Text = L"T-Trimestre";
 			// 
 			// l_50
 			// 
@@ -299,7 +347,7 @@ namespace TMBViatges {
 			this->gb_viatgesdia->Controls->Add(this->tb_vie);
 			this->gb_viatgesdia->Controls->Add(this->tb_mie);
 			this->gb_viatgesdia->Controls->Add(this->tb_jue);
-			this->gb_viatgesdia->Location = System::Drawing::Point(12, 138);
+			this->gb_viatgesdia->Location = System::Drawing::Point(12, 190);
 			this->gb_viatgesdia->Name = L"gb_viatgesdia";
 			this->gb_viatgesdia->Size = System::Drawing::Size(253, 46);
 			this->gb_viatgesdia->TabIndex = 9;
@@ -377,7 +425,7 @@ namespace TMBViatges {
 			this->gb_days->Controls->Add(this->l_initialdate);
 			this->gb_days->Controls->Add(this->l_lastdatelabel);
 			this->gb_days->Controls->Add(this->l_totaldays);
-			this->gb_days->Location = System::Drawing::Point(12, 190);
+			this->gb_days->Location = System::Drawing::Point(12, 242);
 			this->gb_days->Name = L"gb_days";
 			this->gb_days->Size = System::Drawing::Size(253, 79);
 			this->gb_days->TabIndex = 16;
@@ -385,7 +433,7 @@ namespace TMBViatges {
 			// b_nonworkingdays
 			// 
 			this->b_nonworkingdays->Enabled = false;
-			this->b_nonworkingdays->Location = System::Drawing::Point(71, 275);
+			this->b_nonworkingdays->Location = System::Drawing::Point(71, 327);
 			this->b_nonworkingdays->Name = L"b_nonworkingdays";
 			this->b_nonworkingdays->Size = System::Drawing::Size(149, 23);
 			this->b_nonworkingdays->TabIndex = 16;
@@ -396,9 +444,9 @@ namespace TMBViatges {
 			// b_calculate
 			// 
 			this->b_calculate->Enabled = false;
-			this->b_calculate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->b_calculate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->b_calculate->Location = System::Drawing::Point(89, 304);
+			this->b_calculate->Location = System::Drawing::Point(89, 356);
 			this->b_calculate->Name = L"b_calculate";
 			this->b_calculate->Size = System::Drawing::Size(111, 26);
 			this->b_calculate->TabIndex = 17;
@@ -410,14 +458,14 @@ namespace TMBViatges {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(277, 340);
+			this->ClientSize = System::Drawing::Size(277, 400);
 			this->Controls->Add(this->b_calculate);
 			this->Controls->Add(this->b_nonworkingdays);
 			this->Controls->Add(this->gb_days);
 			this->Controls->Add(this->gb_viatgesdia);
 			this->Controls->Add(this->gb_preus);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -462,7 +510,9 @@ private: System::Void b_calculate_Click(System::Object^  sender, System::EventAr
 			this->trips_day = days;
 			this->price10 = float::Parse(this->tb_t10->Text);
 			this->price50 = float::Parse(this->tb_t50->Text);
-			this->price90 = float::Parse(this->tb_tjove->Text);
+			this->pricejove = float::Parse(this->tb_tjove->Text);
+			this->pricemes = float::Parse(this->tb_tmes->Text);
+			this->pricetrimestre = float::Parse(this->tb_ttrimestre->Text);
 
 			this->f_calculation = gcnew Calculation();
 			this->f_calculation->ShowDialog();

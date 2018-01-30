@@ -18,7 +18,9 @@ void TMBViatges::Calculation::calculatePrices()
 
 	float preuT10 = TMBViatges::Form1::price10;
 	float preuT50 = TMBViatges::Form1::price50;
-	float preuTJ = TMBViatges::Form1::price90;
+	float preuTJ = TMBViatges::Form1::pricejove;
+	float preuTM = TMBViatges::Form1::pricemes;
+	float preuTT = TMBViatges::Form1::pricetrimestre;
 
 	tickets10 = 0;
 	falten10 = 0;
@@ -28,9 +30,15 @@ void TMBViatges::Calculation::calculatePrices()
 	falten50 = 0;
 	cost50 = 0;
 	perduts50.Clear();
-	tickets90 = 0;
-	falten90 = 0;
-	cost90 = 0;
+	ticketsJ = 0;
+	faltenJ = 0;
+	costJ = 0;
+	ticketsT = 0;
+	faltenT = 0;
+	costT = 0;
+	ticketsM = 0;
+	faltenM = 0;
+	costM = 0;
 
 	int dayCost; bool festa;
 	for (int i=0; i<days; i++)
@@ -57,25 +65,36 @@ void TMBViatges::Calculation::calculatePrices()
 				cost50 += preuT50;
 				tickets50++;
 			}
-			if (falten90 < 1)
+			if (faltenJ < 1)
 			{
-				falten90 = 90;
-				cost90 += preuTJ;
-				tickets90++;
+				faltenJ = 90;
+				costJ += preuTJ;
+				ticketsJ++;
+
+				faltenT = 90;
+				costT += preuTT;
+				ticketsT++;
+			}
+			if ( faltenM < 1 ) {
+				faltenM = 30;
+				costM += preuTM;
+				ticketsM++;
 			}
 			falten10-=dayCost;
 			falten50-=dayCost;
 		}
 		falten30--;
-		falten90--;
+		faltenJ--;
+		faltenT--;
+		faltenM--;
 		thisDay=thisDay.AddDays(1);
 	}
 
 	if ((falten30 > 30) || (falten30 < 1))
 		falten30 = 0;
 
-	if (falten90 < 0)
-		falten90 = 0;
+	if (faltenJ < 0)
+		faltenJ = 0;
 }
 
 void TMBViatges::Calculation::showResults()
@@ -106,11 +125,41 @@ void TMBViatges::Calculation::showResults()
 			addLine(L"   "+str+" i "+falten50+" viatges a partir del dia "+endDay.ToString(L"dd/MM/yyyy"));
 	addLine(Environment::NewLine);
 
+	addLine(L"Preus T-Mes");
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €", ticketsM, costM));
+	if ( faltenM>1 )
+		this->textBox1->AppendText(L"   Sobren " + faltenM + " dies");
+	else if ( faltenM == 1 )
+		this->textBox1->AppendText(L"   Sobra 1 dia");
+	else
+		this->textBox1->AppendText(L"   No sobra cap dia");
+
+	if ( textBox1->Lines->Length >= 25 )
+		textBox1->ScrollBars = ScrollBars::Vertical;
+	else
+		textBox1->ScrollBars = ScrollBars::None;
+	addLine(Environment::NewLine);
+
+	addLine(L"Preus T-Trimestre");
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €", ticketsT, costT));
+	if ( faltenT>1 )
+		this->textBox1->AppendText(L"   Sobren " + faltenT + " dies");
+	else if ( faltenT == 1 )
+		this->textBox1->AppendText(L"   Sobra 1 dia");
+	else
+		this->textBox1->AppendText(L"   No sobra cap dia");
+
+	if ( textBox1->Lines->Length >= 25 )
+		textBox1->ScrollBars = ScrollBars::Vertical;
+	else
+		textBox1->ScrollBars = ScrollBars::None;
+	addLine(Environment::NewLine);
+
 	addLine(L"Preus T-Jove");
-	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",tickets90,cost90));
-	if (falten90>1)
-		this->textBox1->AppendText(L"   Sobren "+falten90+" dies");
-	else if(falten90==1)
+	addLine(String::Format(L"Targetes: {0}	Preu: {1,2:f} €",ticketsJ,costJ));
+	if (faltenJ>1)
+		this->textBox1->AppendText(L"   Sobren "+faltenJ+" dies");
+	else if(faltenJ==1)
 		this->textBox1->AppendText(L"   Sobra 1 dia");
 	else
 		this->textBox1->AppendText(L"   No sobra cap dia");
