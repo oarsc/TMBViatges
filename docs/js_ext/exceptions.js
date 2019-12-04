@@ -1,4 +1,4 @@
-const {exceptions, PARAMS, MES_NOMS, toDate, fromDate, encData}  = require('./utils.js');
+const {PARAMS, MES_NOMS, toDate, fromDate, encData}  = require('./utils.js');
 
 let initDate;
 let endDate;

@@ -1,8 +1,3 @@
-let exceptions = "{}";
-if (location.protocol.indexOf("file") < 0)
-	exceptions = localStorage.getItem("ext") || "{}";
-exceptions = JSON.parse(exceptions);
-
 const MES_NOMS=["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
 const GET_PARAMS = (function(search){
 	let params = {};
@@ -23,7 +18,22 @@ const GET_PARAMS = (function(search){
 	return params;
 })(location.search);
 
-const PARAMS = loadData();
+const PARAMS = (function(data){
+	if (data) {
+		let lastChar = parseInt(data.substr(data.length-1));
+
+		data = data.substr(0, data.length-1);
+
+		while (lastChar --> 0) {
+			data += "=";
+		}
+
+		return JSON.parse(atob(data));
+	} else {
+		return {};
+	}
+
+})(GET_PARAMS['d']);
 
 function fromDate(date, short) {
 	let month = date.getMonth()+1;
@@ -71,23 +81,6 @@ return str;
 	}
 }
 
-function loadData(d) {
-	let data = d || GET_PARAMS['d'];
-	if (data) {
-		let lastChar = parseInt(data.substr(data.length-1));
-
-		data = data.substr(0, data.length-1);
-
-		while (lastChar --> 0) {
-			data += "=";
-		}
-
-		return JSON.parse(atob(data));
-	} else {
-		return {};
-	}
-}
-
 function encData(data) {
 	let text = btoa(JSON.stringify(data));
 
@@ -102,19 +95,12 @@ function encData(data) {
 	return text;
 }
 
-
-top.loadData = loadData;
-top.encData = encData;
-
 module.exports = {
-	exceptions: exceptions,
-	MES_NOMS: MES_NOMS,
-	GET_PARAMS: GET_PARAMS,
 	PARAMS: PARAMS,
+	MES_NOMS: MES_NOMS,
 	diffDays: diffDays,
 	formatPrice: formatPrice,
 	toDate: toDate,
 	fromDate: fromDate,
 	encData: encData,
-	loadData: loadData,
 }

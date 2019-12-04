@@ -1,4 +1,4 @@
-const {exceptions, formatPrice, toDate, fromDate, PARAMS}  = require('./utils.js');
+const {PARAMS, formatPrice, toDate, fromDate}  = require('./utils.js');
 const {TARGETES, TJove}  = require('./targetes.js');
 
 module.exports = {
