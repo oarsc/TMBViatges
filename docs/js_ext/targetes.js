@@ -1,6 +1,4 @@
 const {diffDays}  = require('./utils.js');
-const TARGETES = [];
-
 
 class Targeta {
 	static get zones(){
@@ -167,12 +165,4 @@ class T7030 extends T5030{
 	}
 }
 
-
-TARGETES.push(T10,TMes,TTrimestre,TJove,T5030,T7030);
-
-module.exports = TARGETES.reduce((obj,t)=>{
-	obj[t.name] = t;
-	return obj
-},{})
-
-module.exports.TARGETES = TARGETES;
+module.exports = [T10,TMes,TTrimestre,TJove,T5030,T7030];

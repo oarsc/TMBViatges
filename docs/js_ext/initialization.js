@@ -1,5 +1,5 @@
 const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData}  = require('./utils.js');
-const {TARGETES}  = require('./targetes.js');
+const TARGETES = require('./targetes.js');
 
 module.exports = {
 	init: _=>{

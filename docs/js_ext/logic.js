@@ -1,5 +1,5 @@
 const {PARAMS, formatPrice, toDate, fromDate}  = require('./utils.js');
-const {TARGETES, TJove}  = require('./targetes.js');
+const TARGETES  = require('./targetes.js');
 
 module.exports = {
 	init: _=>{
@@ -7,7 +7,7 @@ module.exports = {
 	},
 	load: _=>{
 		if (PARAMS.nojove=="on") {
-			TARGETES.splice(TARGETES.indexOf(TJove),1);
+			TARGETES.splice(TARGETES.map(t=>t.nom=="T-Jove").indexOf(true),1);
 		}
 		
 		let count = TARGETES.map(t=>1);
