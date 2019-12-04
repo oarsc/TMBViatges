@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>TMBViatges</title>
+	<link rel="shortcut icon" href="./img/favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+<body>
+	<header>
+		<img id="logo" src="./img/Logo-TMB.png"/>
+		<a id="back-button" href="./index.html">Tornar</a>
+	</header>
+	<h1 id="modern-browser-message">Aquesta eina només funciona en navegadors moderns i actualitzats</h1>
+
+	<div id="content" style="display:none">
+		<div id="mesos"></div>
+		
+		<div id="gravar-excepcions">
+			<button id="submit">Gravar i tornar</button>
+			<a id="back-button-footer" href="./index.html">Tornar</a>
+		</div>
+	</div>
+
+
+
+
+	<template id="month" style="display:none">
+		<div class="month-name"></div>
+		<table><thead><tr>
+			<th>Dilluns</th><th>Dimarts</th><th>Dimecres</th><th>Dijous</th><th>Divendres</th><th>Dissabte</th><th>Diumenge</th>
+		</tr></thead>
+		<tbody class="dies"></tbody>
+		</table>
+	</template>
+
+
+	<template id="week" style="display:none">
+		<tr>
+			<td class="dow d0"><div><div class="dianum"></div><input type="" name="" value="2"/></div></td>
+			<td class="dow d1"><div><div class="dianum"></div><input type="" name="" value="2"/></div></td>
+			<td class="dow d2"><div><div class="dianum"></div><input type="" name="" value="2"/></div></td>
+			<td class="dow d3"><div><div class="dianum"></div><input type="" name="" value="2"/></div></td>
+			<td class="dow d4"><div><div class="dianum"></div><input type="" name="" value="2"/></div></td>
+			<td class="dow d5"><div><div class="dianum"></div><input type="" name="" value="0"/></div></td>
+			<td class="dow d6"><div><div class="dianum"></div><input type="" name="" value="0"/></div></td>
+		</tr>
+	</template>
+
+	<script type="text/javascript" src="./js/bundle.js"></script>
+
+	<footer>Aplicació no oficial de TMB</footer>
+</body>
+</html>

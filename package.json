@@ -1,0 +1,33 @@
+{
+  "name": "tmb-viatges",
+  "version": "1.0.0",
+  "description": "This application compares prices of the metro services in Barcelona.",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"no start specified\" && exit 1",
+    "test": "webpack --mode development -p -w"
+  },
+  "keywords": [
+    "travelling",
+    "barcelona",
+    "tmb",
+    "metro",
+    "transports",
+    "metropolitans"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.7.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-minify": "^0.4.3",
+    "css-loader": "^3.2.1",
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "author": "Scopp",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/scopp/tmbviatges#readme"
+}

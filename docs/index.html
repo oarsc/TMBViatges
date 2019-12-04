@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<title>TMBViatges</title>
+	<link rel="shortcut icon" href="./img/favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+<body>
+	<header>
+		<img id="logo" src="./img/Logo-TMB.png"/>
+	</header>
+	<h1 id="modern-browser-message">Aquesta eina només funciona en navegadors moderns i actualitzats</h1>
+
+	<div id="content" style="display:none">
+		<div id="form">
+			<input type="hidden" name="exceptions" id="exceptions" value="{}"/>
+			<select id="zones-selector" name="z"></select>
+			<div id="tickets">
+				<table class="main-table" border>
+					<thead>
+						<tr><th>Nom</th><th>Preu</th><th>Dies d'ús a la setmana</th><th>Dates</th></tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<label><input type="checkbox" name="nojove" id="nojove">No jove</label>
+			<br/><br/>
+		</div>
+		<form id="form-submit" action='./resultats.html' method="GET">
+			<input type="hidden" name="d" value="e301"/>
+			<div><button id="calculate-button">Calcular</button> <button id="exceptions-button">Dies excepcionals</button></div>
+		</form>
+	</div>
+
+	<template id="table-extra-columns" style="display:none">
+		<td style="text-align:center">
+			<table style="display:inline-block">
+				<tbody>
+					<tr>
+						<td class="week-days-name">Dilluns</td>
+						<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d0" id="dill"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Dimarts</td>
+						<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d1" id="dima"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Dimecres</td>
+						<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d2" id="dime"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Dijous</td>
+						<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d3" id="dijo"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Divendres</td>
+						<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d4" id="dive"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Dissabte</td>
+						<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d5" id="diss"/></td>
+					</tr>
+					<tr>
+						<td class="week-days-name">Diumenge</td>
+						<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d6" id="dium"/></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</td>
+		<td>
+			<table>
+				<tbody>
+					<tr><td class="day-select-label">Día inicial (format AAAA-MM-DD)</td></tr>
+					<tr><td><input placeholder="AAAA-MM-DD" type="text" name="ini" id="dateini" autocomplete="off"></td></tr>
+					<tr><td class="day-add-label"><label>Suma <input type="number" min="0" value="90" id="adddays"> dies</label></td></tr>
+					<tr><td class="day-select-label">Día final (format AAAA-MM-DD)</td></tr>
+					<tr><td><input placeholder="AAAA-MM-DD" type="text" name="end" id="dateend" autocomplete="off"></td></tr>
+				</tbody>
+			</table>
+		</td>
+	</template>
+
+	<script type="text/javascript" src="./js/bundle.js"></script>
+
+	<footer>Aplicació no oficial de TMB</footer>
+</body>
+</html>
