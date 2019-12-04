@@ -4,7 +4,7 @@
   "description": "This application compares prices of the metro services in Barcelona.",
   "main": "index.js",
   "scripts": {
-    "start": "echo \"no start specified\" && exit 1",
+    "build": "webpack -p",
     "test": "webpack --mode development -p -w"
   },
   "keywords": [
