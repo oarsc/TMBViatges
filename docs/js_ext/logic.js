@@ -6,7 +6,7 @@ module.exports = {
 		document.getElementById("back-button").href = "./index.html"+location.search;
 	},
 	load: _=>{
-		if (PARAMS.nojove=="on") {
+		if (PARAMS.jove!="on") {
 			TARGETES.splice(TARGETES.map(t=>t.nom=="T-Jove").indexOf(true),1);
 		}
 		

@@ -5,7 +5,7 @@ class Targeta {
 		return 6;
 	}
 	static get unipersonal(){
-		return true;
+		return false;
 	}
 	constructor(){
 		this.firstUsed = false;
@@ -16,43 +16,15 @@ class Targeta {
 	falta(dia) { return [undefined,undefined]; }
 }
 
-// ###############################
-// ############## Bitllet Senzill:
-class Senzill extends Targeta{
-	static get nom(){
-		return "Bitllet Senzill";
-	}
-	static get preus(){
-		return [2.40, 3.40, 4.50, 5.75, 7.35, 8.55];
-	}
-	static get unipersonal(){
-		return false;
-	}
-	constructor(){
-		super();
-		this.usada = false;
-	}
-	us(dia) {
-		let eraNova = !this.usada;
-		this.usada = true;
-		return eraNova;
-	}
-	caducat(dia) {
-		return this.usada;
-	}
-	falta(dia){
-		return [this.usada?0:1, undefined];
-	}
-}
 
 // ###############################
-// ##################### T-Casual:
-class TCasual extends Targeta{
+// ######################### T-10:
+class T10 extends Targeta{
 	static get nom(){
-		return "T-Casual";
+		return "T-10";
 	}
 	static get preus(){
-		return [11.35, 22.40, 30.50, 39.20, 45.05, 47.90];
+		return [10.20, 20.10, 27.40, 35.25, 40.50, 43.05];
 	}
 	constructor(){
 		super();
@@ -72,13 +44,16 @@ class TCasual extends Targeta{
 
 
 // ###############################
-// ###################### T-Usual:
-class TUsual extends Targeta{
+// ######################## T-Mes:
+class TMes extends Targeta{
 	static get nom(){
-		return "T-Usual";
+		return "T-Mes";
 	}
 	static get preus(){
-		return [40.00, 53.85, 75.60, 92.55, 106.20, 113.75];
+		return [54, 72.70, 102, 124.90, 143.35, 153.55];
+	}
+	static get unipersonal(){
+		return true;
 	}
 	diaValidacio(data){
 		super.diaValidacio(data);
@@ -102,13 +77,13 @@ class TUsual extends Targeta{
 
 
 // ###############################
-// ####################### T-Jove:
-class TJove extends TUsual{
+// ################## T-Trimestre:
+class TTrimestre extends TMes{
 	static get nom(){
-		return "T-Jove";
+		return "T-Trimestre";
 	}
 	static get preus(){
-		return [80.00, 105.20, 147.55, 180.75, 207.40, 222.25];
+		return [145.30, 196.50, 275.25, 337.15, 386.80, 414.40];
 	}
 	diaValidacio(data){
 		super.diaValidacio(data);
@@ -126,37 +101,57 @@ class TJove extends TUsual{
 
 
 // ###############################
-// ######################## T-Dia:
-class TDia extends TUsual{
+// ####################### T-Jove:
+class TJove extends TTrimestre{
 	static get nom(){
-		return "T-Dia";
+		return "T-Jove";
 	}
 	static get preus(){
-		return [10.50, 16.00, 20.10, 22.45, 25.15, 28.15];
-	}
-	diaValidacio(data){
-		super.diaValidacio(data);
-		this.dataFinal = new Date(data);
-		this.dataFinal.setDate(this.dataFinal.getDate()+1)
-		this.dataFinal.setHours(0);
-		this.dataFinal.setMinutes(0);
-		this.dataFinal.setSeconds(0);
-		this.dataFinal.setMilliseconds(0);
-	}
-	falta(dia){
-		return [undefined, diffDays(dia, this.dataFinal)];
+		return [105, 142, 199.20, 244, 280, 300];
 	}
 }
 
 
 // ###############################
-// ####################### T-Grup:
-class TGrup extends TUsual{
+// ###################### T-50/30:
+class T5030 extends TMes{
+	static get zones(){
+		return 1;
+	}
 	static get nom(){
-		return "T-Grup";
+		return "T-50/30";
 	}
 	static get preus(){
-		return [79.45, 156.80, 213.50, 274.40, 315.35, 335.30];
+		return [43.50];
+	}
+	constructor(){
+		super();
+		this.usos = 50;
+	}
+	us(dia) {
+		this.usos--;
+		return this.dataFinal.getTime() > dia.getTime() && this.usos >= 0;
+	}
+	caducat(dia) {
+		return this.dataFinal.getTime() < dia.getTime() || this.usos <= 0;
+	}
+	falta(dia){
+		return [this.usos, diffDays(dia, this.dataFinal)];
+	}
+}
+
+
+// ###############################
+// ###################### T-70/30:
+class T7030 extends T5030{
+	static get zones(){
+		return 6;
+	}
+	static get nom(){
+		return "T-70/30";
+	}
+	static get preus(){
+		return [145.30, 196.50, 275.25, 337.15, 386.80, 414.40];
 	}
 	static get unipersonal(){
 		return false;
@@ -165,47 +160,9 @@ class TGrup extends TUsual{
 		super();
 		this.usos = 70;
 	}
-	us(dia) {
-		this.usos--;
-		return this.dataFinal.getTime() > dia.getTime() && this.usos >= 0;
-	}
-	caducat(dia) {
-		return this.dataFinal.getTime() < dia.getTime() || this.usos <= 0;
-	}
 	falta(dia){
 		return [this.usos, diffDays(dia, this.dataFinal)];
 	}
 }
 
-
-// ###############################
-// ################### T-Familiar:
-class TFamiliar extends TUsual{
-	static get nom(){
-		return "T-Familiar";
-	}
-	static get preus(){
-		return [10.00, 19.00, 27.00, 35.00, 40.00, 42.00];
-	}
-	static get unipersonal(){
-		return false;
-	}
-	constructor(){
-		super();
-		this.usos = 8;
-	}
-	us(dia) {
-		this.usos--;
-		return this.dataFinal.getTime() > dia.getTime() && this.usos >= 0;
-	}
-	caducat(dia) {
-		return this.dataFinal.getTime() < dia.getTime() || this.usos <= 0;
-	}
-	falta(dia){
-		return [this.usos, diffDays(dia, this.dataFinal)];
-	}
-}
-
-
-
-module.exports = [Senzill,TFamiliar,TDia,TCasual,TUsual,TJove,TGrup];
+module.exports = [T10,TMes,TTrimestre,TJove,T5030,T7030];

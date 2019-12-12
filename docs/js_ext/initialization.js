@@ -57,13 +57,13 @@ module.exports = {
 		}
 
 		// CONFIGURAR AVUI COM A PRIMER DIA
-		let dateIni = document.getElementById("dateini")
-		let dateEnd = document.getElementById("dateend")
-		let addDays = document.getElementById("adddays")
+		let dateIni = document.getElementById("dateini");
+		let dateEnd = document.getElementById("dateend");
+		let addDays = document.getElementById("adddays");
 
 		let today = new Date();
 		dateIni.value = fromDate(today);
-		today.setDate(today.getDate()+90);
+		today.setDate(today.getDate()+parseInt(addDays.value));
 		dateEnd.value = fromDate(today);
 
 		addDays.onchange =
@@ -145,7 +145,10 @@ function loadEntryData(){
 	ifSetValue('exceptions', JSON.stringify(PARAMS.exceptions));
 	ifSetValue('zones-selector',PARAMS.z);
 
-	ifSetChecked('nojove',PARAMS.nojove);
+	ifSetChecked('jove',PARAMS.jove);
+
+	document.getElementById('dateini').onblur();
+	document.getElementById('zones-selector').onchange();
 }
 
 function loadOutputData(){
