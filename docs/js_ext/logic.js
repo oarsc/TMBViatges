@@ -1,5 +1,5 @@
 const {PARAMS, formatPrice, toDate, fromDate}  = require('./utils.js');
-const TARGETES  = require('./targetes.js');
+var TARGETES  = require('./targetes.js');
 
 module.exports = {
 	init: _=>{
@@ -7,9 +7,12 @@ module.exports = {
 	},
 	load: _=>{
 		if (PARAMS.jove!="on") {
-			TARGETES.splice(TARGETES.map(t=>t.nom=="T-Jove").indexOf(true),1);
+			TARGETES = TARGETES.filter(t=>t.nom!="T-Jove");
 		}
-		
+		if (PARAMS.uni!="on") {
+			TARGETES = TARGETES.filter(t=>!t.unipersonal);
+		}
+
 		let count = TARGETES.map(t=>1);
 		let instances = TARGETES.map(t=>new t());
 

@@ -146,6 +146,7 @@ function loadEntryData(){
 	ifSetValue('zones-selector',PARAMS.z);
 
 	ifSetChecked('jove',PARAMS.jove);
+	ifSetChecked('uni', PARAMS.uni==undefined? "on" : PARAMS.uni);
 
 	document.getElementById('dateini').onblur();
 	document.getElementById('zones-selector').onchange();
@@ -171,6 +172,8 @@ function loadOutputData(){
 
 			} else if (el.checked) {
 				obj[el.name] = "on";
+			} else {
+				obj[el.name] = "off";
 			}
 
 			return obj;
