@@ -1,4 +1,4 @@
-const {PARAMS, MES_NOMS, toDate, fromDate, encData}  = require('./utils.js');
+const {PARAMS, MES_NOMS, toDate, fromDate, encData, addClass, removeClass}  = require('./utils.js');
 
 let initDate;
 let endDate;
@@ -68,9 +68,16 @@ function fillDay(dayElement, date) {
 
 	dayElement.querySelector(".dianum").textContent = date.getDate();
 	dayElement.querySelector("input").value=usos;
-	dayElement.className += " visible" + (def==usos?" def":"");
 	dayElement.setAttribute("date",fromDate(date));
 	dayElement.setAttribute("def",def);
+
+	if (def == usos) {
+		dayElement.className += " visible def";
+
+	} else {
+		dayElement.className += " visible";
+		addResetButton(dayElement);
+	}
 }
 
 function getUsos(date){
@@ -93,9 +100,34 @@ function blurEvent(ev) {
 	let def = td.getAttribute("def");
 	let usos = ev.target.value;
 	if (def == usos) {
-		if (td.className.indexOf(" def")<0) td.className += " def";
+		addClass(td, "def");
+		removeResetButton(td);
 	} else {
-		if (td.className.indexOf(" def")>=0) td.className = td.className.replace(/ ?def/,"");
+		removeClass(td, "def");
+		addResetButton(td);
+	}
+}
+
+function addResetButton(td) {
+	let div = td.children[0];
+	if (!td.buttonReset) {
+		let button = document.createElement("button");
+		button.innerHTML = "×";
+		button.onclick = ev => {
+			td.querySelector("input").value = td.getAttribute("def");
+			addClass(td, "def");
+			removeResetButton(td);
+		}
+		div.appendChild(button);
+		td.buttonReset = button;
+	}
+}
+
+function removeResetButton(td) {
+	let div = td.children[0];
+	if (td.buttonReset) {
+		div.removeChild(td.buttonReset);
+		td.buttonReset = undefined;
 	}
 }
 

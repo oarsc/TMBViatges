@@ -1,4 +1,4 @@
-const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData}  = require('./utils.js');
+const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData, cleanElement}  = require('./utils.js');
 const TARGETES = require('./targetes.js');
 
 module.exports = {
@@ -180,12 +180,6 @@ function loadOutputData(){
 
 
 // SUPPORT FUNCTIONS:
-function cleanElement(el){
-	while (el.firstChild) {
-		el.removeChild(el.firstChild);
-	}
-}
-
 function checkValidityDates(){
 	let validDates = true;
 

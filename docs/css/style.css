@@ -75,6 +75,10 @@ input.week-days{
 	color:#666;
 }
 
+.result .subhead, .result .sobres , .result .no-sobres {
+	margin-left: 5px;
+}
+
 .result .cost {
 	color:#fc8544;
 	font-weight: bold;
@@ -98,6 +102,7 @@ input.week-days{
 	text-align: center;
 	background-color: #f4f4f4;
 	border: 1px solid #aaa;
+	margin-top: 8px;
 }
 
 .dow {
@@ -133,6 +138,28 @@ input.week-days{
 .dow.modified {
 	background-color:#fffadf;
 }
+
+.dow > div {
+	position: relative;
+}
+
+.dow > div > button{
+	position: absolute;
+	top: 1px;
+	right: 0;
+	border: 1px solid #ae2e2e;
+	background-color: #ff8686;
+	width: 30px;
+	height: 18px;
+	padding: 0;
+	transition: background-color .3s;
+}
+
+.dow > div > button:hover{
+	cursor:pointer;
+	background-color: #fda4a4;
+}
+
 
 #gravar-excepcions {
 	margin-top: 40px;

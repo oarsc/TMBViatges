@@ -95,6 +95,33 @@ function encData(data) {
 	return text;
 }
 
+function addClass(element, className) {
+	let classes = element.className.split(" ");
+	if (classes.indexOf(className) < 0) {
+		element.className += " "+className;
+	}
+}
+
+function removeClass(element, className) {
+	let classes = element.className.split(" ");
+	let idx = classes.indexOf(className);
+	if (idx >= 0) {
+		classes.splice(idx, 1);
+		element.className = classes.join(" ");
+	}
+}
+
+function hasClass(element, className) {
+	let classes = element.className.split(" ");
+	return classes.indexOf(className) >= 0;
+}
+
+function cleanElement(el){
+	while (el.firstChild) {
+		el.removeChild(el.firstChild);
+	}
+}
+
 module.exports = {
 	PARAMS: PARAMS,
 	MES_NOMS: MES_NOMS,
@@ -103,4 +130,8 @@ module.exports = {
 	toDate: toDate,
 	fromDate: fromDate,
 	encData: encData,
+	addClass: addClass,
+	removeClass: removeClass,
+	hasClass: hasClass,
+	cleanElement: cleanElement,
 }

@@ -2,11 +2,6 @@ module.exports = {
   entry: [
     'babel-polyfill',
     './docs/js_ext/orch.js',
-    './docs/js_ext/targetes.js',
-    './docs/js_ext/initialization.js',
-    './docs/js_ext/logic.js',
-    './docs/js_ext/utils.js',
-    './docs/js_ext/exceptions.js',
     './docs/css/style.css'
   ],
   output: {
