@@ -1,11 +1,11 @@
-const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData, cleanElement}  = require('./utils.js');
+const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData, cleanElement, getElementById}  = require('./utils.js');
 const TARGETES = require('./targetes.js');
 
 module.exports = {
 	init: _=>{
-		document.getElementById("form-submit").onsubmit=ev=>{
-			ev.target.d.value = encData(loadOutputData());
-		}
+		getElementById("form-submit").onsubmit = ev=>ev.target.d.value = encData(loadOutputData());
+		getElementById("uni").onchange = onChangeUni;
+		getElementById("reset-fields").onclick = resetFields;
 	},
 	load: _=>{
 		let tbodyTargetes = document.querySelector("#tickets tbody");
@@ -37,14 +37,14 @@ module.exports = {
 
 		}).forEach(t=>tbodyTargetes.appendChild(t));
 
-		var temp = document.getElementById("table-extra-columns");
+		var temp = getElementById("table-extra-columns");
 		var clon = temp.content.cloneNode(true);
 		Array.from(clon.children).forEach(td=>td.rowSpan = TARGETES.length);
 
 		tbodyTargetes.firstChild.appendChild(clon);
 
 		// CONSTUIR COMBO DE ZONES:
-		let zonesSelect = document.getElementById("zones-selector");
+		let zonesSelect = getElementById("zones-selector");
 		cleanElement(zonesSelect);
 
 		zonesSelect.onchange = ev=>actualitzarPreus(zonesSelect.value);
@@ -57,9 +57,9 @@ module.exports = {
 		}
 
 		// CONFIGURAR AVUI COM A PRIMER DIA
-		let dateIni = document.getElementById("dateini");
-		let dateEnd = document.getElementById("dateend");
-		let addDays = document.getElementById("adddays");
+		let dateIni = getElementById("dateini");
+		let dateEnd = getElementById("dateend");
+		let addDays = getElementById("adddays");
 
 		let today = new Date();
 		dateIni.value = fromDate(today);
@@ -93,13 +93,26 @@ module.exports = {
 
 
 		// BOTÓ EXCEPCIONS
-		document.getElementById("exceptions-button").onclick = ev=>{
-			document.getElementById("form-submit").action="./excepcions.html";
+		getElementById("exceptions-button").onclick = ev=>{
+			getElementById("form-submit").action="./excepcions.html";
 		}
 
 
 		loadEntryData();
 	}
+}
+
+function onChangeUni(ev){
+	let jove = getElementById("jove");
+	let uni = jove.disabled = ev.target.checked;
+	if (uni) {
+		jove.checked = false;
+	}
+}
+
+function resetFields(ev) {
+	location.search = "";
+	return false;
 }
 
 function actualitzarPreus(zona) {
@@ -117,14 +130,14 @@ function actualitzarPreus(zona) {
 function loadEntryData(){
 	function ifSetValue(id, value) {
 		if (value) {
-			let el = document.getElementById(id);
+			let el = getElementById(id);
 			if (el) el.value = value;
 		}
 	}
 
 	function ifSetChecked(id, value) {
 		if (value) {
-			let el = document.getElementById(id);
+			let el = getElementById(id);
 			if (el)	el.checked = value=='on';
 		}
 	}
@@ -147,13 +160,16 @@ function loadEntryData(){
 
 	ifSetChecked('jove',PARAMS.jove);
 	ifSetChecked('uni', PARAMS.uni==undefined? "on" : PARAMS.uni);
+	if (!getElementById("uni").checked) {
+		getElementById("jove").disabled = false;;
+	}
 
-	document.getElementById('dateini').onblur();
-	document.getElementById('zones-selector').onchange();
+	getElementById('dateini').onblur();
+	getElementById('zones-selector').onchange();
 }
 
 function loadOutputData(){
-	let form = document.getElementById("form");
+	let form = getElementById("form");
 
 	return [...form.querySelectorAll("select,input")]
 		.filter(el=>el.name)

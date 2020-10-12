@@ -134,4 +134,5 @@ module.exports = {
 	removeClass: removeClass,
 	hasClass: hasClass,
 	cleanElement: cleanElement,
+	getElementById: id => document.getElementById(id),
 }

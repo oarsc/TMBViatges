@@ -24,13 +24,17 @@
 					<tbody></tbody>
 				</table>
 			</div>
-			<label><input type="checkbox" name="jove" id="jove">Incloure T-Jove (per a persones de 24 anys o menys)</label><br/>
-			<label><input type="checkbox" name="uni" id="uni">Mostrar targetes unipersonals</label>
+			<label><input type="checkbox" name="uni" id="uni">Mostrar targetes unipersonals</label><br/>
+			<label><input type="checkbox" name="jove" id="jove" disabled>Incloure T-Jove (per a persones de 24 anys o menys)</label>
 			<br/><br/>
 		</div>
 		<form id="form-submit" action='./resultats.html' method="GET">
 			<input type="hidden" name="d" value="e301"/>
-			<div><button id="calculate-button">Calcular</button> <button id="exceptions-button">Dies excepcionals</button></div>
+			<div>
+				<button id="calculate-button">Calcular</button>
+				<button id="exceptions-button">Dies excepcionals</button><br/>
+				<button id="reset-fields">Esborrar dades</button>
+			</div>
 		</form>
 	</div>
 

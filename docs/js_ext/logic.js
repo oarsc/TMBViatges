@@ -1,9 +1,9 @@
-const {PARAMS, formatPrice, toDate, fromDate}  = require('./utils.js');
+const {PARAMS, formatPrice, toDate, fromDate, getElementById}  = require('./utils.js');
 var TARGETES  = require('./targetes.js');
 
 module.exports = {
 	init: _=>{
-		document.getElementById("back-button").href = "./index.html"+location.search;
+		getElementById("back-button").href = "./index.html"+location.search;
 	},
 	load: _=>{
 		if (PARAMS.jove!="on") {
@@ -72,7 +72,7 @@ function getUsos(date){
 }
 
 function showResults(count, cost, instances, lastDay){
-	let content = document.getElementById("content");
+	let content = getElementById("content");
 	let minCost = cost.map(c=>parseFloat(c)).filter(c=>c>0).reduce((min,v)=>{
 		if (v < min) {
 			min = v;
@@ -85,7 +85,7 @@ function showResults(count, cost, instances, lastDay){
 			continue;
 		}
 
-		let temp = document.getElementById("result-template");
+		let temp = getElementById("result-template");
 		let clon = temp.content.cloneNode(true);
 		clon.querySelector(".head").innerHTML = TARGETES[i].nom;
 		clon.querySelector(".count").innerHTML = count[i];

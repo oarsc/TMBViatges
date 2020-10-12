@@ -1,13 +1,12 @@
-const {PARAMS, MES_NOMS, toDate, fromDate, encData, addClass, removeClass}  = require('./utils.js');
+const {PARAMS, MES_NOMS, toDate, fromDate, encData, addClass, removeClass, getElementById}  = require('./utils.js');
 
 let initDate;
 let endDate;
 
 module.exports = {
 	init: _=>{
-		document.getElementById("back-button-footer").href = 
-		document.getElementById("back-button").href = "./index.html"+location.search;
-		document.getElementById("submit").onclick=submit;
+		getElementById("back-button-footer").href = 
+		getElementById("back-button").href = "./index.html"+location.search;
 	},
 	load: _=>{
 		initDate = toDate(PARAMS.ini);
@@ -32,14 +31,14 @@ function cargarMes(date){
 	let month = date.getMonth();
 	let year = date.getFullYear();
 
-	let temp = document.getElementById("month");
+	let temp = getElementById("month");
 	let clon = temp.content.cloneNode(true);
 
 	clon.querySelector(".month-name").textContent = MES_NOMS[month]+" "+year;
 
 	cargarSetmanes(date, clon.querySelector("tbody"));
 
-	document.getElementById("mesos").appendChild(clon);
+	getElementById("mesos").appendChild(clon);
 }
 
 function cargarSetmanes(date, mes){
@@ -58,7 +57,7 @@ function cargarSetmanes(date, mes){
 }
 
 function newWeek(){
-	let temp = document.getElementById("week");
+	let temp = getElementById("week");
 	return temp.content.cloneNode(true);	
 }
 
@@ -99,6 +98,7 @@ function blurEvent(ev) {
 	let td = ev.target.parentNode.parentNode;
 	let def = td.getAttribute("def");
 	let usos = ev.target.value;
+	save();
 	if (def == usos) {
 		addClass(td, "def");
 		removeResetButton(td);
@@ -115,6 +115,7 @@ function addResetButton(td) {
 		button.innerHTML = "×";
 		button.onclick = ev => {
 			td.querySelector("input").value = td.getAttribute("def");
+			save();
 			addClass(td, "def");
 			removeResetButton(td);
 		}
@@ -131,7 +132,7 @@ function removeResetButton(td) {
 	}
 }
 
-function submit(){
+function save(){
 	dows = [...document.querySelectorAll(".dow.visible")]
 		.map(d=> [toDate(d.getAttribute("date")), d.querySelector("input").value])
 		.filter(([date, value])=> PARAMS.dia[(date.getDay()+6)%7] != value)
@@ -140,10 +141,13 @@ function submit(){
 			return obj;
 		},{});
 
-
 	PARAMS.exceptions = dows;
 
-	let backButtonFooter = document.getElementById("back-button-footer");
-	backButtonFooter.href = backButtonFooter.href.replace(/\?.*$/,'?d='+encData(PARAMS));
-	backButtonFooter.click();
+	let backButtonFooter = getElementById("back-button-footer");
+	let newUrl = backButtonFooter.href.replace(/\?.*$/,'?d='+encData(PARAMS));
+	getElementById("back-button").href = backButtonFooter.href = newUrl;
+
+	try {
+		window.history.pushState("", "", newUrl);
+	} catch (e) {}
 }
