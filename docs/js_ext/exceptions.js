@@ -12,11 +12,13 @@ module.exports = {
 		initDate = toDate(PARAMS.ini);
 		endDate = toDate(PARAMS.end);
 
-		let endMonth = endDate.getMonth();
-		let endYear = endDate.getYear();
-
 		let date = new Date(initDate);
-		while (date.getYear() < endYear || date.getMonth() <= endMonth) {
+
+		//let endMonth = endDate.getMonth();
+		//let endYear = endDate.getYear();
+		//
+		//while (date.getYear() < endYear || date.getMonth() <= endMonth) {
+		while (date < endDate) {
 			cargarMes(date);
 			date.setMonth(date.getMonth()+1);
 			date.setDate(1);
