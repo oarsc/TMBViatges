@@ -104,7 +104,7 @@ module.exports = {
 
 function onChangeUni(ev){
 	let jove = getElementById("jove");
-	let uni = jove.disabled = ev.target.checked;
+	let uni = jove.disabled = !ev.target.checked;
 	if (uni) {
 		jove.checked = false;
 	}
@@ -161,7 +161,7 @@ function loadEntryData(){
 	ifSetChecked('jove',PARAMS.jove);
 	ifSetChecked('uni', PARAMS.uni==undefined? "on" : PARAMS.uni);
 	if (!getElementById("uni").checked) {
-		getElementById("jove").disabled = false;;
+		getElementById("jove").disabled = true;
 	}
 
 	getElementById('dateini').onblur();
