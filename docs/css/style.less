@@ -22,14 +22,17 @@ th,td {
 	margin-left:50px;
 }
 
-.main-table > thead th {
-	background-color:#333;
-	color:white;
-	border-color:black;
-}
+.main-table {
+	> thead th {
+		background-color:#333;
+		color:white;
+		border-color:black;
+	}
 
-.main-table .nom {
-	background-color:#eee;
+	.nom {
+		background-color:#eee;
+	}
+
 }
 
 input.week-days{
@@ -95,71 +98,70 @@ input.week-days{
 	margin:30px 0 10px;
 }
 
-.dow input{
-	width: 41px;
-	height: 20px;
-	float: right;
-	text-align: center;
-	background-color: #f4f4f4;
-	border: 1px solid #aaa;
-	margin-top: 8px;
-}
-
 .dow {
 	width:100px;
 	border:1px solid #aaa;
 	transition: background-color 0.2s;
-}
 
-.dow:hover input, .dow input:focus{
-	border-color:#00abff;
-}
+	&:hover {
+		background-color:#eef9ff;
+	}
 
-.dow:hover {
-	background-color:#eef9ff;
-}
+	&:hover input, input:focus {
+		border-color:#00abff;
+	}
 
-.dow:not(.def) {
-	background-color:#ffdc54;
-}
+	&:not(.def) {
+		background-color:#ffdc54;
+	}
 
-.dow:hover:not(.def) {
-	background-color:#ffc454;
-}
+	&:hover:not(.def) {
+		background-color:#ffc454;
+	}
 
-.dow:not(.visible) > div {
-	display: none;
-}
+	&:not(.visible) > div {
+		display: none;
+	}
 
-.dow:not(.visible), .dow:hover:not(.visible) {
-	background-color:#ddd;
-}
+	&:not(.visible), &:hover:not(.visible) {
+		background-color:#ddd;
+	}
 
-.dow.modified {
-	background-color:#fffadf;
-}
+	&.modified {
+		background-color:#fffadf;
+	}
 
-.dow > div {
-	position: relative;
-}
+	> div {
+		position: relative;
+	}
 
-.dow > div > button{
-	position: absolute;
-	top: 1px;
-	right: 0;
-	border: 1px solid #ae2e2e;
-	background-color: #ff8686;
-	width: 30px;
-	height: 18px;
-	padding: 0;
-	transition: background-color .3s;
-}
+	> div > button{
+		position: absolute;
+		top: 1px;
+		right: 0;
+		border: 1px solid #ae2e2e;
+		background-color: #ff8686;
+		width: 30px;
+		height: 18px;
+		padding: 0;
+		transition: background-color .3s;
+	}
 
-.dow > div > button:hover{
-	cursor:pointer;
-	background-color: #fda4a4;
-}
+	> div > button:hover{
+		cursor:pointer;
+		background-color: #fda4a4;
+	}
 
+	input{
+		width: 41px;
+		height: 20px;
+		float: right;
+		text-align: center;
+		background-color: #f4f4f4;
+		border: 1px solid #aaa;
+		margin-top: 8px;
+	}
+}
 
 #gravar-excepcions {
 	margin-top: 40px;
