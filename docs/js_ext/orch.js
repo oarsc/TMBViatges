@@ -1,21 +1,18 @@
-new Promise(async (resolve, reject)=>{
-	let message = document.getElementById(`modern-${"browser-m"}essage`);
-	message.parentElement.removeChild(message);
-	resolve();
+import { getElementById } from './dom-utils';
 
-}).then(async _=>{	
-	if (location.pathname.indexOf("resultats.html")>=0){
-		return require('./logic.js');
+let mod;
+if (location.pathname.indexOf('resultats.html') >= 0){
+	mod = require('./logic.js');
 
-	} else if (location.pathname.indexOf("excepcions.html")>=0){
-		return require('./exceptions.js');
+} else if (location.pathname.indexOf('excepcions.html') >= 0){
+	mod = require('./exceptions.js');
 
-	} else {
-		return require('./initialization.js');
-	}
+} else {
+	mod = require('./initialization.js');
+}
 
-}).then(async _=>{
-	_.init();
-	_.load();
-	document.getElementById("content").style.display="";
-});
+let res = mod.init? mod.init() : undefined;
+if (res === undefined || res)
+	mod.load();
+
+getElementById('content').show();

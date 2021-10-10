@@ -1,63 +1,81 @@
-const {PARAMS, formatPrice, toDate, fromDate, getElementById}  = require('./utils.js');
-var TARGETES  = require('./targetes.js');
+import { getElementById, getElementsByClassName, addClass, generateFromTemplate } from './dom-utils';
+import { PARAMS, formatPrice, toDate, fromDate, goToPage } from './utils';
 
-module.exports = {
-	init: _=>{
-		getElementById("back-button").href = "./index.html"+location.search;
-	},
-	load: _=>{
-		if (PARAMS.jove!="on") {
-			TARGETES = TARGETES.filter(t=>t.nom!="T-Jove");
-		}
-		if (PARAMS.uni!="on") {
-			TARGETES = TARGETES.filter(t=>!t.unipersonal);
-		}
+import { TARGETES } from './targetes';
+let FILTERED_TARGETES;
 
-		let count = TARGETES.map(t=>1);
-		let instances = TARGETES.map(t=>new t());
+export function init() {
+	let errorMessage;
+	if (!PARAMS.ini)      errorMessage = '0xae34fa';
+	else if (!PARAMS.end) errorMessage = '0x1e98e9';
+	else if (!PARAMS.z)   errorMessage = '0x681a55';
+	else if (!PARAMS.dia || PARAMS.dia.length != 7) errorMessage = '0x13610f';
 
-		let day = toDate(PARAMS.ini);
-		let endDayTime = toDate(PARAMS.end).getTime();
+	if (errorMessage) {
+		let errorElement = getElementById('error-message');
+		errorElement.textContent = `An error ocurred [${errorMessage}]`;
+		errorElement.show();
+		return false;
+	}
 
-		while (day.getTime() < endDayTime) {
+	getElementsByClassName('back-button').forEach(a => a.onclick = _ => goToPage());
+	getElementById('logo').onclick = _ => goToPage();
+}
 
-			let usos = parseInt(getUsos(day));
-			for (let u=0; u<usos; u++){
-				for (let i=0; i<TARGETES.length; i++) {
-					let tar = instances[i];
+export function load() {
+	FILTERED_TARGETES = TARGETES;
+	if (PARAMS.jove!='on') {
+		FILTERED_TARGETES = FILTERED_TARGETES.filter(t => t.nom!='T-Jove');
+	}
+	if (PARAMS.uni!='on') {
+		FILTERED_TARGETES = FILTERED_TARGETES.filter(t => !t.unipersonal);
+	}
 
-					if (!tar.firstUsed) {
-						tar.diaValidacio(day);
-					}
-					if (tar.caducat(day)) {
-						count[i]++;
-						instances[i] = tar = new TARGETES[i];
-						tar.diaValidacio(day);
-					}
+	let count = FILTERED_TARGETES.map(t=>1);
+	let instances = FILTERED_TARGETES.map(t=>new t());
 
-					let res = tar.us(day);
-					if (!res){
-						let error = new Error("Hi ha hagut un error calculant...");
-						console.log(error);
-						alert(error);
-						throw error;
-					}
+	let day = toDate(PARAMS.ini);
+
+	let endDayTime = toDate(PARAMS.end).getTime();
+
+	while (day.getTime() < endDayTime) {
+
+		let usos = parseInt(getUsos(day));
+		for (let u=0; u<usos; u++){
+			for (let i=0; i<FILTERED_TARGETES.length; i++) {
+				let tar = instances[i];
+
+				if (!tar.firstUsed) {
+					tar.diaValidacio(day);
+				}
+				if (tar.caducat(day)) {
+					count[i]++;
+					instances[i] = tar = new FILTERED_TARGETES[i];
+					tar.diaValidacio(day);
+				}
+
+				let res = tar.us(day);
+				if (!res){
+					let error = new Error('Hi ha hagut un error calculant...');
+					console.log(error);
+					alert(error);
+					throw error;
 				}
 			}
-
-			day.setDate(day.getDate()+1);
 		}
 
-		let cost = [];
-		for (let i=0;i<TARGETES.length;i++) {
-			if (!instances[i].firstUsed) {
-				count[i]--;
-			}
-			cost.push(preu(TARGETES[i].preus[PARAMS.z-1],count[i]))
-		}
-
-		showResults(count, cost, instances, day);
+		day.setDate(day.getDate()+1);
 	}
+
+	let cost = [];
+	for (let i=0;i<FILTERED_TARGETES.length;i++) {
+		if (!instances[i].firstUsed) {
+			count[i]--;
+		}
+		cost.push(preu(FILTERED_TARGETES[i].preus[PARAMS.z-1],count[i]))
+	}
+
+	showResults(count, cost, instances, day);
 }
 
 function getUsos(date){
@@ -72,7 +90,9 @@ function getUsos(date){
 }
 
 function showResults(count, cost, instances, lastDay){
-	let content = getElementById("content");
+	let content = getElementById('content');
+	let preus = getElementById('preus');
+	
 	let minCost = cost.map(c=>parseFloat(c)).filter(c=>c>0).reduce((min,v)=>{
 		if (v < min) {
 			min = v;
@@ -80,51 +100,49 @@ function showResults(count, cost, instances, lastDay){
 		return min;
 	},Infinity);
 
-	for (let i=0; i<TARGETES.length; i++) {
-		if (TARGETES[i].zones < PARAMS.z){
+	for (let i=0; i<FILTERED_TARGETES.length; i++) {
+		if (FILTERED_TARGETES[i].zones < PARAMS.z){
 			continue;
 		}
 
-		let temp = getElementById("result-template");
-		let clon = temp.content.cloneNode(true);
-		clon.querySelector(".head").innerHTML = TARGETES[i].nom;
-		clon.querySelector(".count").innerHTML = count[i];
-		clon.querySelector(".cost").innerHTML = cost[i]+" €";
+		let clon = generateFromTemplate('result-template');
+		clon.querySelector('.head').textContent = FILTERED_TARGETES[i].nom;
+		clon.querySelector('.count').textContent = count[i];
+		clon.querySelector('.cost').textContent = cost[i]+' €';
 		if (minCost == cost[i]) {
-			clon.querySelector(".cost").className += " min";
+			addClass(clon.querySelector('.cost'), 'min');
 		}
 
 		if (count[i] > 0) {
 			if (instances[i].caducat(lastDay)) {
-				clon.querySelector(".no-sobres").style.display="";
+				clon.querySelector('.no-sobres').show();
 
 			} else {
 				let [sUs, sDia] = instances[i].falta(lastDay);
 				let show = 0;
 
-				clon.querySelectorAll(".dia").forEach(i=>i.innerHTML=fromDate(lastDay));
+				clon.querySelectorAll('.dia').forEach(i=>i.textContent=fromDate(lastDay));
 
 				if (sUs !== undefined) {
 					show += 1;
-					clon.querySelectorAll(".n-usos").forEach(i=>i.innerHTML=sUs);
+					clon.querySelectorAll('.n-usos').forEach(i=>i.textContent=sUs);
 				}
 				if (sDia !== undefined) {
 					show += 2;
-					clon.querySelectorAll(".n-dies").forEach(i=>i.innerHTML=sDia);
+					clon.querySelectorAll('.n-dies').forEach(i=>i.textContent=sDia);
 				}
 				
-				clon.querySelector(show > 0? ".sobres": ".no-sobres").style.display="";
+				clon.querySelector(show > 0? '.sobres': '.no-sobres').show();
 
 				switch (show){
-					case 1: clon.querySelector(".usos").style.display=""; break;
-					case 2: clon.querySelector(".dies").style.display=""; break;
-					case 3: clon.querySelector(".usos-dies").style.display=""; break;
+					case 1: clon.querySelector('.usos').show(); break;
+					case 2: clon.querySelector('.dies').show(); break;
+					case 3: clon.querySelector('.usos-dies').show(); break;
 				}
-
 			}
 		}
 
-		content.appendChild(clon);
+		preus.appendChild(clon);
 	}
 }
 

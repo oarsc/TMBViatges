@@ -1,4 +1,4 @@
-const {diffDays}  = require('./utils.js');
+import { diffDays } from './utils';
 
 class Targeta {
 	static get zones(){
@@ -20,7 +20,7 @@ class Targeta {
 // ############## Bitllet Senzill:
 class Senzill extends Targeta{
 	static get nom(){
-		return "Bitllet Senzill";
+		return 'Bitllet Senzill';
 	}
 	static get preus(){
 		return [2.40, 3.40, 4.50, 5.75, 7.35, 8.55];
@@ -49,7 +49,7 @@ class Senzill extends Targeta{
 // ##################### T-Casual:
 class TCasual extends Targeta{
 	static get nom(){
-		return "T-Casual";
+		return 'T-Casual';
 	}
 	static get preus(){
 		return [11.35, 22.40, 30.50, 39.20, 45.05, 47.90];
@@ -75,7 +75,7 @@ class TCasual extends Targeta{
 // ###################### T-Usual:
 class TUsual extends Targeta{
 	static get nom(){
-		return "T-Usual";
+		return 'T-Usual';
 	}
 	static get preus(){
 		return [40.00, 53.85, 75.60, 92.55, 106.20, 113.75];
@@ -105,7 +105,7 @@ class TUsual extends Targeta{
 // ####################### T-Jove:
 class TJove extends TUsual{
 	static get nom(){
-		return "T-Jove";
+		return 'T-Jove';
 	}
 	static get preus(){
 		return [80.00, 105.20, 147.55, 180.75, 207.40, 222.25];
@@ -129,7 +129,7 @@ class TJove extends TUsual{
 // ######################## T-Dia:
 class TDia extends TUsual{
 	static get nom(){
-		return "T-Dia";
+		return 'T-Dia';
 	}
 	static get preus(){
 		return [10.50, 16.00, 20.10, 22.45, 25.15, 28.15];
@@ -153,7 +153,7 @@ class TDia extends TUsual{
 // ####################### T-Grup:
 class TGrup extends TUsual{
 	static get nom(){
-		return "T-Grup";
+		return 'T-Grup';
 	}
 	static get preus(){
 		return [79.45, 156.80, 213.50, 274.40, 315.35, 335.30];
@@ -182,7 +182,7 @@ class TGrup extends TUsual{
 // ################### T-Familiar:
 class TFamiliar extends TUsual{
 	static get nom(){
-		return "T-Familiar";
+		return 'T-Familiar';
 	}
 	static get preus(){
 		return [10.00, 19.00, 27.00, 35.00, 40.00, 42.00];
@@ -207,5 +207,4 @@ class TFamiliar extends TUsual{
 }
 
 
-
-module.exports = [Senzill,TFamiliar,TDia,TCasual,TUsual,TJove,TGrup];
+export const TARGETES = [Senzill,TFamiliar,TDia,TCasual,TUsual,TJove,TGrup];

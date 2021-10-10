@@ -1,31 +1,26 @@
-const {PARAMS, MES_NOMS, toDate, fromDate, encData, addClass, removeClass, getElementById}  = require('./utils.js');
+import { addClass, toggleClass, getElementById, getElementsByClassName, querySelectorAll, createElement, generateFromTemplate } from './dom-utils';
+import { PARAMS, MES_NOMS, toDate, fromDate, encData, goToPage } from './utils';
 
 let initDate;
 let endDate;
 
-module.exports = {
-	init: _=>{
-		getElementById("back-button-footer").href = 
-		getElementById("back-button").href = "./index.html"+location.search;
-	},
-	load: _=>{
-		initDate = toDate(PARAMS.ini);
-		endDate = toDate(PARAMS.end);
+//export function init() {}
 
-		let date = new Date(initDate);
+export function load() {
+	initDate = toDate(PARAMS.ini);
+	endDate = toDate(PARAMS.end);
 
-		//let endMonth = endDate.getMonth();
-		//let endYear = endDate.getYear();
-		//
-		//while (date.getYear() < endYear || date.getMonth() <= endMonth) {
-		while (date < endDate) {
-			cargarMes(date);
-			date.setMonth(date.getMonth()+1);
-			date.setDate(1);
-		}
+	let date = new Date(initDate);
 
-		document.querySelectorAll(".dow.visible input").forEach(e=>e.onblur=blurEvent);
+	while (date < endDate) {
+		cargarMes(date);
+		date.setMonth(date.getMonth()+1);
+		date.setDate(1);
 	}
+
+	querySelectorAll('.dow.visible input').forEach(e => e.onblur = blurEvent);
+	getElementsByClassName('save-button').forEach(a => a.onclick = save);
+	getElementById('logo').onclick = save;
 }
 
 function cargarMes(date){
@@ -33,14 +28,13 @@ function cargarMes(date){
 	let month = date.getMonth();
 	let year = date.getFullYear();
 
-	let temp = getElementById("month");
-	let clon = temp.content.cloneNode(true);
+	let clon = generateFromTemplate('month');
 
-	clon.querySelector(".month-name").textContent = MES_NOMS[month]+" "+year;
+	clon.querySelector('.month-name').textContent = MES_NOMS[month]+' '+year;
 
-	cargarSetmanes(date, clon.querySelector("tbody"));
+	cargarSetmanes(date, clon.querySelector('tbody'));
 
-	getElementById("mesos").appendChild(clon);
+	getElementById('mesos').appendChild(clon);
 }
 
 function cargarSetmanes(date, mes){
@@ -50,35 +44,37 @@ function cargarSetmanes(date, mes){
 	while(date.getMonth() == thisMonth && date.getTime() < endDate.getTime()) {
 		if (!week || date.getDay()==1){
 			if (week) mes.appendChild(week)
-			week = newWeek();
+			week = generateFromTemplate('week');
 		}
-		fillDay(week.querySelector(".d"+(date.getDay()+6)%7), date);
+		fillDay(week.querySelector('.d'+(date.getDay()+6)%7), date);
 		date.setDate(date.getDate()+1);
 	}
 	mes.appendChild(week);
-}
-
-function newWeek(){
-	let temp = getElementById("week");
-	return temp.content.cloneNode(true);	
 }
 
 function fillDay(dayElement, date) {
 	let def = usosDefault(date);
 	let usos = getUsos(date);
 
-	dayElement.querySelector(".dianum").textContent = date.getDate();
-	dayElement.querySelector("input").value=usos;
-	dayElement.setAttribute("date",fromDate(date));
-	dayElement.setAttribute("def",def);
+	dayElement.querySelector('.dianum').textContent = date.getDate();
+	dayElement.querySelector('input').value=usos;
+	dayElement.setAttribute('date',fromDate(date));
+	dayElement.setAttribute('def',def);
 
 	if (def == usos) {
-		dayElement.className += " visible def";
+		addClass(dayElement, 'visible', 'def');
 
 	} else {
-		dayElement.className += " visible";
+		addClass(dayElement, 'visible')
 		addResetButton(dayElement);
 	}
+
+	dayElement.classList.onChange((className, added) => {
+		if (className == 'def') {
+			if (added) removeResetButton(dayElement);
+			else       addResetButton(dayElement);
+		}
+	});
 }
 
 function getUsos(date){
@@ -98,28 +94,20 @@ function usosDefault(date) {
 
 function blurEvent(ev) {
 	let td = ev.target.parentNode.parentNode;
-	let def = td.getAttribute("def");
+	let def = td.getAttribute('def');
 	let usos = ev.target.value;
-	save();
-	if (def == usos) {
-		addClass(td, "def");
-		removeResetButton(td);
-	} else {
-		removeClass(td, "def");
-		addResetButton(td);
-	}
+
+	toggleClass(td, 'def', def == usos);
 }
 
 function addResetButton(td) {
 	let div = td.children[0];
 	if (!td.buttonReset) {
-		let button = document.createElement("button");
-		button.innerHTML = "×";
+		let button = createElement('button');
+		button.textContent = '×';
 		button.onclick = ev => {
-			td.querySelector("input").value = td.getAttribute("def");
-			save();
-			addClass(td, "def");
-			removeResetButton(td);
+			td.querySelector('input').value = td.getAttribute('def');
+			addClass(td, 'def');
 		}
 		div.appendChild(button);
 		td.buttonReset = button;
@@ -134,9 +122,9 @@ function removeResetButton(td) {
 	}
 }
 
-function save(){
-	dows = [...document.querySelectorAll(".dow.visible")]
-		.map(d=> [toDate(d.getAttribute("date")), d.querySelector("input").value])
+function save() {
+	let dows = querySelectorAll('.dow.visible')
+		.map(d=> [toDate(d.getAttribute('date')), d.querySelector('input').value])
 		.filter(([date, value])=> PARAMS.dia[(date.getDay()+6)%7] != value)
 		.reduce((obj,[date, value])=>{
 			obj[fromDate(date,true)] = value;
@@ -144,12 +132,8 @@ function save(){
 		},{});
 
 	PARAMS.exceptions = dows;
+	let data = encData(PARAMS);
 
-	let backButtonFooter = getElementById("back-button-footer");
-	let newUrl = backButtonFooter.href.replace(/\?.*$/,'?d='+encData(PARAMS));
-	getElementById("back-button").href = backButtonFooter.href = newUrl;
-
-	try {
-		window.history.pushState("", "", newUrl);
-	} catch (e) {}
+	window.history.pushState('', '', location.pathname + '?d=' + data);
+	goToPage('', data);
 }

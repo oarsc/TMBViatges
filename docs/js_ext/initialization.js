@@ -1,109 +1,111 @@
-const {PARAMS, diffDays, formatPrice, toDate, fromDate, encData, cleanElement, getElementById}  = require('./utils.js');
-const TARGETES = require('./targetes.js');
+import { getElementById, querySelector, querySelectorAll, createElement, generateFromTemplate } from './dom-utils';
+import { PARAMS, diffDays, formatPrice, toDate, fromDate, encData } from './utils';
 
-module.exports = {
-	init: _=>{
-		getElementById("form-submit").onsubmit = ev=>ev.target.d.value = encData(loadOutputData());
-		getElementById("uni").onchange = onChangeUni;
-		getElementById("reset-fields").onclick = resetFields;
-	},
-	load: _=>{
-		let tbodyTargetes = document.querySelector("#tickets tbody");
-		cleanElement(tbodyTargetes);
+import { TARGETES } from './targetes';
 
-		// CONSTRUIR TAULA DE TARGETES:
-		let totalZones = 0;
-		TARGETES.map(t=>{
-			let row = document.createElement("tr");
-			row.className = "ticket";
-			row.class = t;
-
-			let tName = document.createElement("td");
-			tName.innerHTML = t.nom;
-			tName.className = "nom";
-
-			let tPreu = document.createElement("td");
-			tPreu.innerHTML = formatPrice(t.preus[0], "€");
-			tPreu.className = "preu";
-
-			row.appendChild(tName);
-			row.appendChild(tPreu);
-
-			if (t.zones > totalZones) {
-				totalZones = t.zones;
-			}
-
-			return row;
-
-		}).forEach(t=>tbodyTargetes.appendChild(t));
-
-		var temp = getElementById("table-extra-columns");
-		var clon = temp.content.cloneNode(true);
-		Array.from(clon.children).forEach(td=>td.rowSpan = TARGETES.length);
-
-		tbodyTargetes.firstChild.appendChild(clon);
-
-		// CONSTUIR COMBO DE ZONES:
-		let zonesSelect = getElementById("zones-selector");
-		cleanElement(zonesSelect);
-
-		zonesSelect.onchange = ev=>actualitzarPreus(zonesSelect.value);
-
-		for (let i=1; i<=totalZones; i++) {
-			let option = document.createElement("option");
-			option.innerHTML = "Zona "+i;
-			option.value = i;
-			zonesSelect.appendChild(option);
-		}
-
-		// CONFIGURAR AVUI COM A PRIMER DIA
-		let dateIni = getElementById("dateini");
-		let dateEnd = getElementById("dateend");
-		let addDays = getElementById("adddays");
-
-		let today = new Date();
-		dateIni.value = fromDate(today);
-		today.setDate(today.getDate()+parseInt(addDays.value));
-		dateEnd.value = fromDate(today);
-
-		addDays.onchange =
-		addDays.onkeyup = ev=>{
-			let validDates = checkValidityDates(dateIni);
-
-			if (validDates) {
-				let val = parseInt(addDays.value) || 0;
-
-				let initDate = toDate(dateIni.value);
-				initDate.setDate(initDate.getDate()+val);
-				dateEnd.value = fromDate(initDate);
-			}
-		}
-
-		dateEnd.onblur =
-		dateIni.onblur = ev=>{
-			let validDates = checkValidityDates(dateIni, dateEnd);
-		
-			if (validDates) {
-				let iDate = toDate(dateIni.value);
-				let eDate = toDate(dateEnd.value);
-
-				addDays.value = diffDays(eDate,iDate);
-			}
-		}
-
-
-		// BOTÓ EXCEPCIONS
-		getElementById("exceptions-button").onclick = ev=>{
-			getElementById("form-submit").action="./excepcions.html";
-		}
-
-
-		loadEntryData();
+export function init() {
+	getElementById('form-submit').onsubmit = ev => {
+		let data = ev.target.d.value = encData(loadOutputData());
+		let path = ['origin','pathname'].map(attr => window.location[attr]).join('') + '?d=' + data;
+		window.history.pushState('', '', path);
 	}
+	getElementById('uni').onchange = onChangeUni;
+	getElementById('reset-fields').onclick = resetFields;
+
+	getElementById('logo').onclick = _ => location.reload();
+}
+
+export function load() {
+	let tbodyTargetes = querySelector('#tickets tbody');
+	tbodyTargetes.clear();
+
+	// CONSTRUIR TAULA DE TARGETES:
+	let totalZones = 0;
+	TARGETES.map(t=>{
+		let row = createElement('tr', 'ticket');
+		row.class = t;
+
+		let tName = createElement('td', 'nom');
+		tName.textContent = t.nom;
+
+		let tPreu = createElement('td', 'preu');
+		tPreu.textContent = formatPrice(t.preus[0], '€');
+
+		row.appendChild(tName);
+		row.appendChild(tPreu);
+
+		if (t.zones > totalZones) {
+			totalZones = t.zones;
+		}
+
+		return row;
+
+	}).forEach(t=>tbodyTargetes.appendChild(t));
+
+	let clon = generateFromTemplate('table-extra-columns');
+	Array.from(clon.children).forEach(td=>td.rowSpan = TARGETES.length);
+
+	tbodyTargetes.firstChild.appendChild(clon);
+
+	// CONSTUIR COMBO DE ZONES:
+	let zonesSelect = getElementById('zones-selector');
+	zonesSelect.clear();
+
+	zonesSelect.onchange = ev=>actualitzarPreus(zonesSelect.value);
+
+	for (let i=1; i<=totalZones; i++) {
+		let option = createElement('option');
+		option.textContent = 'Zona '+i;
+		option.value = i;
+		zonesSelect.appendChild(option);
+	}
+
+	// CONFIGURAR AVUI COM A PRIMER DIA
+	let dateIni = getElementById('dateini');
+	let dateEnd = getElementById('dateend');
+	let addDays = getElementById('adddays');
+
+	let today = new Date();
+	dateIni.value = fromDate(today);
+	today.setDate(today.getDate()+parseInt(addDays.value));
+	dateEnd.value = fromDate(today);
+
+	dateIni.onblur =
+	addDays.onchange =
+	addDays.onkeyup = ev=>{
+		let validDates = checkValidityDates(dateIni);
+
+		if (validDates) {
+			let val = parseInt(addDays.value) || 0;
+
+			let initDate = toDate(dateIni.value);
+			initDate.setDate(initDate.getDate()+val);
+			dateEnd.value = fromDate(initDate);
+		}
+	}
+
+	dateEnd.onblur = ev=>{
+		let validDates = checkValidityDates(dateEnd);
+	
+		if (validDates) {
+			let val = parseInt(addDays.value) || 0;
+
+			let endDate = toDate(dateEnd.value);
+			endDate.setDate(endDate.getDate()-val);
+			dateIni.value = fromDate(endDate);
+		}
+	}
+
+	// BOTÓ EXCEPCIONS
+	getElementById('exceptions-button').onclick = ev => {
+		getElementById('form-submit').action='./excepcions.html';
+	}
+
+	loadEntryData();
 }
 
 function onChangeUni(ev){
-	let jove = getElementById("jove");
+	let jove = getElementById('jove');
 	let uni = jove.disabled = !ev.target.checked;
 	if (uni) {
 		jove.checked = false;
@@ -111,25 +113,21 @@ function onChangeUni(ev){
 }
 
 function resetFields(ev) {
-	location.search = "";
+	location.search = '';
 	return false;
 }
 
 function actualitzarPreus(zona) {
-	document.querySelectorAll("#tickets .ticket")
-		.forEach(row=>{
-			if (row.class.zones < zona) {
-				row.querySelector(".preu").innerHTML = "";
-			} else {
-				row.querySelector(".preu").innerHTML = formatPrice(row.class.preus[zona-1], "€");
-			}
-		})
+	querySelectorAll('#tickets .ticket')
+		.forEach(row => {
+			querySelector('.preu', row).textContent = row.class.zones < zona? '' : formatPrice(row.class.preus[zona-1], '€');
+		});
 }
 
 
 function loadEntryData(){
-	function ifSetValue(id, value) {
-		if (value) {
+	function ifSetValue(id, value, undefined) {
+		if (value != undefined) {
 			let el = getElementById(id);
 			if (el) el.value = value;
 		}
@@ -155,27 +153,30 @@ function loadEntryData(){
 	ifSetValue('dateini',PARAMS.ini);
 	ifSetValue('dateend',PARAMS.end);
 
+	if (PARAMS.ini && PARAMS.end) {
+		getElementById('adddays').value = diffDays(PARAMS.ini, PARAMS.end);
+	}
+
 	ifSetValue('exceptions', JSON.stringify(PARAMS.exceptions));
 	ifSetValue('zones-selector',PARAMS.z);
 
 	ifSetChecked('jove',PARAMS.jove);
-	ifSetChecked('uni', PARAMS.uni==undefined? "on" : PARAMS.uni);
-	if (!getElementById("uni").checked) {
-		getElementById("jove").disabled = true;
+	ifSetChecked('uni', PARAMS.uni==undefined? 'on' : PARAMS.uni);
+	if (!getElementById('uni').checked) {
+		getElementById('jove').disabled = true;
 	}
 
-	getElementById('dateini').onblur();
 	getElementById('zones-selector').onchange();
 }
 
 function loadOutputData(){
-	let form = getElementById("form");
+	let form = getElementById('form');
 
-	return [...form.querySelectorAll("select,input")]
+	return querySelectorAll('select,input', form)
 		.filter(el=>el.name)
 		.sort((a,b)=>a.name>b.name?1:a.name<b.name?-1:0)
 		.reduce((obj,el)=>{
-			if (el.type != "checkbox") {
+			if (el.type != 'checkbox') {
 
 				if (el.name.match(/^d\d$/)) {
 					if (obj.dia) obj.dia.push(parseInt(el.value));
@@ -187,9 +188,9 @@ function loadOutputData(){
 				}
 
 			} else if (el.checked) {
-				obj[el.name] = "on";
+				obj[el.name] = 'on';
 			} else {
-				obj[el.name] = "off";
+				obj[el.name] = 'off';
 			}
 
 			return obj;
@@ -207,9 +208,9 @@ function checkValidityDates(){
 
 		if (!date || isNaN(date.getTime())) {
 			validDates = false;
-			dateInput.setCustomValidity("Invalid date");
+			dateInput.setCustomValidity('Invalid date');
 		} else {
-			dateInput.setCustomValidity("");
+			dateInput.setCustomValidity('');
 		}
 	});
 

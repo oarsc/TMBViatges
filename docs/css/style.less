@@ -16,6 +16,7 @@ th,td {
 
 #logo {
 	vertical-align: middle;
+	cursor: pointer;
 }
 
 #back-button{
@@ -62,6 +63,10 @@ input.week-days{
 .day-add-label input{
 	text-align:center;
 	font-size:1em;
+}
+
+#error-message {
+	color: red;
 }
 
 .result {
@@ -163,9 +168,12 @@ input.week-days{
 	}
 }
 
-#gravar-excepcions {
-	margin-top: 40px;
+.tornar-btn-container {
 	text-align:center;
+}
+
+.tornar-btn-container:not(:first-child) {
+	margin-top: 40px;
 }
 
 footer {

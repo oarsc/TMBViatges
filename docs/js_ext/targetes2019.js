@@ -1,4 +1,4 @@
-const {diffDays}  = require('./utils.js');
+import { diffDays } from './utils';
 
 class Targeta {
 	static get zones(){
@@ -21,7 +21,7 @@ class Targeta {
 // ######################### T-10:
 class T10 extends Targeta{
 	static get nom(){
-		return "T-10";
+		return 'T-10';
 	}
 	static get preus(){
 		return [10.20, 20.10, 27.40, 35.25, 40.50, 43.05];
@@ -47,7 +47,7 @@ class T10 extends Targeta{
 // ######################## T-Mes:
 class TMes extends Targeta{
 	static get nom(){
-		return "T-Mes";
+		return 'T-Mes';
 	}
 	static get preus(){
 		return [54, 72.70, 102, 124.90, 143.35, 153.55];
@@ -80,7 +80,7 @@ class TMes extends Targeta{
 // ################## T-Trimestre:
 class TTrimestre extends TMes{
 	static get nom(){
-		return "T-Trimestre";
+		return 'T-Trimestre';
 	}
 	static get preus(){
 		return [145.30, 196.50, 275.25, 337.15, 386.80, 414.40];
@@ -104,7 +104,7 @@ class TTrimestre extends TMes{
 // ####################### T-Jove:
 class TJove extends TTrimestre{
 	static get nom(){
-		return "T-Jove";
+		return 'T-Jove';
 	}
 	static get preus(){
 		return [105, 142, 199.20, 244, 280, 300];
@@ -119,7 +119,7 @@ class T5030 extends TMes{
 		return 1;
 	}
 	static get nom(){
-		return "T-50/30";
+		return 'T-50/30';
 	}
 	static get preus(){
 		return [43.50];
@@ -148,7 +148,7 @@ class T7030 extends T5030{
 		return 6;
 	}
 	static get nom(){
-		return "T-70/30";
+		return 'T-70/30';
 	}
 	static get preus(){
 		return [145.30, 196.50, 275.25, 337.15, 386.80, 414.40];
@@ -165,4 +165,4 @@ class T7030 extends T5030{
 	}
 }
 
-module.exports = [T10,TMes,TTrimestre,TJove,T5030,T7030];
+export const TARGETES = [T10,TMes,TTrimestre,TJove,T5030,T7030];
