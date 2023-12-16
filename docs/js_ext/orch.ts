@@ -15,4 +15,4 @@ let res = mod.init? mod.init() : undefined;
 if (res === undefined || res)
 	mod.load();
 
-getElementById('content').show();
+getElementById('content')?.show();

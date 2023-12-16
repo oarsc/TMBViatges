@@ -30,7 +30,7 @@ const filesConfiguration = [
 	in: [
 		'core-js',
 		INPUT_FILES+'/dom-modifications.js',
-		INPUT_FILES+'/orch.js',
+		INPUT_FILES+'/orch.ts',
 		...['docs/css'].flatMap(dir=>
 			fs.readdirSync(dir).map(filename => `./${dir}/${filename}`)
 		)
@@ -50,20 +50,20 @@ module.exports = filesConfiguration.map(entry => (
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
-					exclude: /node_modules/,
-					use: {
-						loader: 'babel-loader',
-						options: {
-							presets: [
-								['@babel/preset-env', {
-									//"corejs": 3,
-									//useBuiltIns: "usage",
-								}]
-		    				]
-						}
-					}
-				},
+          test: /\.[tj]sx?$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env']
+              }
+            },
+            {
+              loader: 'ts-loader'
+            },
+          ]
+        },
 				{
 					test: /\.less$/,
 					use: [
@@ -74,6 +74,9 @@ module.exports = filesConfiguration.map(entry => (
 					]
 				}
 			]
-		}
+		},
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
 	}
 ));
