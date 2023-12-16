@@ -78,7 +78,7 @@ class TUsual extends Targeta{
 		return 'T-Usual';
 	}
 	static get preus(){
-		return [40.00, 53.85, 75.60, 92.55, 106.20, 113.75];
+		return [20, 26.95, 37.80, 46.30, 53.10, 56.90];
 	}
 	diaValidacio(data){
 		super.diaValidacio(data);
@@ -108,7 +108,7 @@ class TJove extends TUsual{
 		return 'T-Jove';
 	}
 	static get preus(){
-		return [80.00, 105.20, 147.55, 180.75, 207.40, 222.25];
+		return [40.00, 52.60, 73.80, 90.40, 103.70, 111.15];
 	}
 	diaValidacio(data){
 		super.diaValidacio(data);
