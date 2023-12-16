@@ -1,4 +1,4 @@
-// version 1.0.0
+// version 2.2.0
 
 (function(htmlElementPrototype){
 	htmlElementPrototype.isHidden = function(){
@@ -8,8 +8,13 @@
 	htmlElementPrototype.isVisible = function(){
 		return !this.isHidden();
 	};
-	
-	htmlElementPrototype.show = function(display = 'block'){
+
+	htmlElementPrototype.show = function(display){
+		if (display == undefined) {
+			display = 'revert';
+			display = window.CSS?.supports('display', display)? display : '';
+		}
+
 		this.style.display = display;
 	};
 
@@ -22,16 +27,16 @@
 	};
 
 	htmlElementPrototype.previousSiblings = function() {
+		const result = [];
 		let element = this;
-		let result = [];
 		while (element = element.previousElementSibling)
 			result.push(element);
 		return result;
 	};
 
 	htmlElementPrototype.nextSiblings = function() {
+		const result = [];
 		let element = this;
-		let result = [];
 		while (element = element.nextElementSibling)
 			result.push(element);
 		return result;
@@ -41,13 +46,13 @@
 		if (this == document.body){
 			return undefined;
 		} else {
-			let parent = this.parentNode;
+			const parent = this.parentNode;
 			return parent.matches(selector)? parent : parent.closest(selector);
 		}
 	};
 
 	htmlElementPrototype.clear = function() {
-		while (this.firstChild){ 
+		while (this.firstChild){
 			this.removeChild(this.firstChild);
 		}
 	};
@@ -56,21 +61,24 @@
 
 
 (function(domTokenListPrototype){
+	const ALL_ELEMENTS_TOKEN = '*';
+
 	const originalAdd = domTokenListPrototype.add;
 	const originalRemove = domTokenListPrototype.remove;
 	const originalToggle = domTokenListPrototype.toggle;
 	const originalReplace = domTokenListPrototype.replace;
 
 	function manageCallback(self, originalAction, args) {
-		let listeners = self.onChangeListeners;
+		const listeners = self.onChangeListeners;
 		originalAction = originalAction.bind(self, ...args);
 
-		if (listeners?.length) {
+		if (listeners && Object.keys(listeners).length) {
 			function callListeners(element, value) {
-				listeners.forEach(f => f(element, value));
+				listeners[ALL_ELEMENTS_TOKEN]?.forEach(f => f(element, value));
+				listeners[element]?.forEach(f => f(value));
 			}
 
-			let initialClass = [...self];
+			const initialClass = [...self];
 			originalAction();
 
 			initialClass.filter(element => !self.contains(element))
@@ -78,7 +86,7 @@
 
 			self.forEach(element => {
 				if (initialClass.indexOf(element) < 0)
-					callListeners(element, true)
+					callListeners(element, true);
 			});
 
 		} else {
@@ -91,9 +99,16 @@
 	domTokenListPrototype.toggle = function() {  manageCallback(this, originalToggle,  arguments); };
 	domTokenListPrototype.replace = function() { manageCallback(this, originalReplace, arguments); };
 
-	domTokenListPrototype.onChange = function(callback) {
-		if (!this.onChangeListeners?.push(callback)) {
-			this.onChangeListeners = [callback];
+	domTokenListPrototype.onAnyChange = function(callback) {
+		this.onChange(ALL_ELEMENTS_TOKEN,callback);
+	};
+
+	domTokenListPrototype.onChange = function(element, callback) {
+		if (!this.onChangeListeners) {
+			this.onChangeListeners = {};
+		}
+		if (!this.onChangeListeners[element]?.push(callback)) {
+			this.onChangeListeners[element] = [callback];
 		}
 	};
 
@@ -105,4 +120,45 @@
 		this.forEach(fun);
 		return this;
 	};
+
+	arrayPrototype.unique = function() {
+		return this.filter((element, index, array) => array.indexOf(element) == index);
+	};
+
+	arrayPrototype.clear = function() {
+		return this.splice(0, this.length);
+	};
+
+	arrayPrototype.removeIf = function(callback) {
+		for(let i = 0; i < this.length; i++) {
+			if (callback(this[i], i, this)) {
+				this.splice(i--,1);
+			}
+		}
+		return this;
+	};
+
+	arrayPrototype.red = function(funct, ...args) {
+		return this.reduce(function(acc) {
+			funct.apply(this, arguments);
+			return acc;
+		}, ...args);
+	};
+
+	arrayPrototype.also = function(fun) {
+		fun(this);
+		return this;
+	};
+
+	arrayPrototype.let = function(fun) {
+		return fun(this);
+	};
 })(Array.prototype);
+
+
+(function(css2PropertiesPrototype){
+	css2PropertiesPrototype.also = function(fun) {
+		fun(this);
+		return this;
+	};
+})(CSS2Properties.prototype);
