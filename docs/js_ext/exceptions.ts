@@ -1,8 +1,14 @@
 import { addClass, toggleClass, getElementById, getElementsByClassName, querySelectorAll, createElement, generateFromTemplate } from './dom-utils';
 import { PARAMS, MES_NOMS, toDate, fromDate, encData, goToPage } from './utils';
 
-let initDate;
-let endDate;
+declare global {
+  interface HTMLTableCellElement {
+    buttonReset?: HTMLElement | undefined;
+  }
+}
+
+let initDate: Date;
+let endDate: Date;
 
 //export function init() {}
 
@@ -10,7 +16,7 @@ export function load() {
 	initDate = toDate(PARAMS.ini);
 	endDate = toDate(PARAMS.end);
 
-	let date = new Date(initDate);
+	const date = new Date(initDate);
 
 	while (date < endDate) {
 		cargarMes(date);
@@ -20,46 +26,48 @@ export function load() {
 
 	querySelectorAll('.dow.visible input').forEach(e => e.onblur = blurEvent);
 	getElementsByClassName('save-button').forEach(a => a.onclick = save);
-	getElementById('logo').onclick = save;
+	getElementById('logo')!.onclick = save;
 }
 
-function cargarMes(date){
+function cargarMes(date: Date){
 	date = new Date(date);
-	let month = date.getMonth();
-	let year = date.getFullYear();
+	const month = date.getMonth();
+	const year = date.getFullYear();
 
-	let clon = generateFromTemplate('month');
+	const clon = generateFromTemplate('month')!;
 
-	clon.querySelector('.month-name').textContent = MES_NOMS[month]+' '+year;
+	clon.querySelector('.month-name')!.textContent = MES_NOMS[month]+' '+year;
 
-	cargarSetmanes(date, clon.querySelector('tbody'));
+	cargarSetmanes(date, clon.querySelector('tbody')!);
 
-	getElementById('mesos').appendChild(clon);
+	getElementById('mesos')!.appendChild(clon);
 }
 
-function cargarSetmanes(date, mes){
+function cargarSetmanes(date: Date, mes: HTMLTableSectionElement){
 	let thisMonth = date.getMonth();
 	let week;
 
 	while(date.getMonth() == thisMonth && date.getTime() < endDate.getTime()) {
-		if (!week || date.getDay()==1){
+		if (!week || date.getDay() == 1){
 			if (week) mes.appendChild(week)
 			week = generateFromTemplate('week');
 		}
-		fillDay(week.querySelector('.d'+(date.getDay()+6)%7), date);
+		fillDay(week!.querySelector('.d'+(date.getDay()+6)%7)!, date);
 		date.setDate(date.getDate()+1);
 	}
-	mes.appendChild(week);
+	if (week) {
+		mes.appendChild(week);
+	}
 }
 
-function fillDay(dayElement, date) {
+function fillDay(dayElement: HTMLTableCellElement, date: Date) {
 	let def = usosDefault(date);
 	let usos = getUsos(date);
 
-	dayElement.querySelector('.dianum').textContent = date.getDate();
-	dayElement.querySelector('input').value=usos;
-	dayElement.setAttribute('date',fromDate(date));
-	dayElement.setAttribute('def',def);
+	dayElement.querySelector('.dianum')!.textContent = `${date.getDate()}`;
+	dayElement.querySelector('input')!.value = `${usos}`;
+	dayElement.setAttribute('date', fromDate(date));
+	dayElement.setAttribute('def', `${def}`);
 
 	if (def == usos) {
 		addClass(dayElement, 'visible', 'def');
@@ -69,15 +77,13 @@ function fillDay(dayElement, date) {
 		addResetButton(dayElement);
 	}
 
-	dayElement.classList.onChange((className, added) => {
-		if (className == 'def') {
-			if (added) removeResetButton(dayElement);
-			else       addResetButton(dayElement);
-		}
+	dayElement.classList.onChange('def', added => {
+		if (added) removeResetButton(dayElement);
+		else       addResetButton(dayElement);
 	});
 }
 
-function getUsos(date){
+function getUsos(date: Date){
 	let usos;
 	if (PARAMS.exceptions) {
 		usos = PARAMS.exceptions[fromDate(date,true)];
@@ -88,11 +94,11 @@ function getUsos(date){
 	return usos;
 }
 
-function usosDefault(date) {
+function usosDefault(date: Date): number {
 	return PARAMS.dia[(date.getDay()+6)%7];
 }
 
-function blurEvent(ev) {
+function blurEvent(ev: any) {
 	let td = ev.target.parentNode.parentNode;
 	let def = td.getAttribute('def');
 	let usos = ev.target.value;
@@ -100,13 +106,14 @@ function blurEvent(ev) {
 	toggleClass(td, 'def', def == usos);
 }
 
-function addResetButton(td) {
+function addResetButton(td: HTMLTableCellElement) {
+
 	let div = td.children[0];
 	if (!td.buttonReset) {
-		let button = createElement('button');
+		const button = createElement('button');
 		button.textContent = '×';
 		button.onclick = ev => {
-			td.querySelector('input').value = td.getAttribute('def');
+			td.querySelector('input')!.value = td.getAttribute('def') ?? '';
 			addClass(td, 'def');
 		}
 		div.appendChild(button);
@@ -114,7 +121,7 @@ function addResetButton(td) {
 	}
 }
 
-function removeResetButton(td) {
+function removeResetButton(td: HTMLTableCellElement) {
 	let div = td.children[0];
 	if (td.buttonReset) {
 		div.removeChild(td.buttonReset);
@@ -124,12 +131,12 @@ function removeResetButton(td) {
 
 function save() {
 	let dows = querySelectorAll('.dow.visible')
-		.map(d=> [toDate(d.getAttribute('date')), d.querySelector('input').value])
+		.map<[Date, number]>(d => [toDate(d.getAttribute('date')), parseInt(d.querySelector('input')!.value)])
 		.filter(([date, value])=> PARAMS.dia[(date.getDay()+6)%7] != value)
 		.reduce((obj,[date, value])=>{
-			obj[fromDate(date,true)] = value;
+			obj[fromDate(date, true)] = value;
 			return obj;
-		},{});
+		},{} as Record<string, number>);
 
 	PARAMS.exceptions = dows;
 	let data = encData(PARAMS);
