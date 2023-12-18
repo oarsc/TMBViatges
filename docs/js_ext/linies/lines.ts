@@ -26,7 +26,7 @@ export function init() {
     destinationSelect.appendChild(opt);
   });
 
-  getElementById('logo')!.onclick = () => { location.href = './' };
+  getElementById('goto-index')!.onclick = () => { location.href = './' };
   getElementById('content')?.show();
 }
 
@@ -37,7 +37,7 @@ function generateHtml(line: Line): HTMLElement {
 
   const header = createElement('div', 'line-header', lineDiv);
   const logo = generateHtmlLogo(line);
-  logo.onclick = () => openLine(line)
+  logo.onclick = ev => openLine(line, !ev.shiftKey)
   header.appendChild(logo);
 
   createElement('label', 'title', header)
@@ -67,7 +67,7 @@ function generateHtml(line: Line): HTMLElement {
       .filter(l => l != line)
       .forEach(l => {
         const html = generateHtmlLogo(l);
-        html.onclick = () => openLine(l)
+        html.onclick = ev => openLine(l, !ev.shiftKey)
         other.appendChild(html)
       });
 
@@ -93,12 +93,17 @@ function getLineName(line: Line): string {
   return `${line.firstStation.name} &#x294A; ${line.lastStation.name}`
 }
 
-function openLine(line: Line) {
+function openLine(line: Line, closeRest = true) {
   const lineElement = getElementById(line.id)!;
 
   const isOpened = lineElement.classList.contains('open');
 
-  querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  if (closeRest) {
+    querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  } else if (isOpened) {
+    lineElement.classList.remove('open');
+  }
+
   if (!isOpened) {
     lineElement.classList.add('open');
   }

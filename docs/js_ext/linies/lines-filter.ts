@@ -34,7 +34,8 @@ export function init() {
   drawMenu();
   drawAlternative(alternatives[page]);
 
-  getElementById('logo')!.onclick = () => { location.href = './' };
+  getElementById('logo')!.onclick = () => { location.href = './linies.html' };
+  getElementById('goto-index')!.onclick = () => { location.href = './' };
   getElementById('content')?.show();
 }
 
@@ -85,7 +86,7 @@ function findAlternatives(origin: Station, destination: Station): Step[] {
       }
     ]);
 
-  while (pendingSteps.length && finalSteps.length < 100) {
+  while (pendingSteps.length) {
     pendingSteps = pendingSteps
       .flatMap(step => nextSteps(step, destination))
       .filter(step => {
@@ -96,16 +97,14 @@ function findAlternatives(origin: Station, destination: Station): Step[] {
       });
   }
 
-  const minTransshipments = 2 + finalSteps.reduce((min, v) => min < v.transshipments ? min : v.transshipments, 500);
-
   return finalSteps
-    .filter(a => a.transshipments <= minTransshipments)
     .sort((a,b) => a.distance - b.distance)
     .sort((a,b) => a.transshipments - b.transshipments);
 }
 
 function nextSteps(step: Step, destination: Station): Step[] {
-  const currentStation = step.stations.slice(-1)[0];
+  const [ currentStation ] = step.stations.slice(-1);
+
   const next = step.forward
     ? currentStation.nextStationLink(step.line)
     : currentStation.prevStationLink(step.line);
@@ -115,13 +114,13 @@ function nextSteps(step: Step, destination: Station): Step[] {
   const distance = step.distance + next.distance;
   const station = next.station;
 
+  if (step.stations.indexOf(station) >= 0) return [];
+
   if (station == destination) {
     return [{
-      line: step.line,
+      ...step,
       stations: [...step.stations, station],
       distance: distance,
-      transshipments: step.transshipments,
-      forward: step.forward,
       lines: [...step.lines, step.line],
       done: true
     }];
@@ -152,13 +151,11 @@ function nextSteps(step: Step, destination: Station): Step[] {
 
   return [
     {
-      line: step.line,
+      ...step,
       stations: [...step.stations, station],
       distance: distance,
       transshipments: step.transshipments,
-      forward: step.forward,
       lines: [...step.lines, step.line],
-      done: false
     },
     ...steps
   ];
@@ -286,7 +283,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
 
   const header = createElement('div', 'line-header', lineDiv);
   const logo = generateHtmlLogo(line);
-  logo.onclick = () => openLine(line)
+  logo.onclick = ev => openLine(line, !ev.shiftKey)
   header.appendChild(logo);
 
   createElement('label', 'title', header)
@@ -316,7 +313,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
         const html = generateHtmlLogo(l);
 
         if (linesAvailable.indexOf(l) >= 0) {
-          html.onclick = () => openLine(l);
+          html.onclick = ev => openLine(l, !ev.shiftKey);
         } else {
           html.classList.add('faded');
         }
@@ -361,12 +358,16 @@ function getLineName(line: Line, stations: Station[]): string {
   return `&#x2933; ${name}`
 }
 
-function openLine(line: Line) {
+function openLine(line: Line, closeRest = true) {
   const lineElement = getElementById(line.id)!;
 
   const isOpened = lineElement.classList.contains('open');
 
-  querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  if (closeRest) {
+    querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  } else if (isOpened) {
+    lineElement.classList.remove('open');
+  }
   if (!isOpened) {
     lineElement.classList.add('open');
   }
