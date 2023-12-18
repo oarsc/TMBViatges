@@ -26,6 +26,7 @@ export function init() {
     destinationSelect.appendChild(opt);
   });
 
+  getElementById('logo')!.onclick = () => { location.href = './' };
   getElementById('content')?.show();
 }
 

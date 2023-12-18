@@ -34,6 +34,7 @@ export function init() {
   drawMenu();
   drawAlternative(alternatives[page]);
 
+  getElementById('logo')!.onclick = () => { location.href = './' };
   getElementById('content')?.show();
 }
 

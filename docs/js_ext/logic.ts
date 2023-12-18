@@ -23,6 +23,7 @@ export function init(): boolean {
 		.forEach(element => element.onclick = _ => goToPage());
 
 	getElementById('logo')!.onclick = _ => goToPage();
+	getElementById('goto-lines')!.onclick = () => { location.href = './linies.html' };
 
 	return true;
 }

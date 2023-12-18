@@ -31,6 +31,7 @@ export function init(): boolean {
 	};
 
 	getElementById('logo')!.onclick = _ => location.reload();
+	getElementById('goto-lines')!.onclick = () => { location.href = './linies.html' };
 
 	return true;
 }
