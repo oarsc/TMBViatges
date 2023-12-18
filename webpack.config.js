@@ -2,40 +2,30 @@ const path = require('path');
 const fs = require('fs');
 
 const INPUT_FILES = path.join(__dirname, 'docs/js_ext');
+const INPUT_CSS_FILES = path.join(__dirname, 'docs/css');
 const OUTPUT_FILES = path.join(__dirname, 'docs/js');
 
 const filesConfiguration = [
-/*
-{
-	in: [
-		'core-js',
-		INPUT_JS_FILES+'/dom-modifications.js',
-	],
-	out: "polyfill.min.js",
-},
-*/
-
-/*
-...fs.readdirSync(INPUT_JS_FILES, { withFileTypes:true })
-	.filter(element => element.isFile())
-	.map(file => file.name)
-	.filter(filename => filename.indexOf('.o.js') > 0)
-	.map(filename => ({
-		in: `${INPUT_JS_FILES}/${filename}`,
-		out: filename.replace(/\.o\.jsx?$/, '.min.js'),
-	})),
-*/
-
 {
 	in: [
 		'core-js',
 		INPUT_FILES+'/dom-modifications.js',
 		INPUT_FILES+'/orch.ts',
-		...['docs/css'].flatMap(dir=>
+		INPUT_CSS_FILES+'/style.less'
+		/*...['docs/css'].flatMap(dir =>
 			fs.readdirSync(dir).map(filename => `./${dir}/${filename}`)
-		)
+		)*/
 	],
 	out: "bundle.js",
+},
+{
+	in: [
+		'core-js',
+		INPUT_FILES+'/dom-modifications.js',
+		INPUT_FILES+'/linies/orch.ts',
+		INPUT_CSS_FILES+'/style-lines.less'
+	],
+	out: "bundle-linies.js",
 },
 ];
 
