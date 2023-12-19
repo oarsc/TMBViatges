@@ -16,11 +16,11 @@ const GET_PARAMS = (search => search.length == 0
 let alternatives: Step[];
 let page = 0;
 let total = 0;
-let linearView = false;
+let linearView = true;
 
 export function init() {
   getElementById('invert')!.onclick = () => {
-    location.search = `?i=${GET_PARAMS.f}&f=${GET_PARAMS.i}&p=${page}`;
+    location.search = `?i=${GET_PARAMS.f}&f=${GET_PARAMS.i}&p=${page}${linearView? '' : '&v=0'}`;
   }
 
   const allStations = Object.keys(stations).sort();
@@ -30,7 +30,7 @@ export function init() {
   if (GET_PARAMS.p) {
     page = parseInt(GET_PARAMS.p);
   }
-  linearView = GET_PARAMS.v === '1';
+  linearView = GET_PARAMS.v !== '0';
 
   getElementById('origin')!.textContent = origin.name;
   getElementById('destination')!.textContent = dest.name;
@@ -402,5 +402,5 @@ function changeView(change: boolean) {
 }
 
 function updateUrl() {
-  window.history.pushState('', '', `./linies-filter.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '&v=1' : ''}`);
+  window.history.pushState('', '', `./linies-filter.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '' : '&v=0'}`);
 }

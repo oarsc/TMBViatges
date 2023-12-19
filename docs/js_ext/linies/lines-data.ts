@@ -181,7 +181,7 @@ const linesData: Array<Data> = [
       'Santa Rosa', 551,
       'Can Peixauet', 1200,
       'Bon Pastor', 1440,
-      'Onze de Setembre', 1550,
+      'Onze de Setembre', 1560,
       'La Sagrera',
     ]
   },
@@ -215,8 +215,8 @@ const linesData: Array<Data> = [
       'Gorg', 862,
       'La Salut', 620,
       'Llefià', 1280,
-      'Bon Pastor', 1410,
-      'Onze de Setembre', 1570,
+      'Bon Pastor', 1440,
+      'Onze de Setembre', 1560,
       'La Sagrera',
     ]
   },
