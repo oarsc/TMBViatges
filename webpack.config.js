@@ -8,7 +8,6 @@ const OUTPUT_FILES = path.join(__dirname, 'docs/js');
 const filesConfiguration = [
 {
 	in: [
-		'core-js',
 		INPUT_FILES+'/dom-modifications.js',
 		INPUT_FILES+'/orch.ts',
 		INPUT_CSS_FILES+'/style.less'
@@ -20,7 +19,6 @@ const filesConfiguration = [
 },
 {
 	in: [
-		'core-js',
 		INPUT_FILES+'/dom-modifications.js',
 		INPUT_FILES+'/linies/orch.ts',
 		INPUT_CSS_FILES+'/style-lines.less'
@@ -43,12 +41,6 @@ module.exports = filesConfiguration.map(entry => (
           test: /\.[tj]sx?$/,
           exclude: /node_modules/,
           use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env']
-              }
-            },
             {
               loader: 'ts-loader'
             },
