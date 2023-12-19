@@ -20,6 +20,28 @@ body {
 	text-align: right;
 }
 
+#header {
+  position: relative;
+}
+
+table#stats {
+  position: absolute;
+  bottom: -10px;
+  padding-right: 5px;
+	font-size: .8em;
+	line-height: 1em;
+	
+	td:first-child {
+		font-weight: bold;
+		text-align: right;
+	}
+
+	td:not(:first-child) {
+		text-align: left;
+		padding-left: 5px;
+	}
+}
+
 select, button {
   border: 0;
   background-color: #E30613;
@@ -31,7 +53,7 @@ select, button {
 }
 
 #journey {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 	font-weight: bold;
 	font-size: 1.3em;
 	> * {
@@ -41,6 +63,7 @@ select, button {
 	#arrow {
 		font-size: 2em;
 		margin: 0 12px;
+		cursor: pointer;
 	}
 }
 

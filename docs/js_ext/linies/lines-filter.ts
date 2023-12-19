@@ -19,7 +19,10 @@ let total = 0;
 let linearView = true;
 
 export function init() {
-  getElementById('invert')!.onclick = () => {
+  const invertArrow = getElementById('arrow')!;
+  invertArrow.onmouseenter = () => invertArrow.innerHTML = '&#x21E0;';
+  invertArrow.onmouseleave = () => invertArrow.innerHTML = '&#x21E2;';
+  invertArrow.onclick = () => {
     location.search = `?i=${GET_PARAMS.f}&f=${GET_PARAMS.i}&p=${page}${linearView? '' : '&v=0'}`;
   }
 
@@ -175,7 +178,6 @@ function nextSteps(step: Step, destination: Station): Step[] {
 
 
 function drawMenu() {
-  const transSelect = getElementById<HTMLSelectElement>('transshipments')!;
   const numPage = getElementById('num')!;
   const totalPages = getElementById('total')!;
 
@@ -185,49 +187,11 @@ function drawMenu() {
   total = alternatives.length;
   totalPages.textContent = `${total}`;
 
-  alternatives
-    .map(v => v.transshipments)
-    .unique()
-    .sort()
-    .map(trans => {
-      const option = createElement('option')
-      option.value = `${trans}`;
-      option.textContent = trans == 1 ? `${trans} transbord` : `${trans} transbords`;
-      return option;
-    })
-    .forEach(option => transSelect.appendChild(option));
-
-  transSelect.onchange = () => {
-    const trans = parseInt(transSelect.value);
-    page = 0;
-    numPage.textContent = `${page + 1}`;
-
-    total = trans < 0
-      ? alternatives.length
-      : alternatives.filter(v => v.transshipments == trans).length;
-
-    totalPages.textContent = `${total}`;
-
-    if (trans < 0) {
-      drawAlternative(alternatives[page]);
-    } else {
-      drawAlternative(alternatives.find(v => v.transshipments == trans)!);
-    }
-  }
-
-
   getElementById('prevPage')!.onclick = () => {
     if (page > 0) {
       page--;
       numPage.textContent = `${page + 1}`;
-
-      const trans = parseInt(transSelect.value);
-      if (trans < 0) {
-        drawAlternative(alternatives[page]);
-      } else {
-        const alts = alternatives.filter(v => v.transshipments == trans)
-        drawAlternative(alts[page]);
-      }
+      drawAlternative(alternatives[page]);
       updateUrl();
     }
   };
@@ -236,14 +200,7 @@ function drawMenu() {
     if (page < total-1) {
       page++;
       numPage.textContent = `${page + 1}`;
-
-      const trans = parseInt(transSelect.value);
-      if (trans < 0) {
-        drawAlternative(alternatives[page]);
-      } else {
-        const alts = alternatives.filter(v => v.transshipments == trans)
-        drawAlternative(alts[page]);
-      }
+      drawAlternative(alternatives[page]);
       updateUrl();
     }
   };
@@ -255,6 +212,7 @@ function drawAlternative(step: Step) {
 
   getElementById('distance')!.textContent = `${(step.distance/1000).toFixed(1)}`;
   getElementById('stops')!.textContent = `${step.stations.length - 1}`;
+  getElementById('trans')!.textContent = `${step.transshipments}`;
 
   const content = getElementById('alternative')!;
   content.clear();
