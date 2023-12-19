@@ -30,6 +30,20 @@ select, button {
   cursor: pointer;
 }
 
+#journey {
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 1.3em;
+	> * {
+		vertical-align: middle;
+	}
+
+	#arrow {
+		font-size: 2em;
+		margin: 0 12px;
+	}
+}
+
 #alternative, #all-lines {
   margin-top: 10px;
   padding-top: 10px;
@@ -137,6 +151,21 @@ select, button {
 			cursor: pointer;
 			margin-left: 5px;
 		}
+	}
+}
+
+#alternative.linear-view {
+	> .line {
+		display: block;
+		margin: auto;
+		width: 300px;
+
+		&:not(:first-child){
+			margin-top: 40px;
+		}
+	}
+	.logo-wrapper {
+		opacity: 1;
 	}
 }
 

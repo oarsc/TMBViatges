@@ -1,4 +1,4 @@
-import { createElement, getElementById, querySelectorAll } from "../dom-utils";
+import { createElement, getElementById, querySelectorAll, toggleClass } from "../dom-utils";
 import { stations } from "./lines-data";
 import { Line, Station } from "./lines-model";
 
@@ -16,6 +16,7 @@ const GET_PARAMS = (search => search.length == 0
 let alternatives: Step[];
 let page = 0;
 let total = 0;
+let linearView = false;
 
 export function init() {
   getElementById('invert')!.onclick = () => {
@@ -29,11 +30,16 @@ export function init() {
   if (GET_PARAMS.p) {
     page = parseInt(GET_PARAMS.p);
   }
+  linearView = GET_PARAMS.v === '1';
+
+  getElementById('origin')!.textContent = origin.name;
+  getElementById('destination')!.textContent = dest.name;
 
   alternatives = findAlternatives(origin, dest);
   drawMenu();
   drawAlternative(alternatives[page]);
 
+  getElementById('change-view')!.onclick = () => changeView(true);
   getElementById('logo')!.onclick = () => { location.href = './linies.html' };
   getElementById('goto-index')!.onclick = () => { location.href = './' };
   getElementById('content')?.show();
@@ -173,6 +179,8 @@ function drawMenu() {
   const numPage = getElementById('num')!;
   const totalPages = getElementById('total')!;
 
+  changeView(false);
+
   numPage.textContent = `${page + 1}`;
   total = alternatives.length;
   totalPages.textContent = `${total}`;
@@ -250,6 +258,7 @@ function drawAlternative(step: Step) {
 
   const content = getElementById('alternative')!;
   content.clear();
+  toggleClass(content, 'linear-view', linearView);
 
   let lastLineId: string = '';
   for (let i = 0; i < step.lines.length; i++) {
@@ -271,7 +280,7 @@ function drawAlternative(step: Step) {
     content.appendChild(element);
   });
 
-  openLine(lines[0]);
+  //openLine(lines[0]);
 }
 
 
@@ -353,8 +362,6 @@ function getLineName(line: Line, stations: Station[]): string {
     }
   }
 
-
-
   return `&#x2933; ${name}`
 }
 
@@ -373,6 +380,27 @@ function openLine(line: Line, closeRest = true) {
   }
 }
 
+function changeView(change: boolean) {
+  const linear = change
+    ? !linearView
+    : linearView;
+
+  linearView = linear;
+
+  const content = getElementById('alternative')!;
+  toggleClass(content, 'linear-view', linear);
+
+  const button = getElementById('change-view')!;
+  button.textContent = linear? 'Vista en columnes' : 'Vista lineal';
+
+  if (change) {
+    updateUrl();
+  }
+  if (!linear) {
+    querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  }
+}
+
 function updateUrl() {
-  window.history.pushState('', '', `./linies-filter.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}`);
+  window.history.pushState('', '', `./linies-filter.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '&v=1' : ''}`);
 }
