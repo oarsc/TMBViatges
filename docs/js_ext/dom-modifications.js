@@ -155,10 +155,9 @@
 	};
 })(Array.prototype);
 
-
-(function(css2PropertiesPrototype){
-	css2PropertiesPrototype.also = function(fun) {
+(function(cssStyleDeclarationPrototype){
+	cssStyleDeclarationPrototype.also = function(fun) {
 		fun(this);
 		return this;
 	};
-})(CSS2Properties.prototype);
+})(CSSStyleDeclaration.prototype);
