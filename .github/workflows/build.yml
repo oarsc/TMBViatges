@@ -31,17 +31,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm install
-      # Runs a set of commands using the runners shell
-      - name: Build code
-        run: npm run build
+        with:
+          submodules: 'true'
       - name: Setup Pages
         uses: actions/configure-pages@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Build code
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          # Upload entire repository
           path: './docs'
       - name: Deploy to GitHub Pages
         id: deployment

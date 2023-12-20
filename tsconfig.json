@@ -101,8 +101,8 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./docs/js_ext/**/*.ts",
-    "./docs/js_ext/**/*.js"
+    "./src/**/*.ts",
+    "./src/**/*.js"
   ],
   "exclude": [
     "node_modules"

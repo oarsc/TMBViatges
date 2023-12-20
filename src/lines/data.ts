@@ -1,4 +1,4 @@
-import { Line, Station } from './lines-model';
+import { Line, Station } from './models';
 
 interface Data {
   line: string,

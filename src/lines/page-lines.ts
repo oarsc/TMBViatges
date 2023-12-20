@@ -1,6 +1,7 @@
-import { createElement, getElementById, querySelectorAll } from "../dom-utils";
-import { lines, stations } from "./lines-data";
-import { Line, Station } from "./lines-model";
+import { createElement, getElementById, querySelectorAll } from '../lib/dom-utils';
+import { goToPage } from '../utils';
+import { lines, stations } from './data';
+import { Line, Station } from './models';
 
 export function init() {
   const content = getElementById('all-lines')!;
@@ -26,7 +27,7 @@ export function init() {
     destinationSelect.appendChild(opt);
   });
 
-  getElementById('goto-index')!.onclick = () => { location.href = './' };
+  getElementById('goto-index')!.onclick = () => goToPage();
   getElementById('content')?.show();
 }
 

@@ -1,17 +1,7 @@
-import { createElement, getElementById, querySelectorAll, toggleClass } from "../dom-utils";
-import { stations } from "./lines-data";
-import { Line, Station } from "./lines-model";
-
-const GET_PARAMS = (search => search.length == 0 
-	? {}
-	: search.substring(1).split('&')
-			.reduce((acc, param) => {
-				const [key, value] = param.split('=');
-
-				acc[key] = value ? decodeURIComponent(value) : '';
-				return acc;
-			}, {} as Record<string, string>)
-)(location.search);
+import { createElement, getElementById, querySelectorAll, toggleClass } from '../lib/dom-utils';
+import { GET_PARAMS, goToPage } from '../utils';
+import { stations } from './data';
+import { Line, Station } from './models';
 
 let alternatives: Step[];
 let page = 0;
@@ -43,8 +33,8 @@ export function init() {
   drawAlternative(alternatives[page]);
 
   getElementById('change-view')!.onclick = () => changeView(true);
-  getElementById('logo')!.onclick = () => { location.href = './linies.html' };
-  getElementById('goto-index')!.onclick = () => { location.href = './' };
+  getElementById('logo')!.onclick = () => goToPage('linies');
+  getElementById('goto-index')!.onclick = () => goToPage();
   getElementById('content')?.show();
 }
 
@@ -360,5 +350,5 @@ function changeView(change: boolean) {
 }
 
 function updateUrl() {
-  window.history.pushState('', '', `./linies-filter.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '' : '&v=0'}`);
+  window.history.pushState('', '', `./resultats-linies.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '' : '&v=0'}`);
 }
