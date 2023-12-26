@@ -34,7 +34,6 @@ export function init() {
 
   getElementById('change-view')!.onclick = () => changeView(true);
   getElementById('logo')!.onclick = () => goToPage('linies');
-  getElementById('goto-index')!.onclick = () => goToPage();
   getElementById('content')?.show();
 }
 

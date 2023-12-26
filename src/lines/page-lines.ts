@@ -1,5 +1,4 @@
 import { createElement, getElementById, querySelectorAll } from '../lib/dom-utils';
-import { goToPage } from '../utils';
 import { lines, stations } from './data';
 import { Line, Station } from './models';
 
@@ -27,7 +26,6 @@ export function init() {
     destinationSelect.appendChild(opt);
   });
 
-  getElementById('goto-index')!.onclick = () => goToPage();
   getElementById('content')?.show();
 }
 

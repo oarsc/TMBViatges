@@ -27,7 +27,6 @@ export function load() {
   querySelectorAll('.dow.visible input').forEach(e => e.onblur = blurEvent);
   getElementsByClassName('save-button').forEach(a => a.onclick = save);
   getElementById('logo')!.onclick = save;
-  getElementById('goto-lines')!.onclick = () => goToPage('linies', undefined);
 }
 
 function cargarMes(date: Date){

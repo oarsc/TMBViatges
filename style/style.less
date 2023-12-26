@@ -30,9 +30,27 @@ select, button {
 	cursor: pointer;
 }
 
-#header-content{
+#header-links{
 	display: inline-block;
-	text-align: right;
+	margin-left: 50px;
+
+	.separator {
+		color: #E30613;
+		font-size: 1.5em;
+	}
+	a {
+		color: #E30613;
+		cursor: pointer;
+
+		&.here {
+			color: #444;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
 }
 
 #back-button{

@@ -22,7 +22,6 @@ export function init(): boolean {
     .forEach(element => element.onclick = _ => goToPage());
 
   getElementById('logo')!.onclick = _ => goToPage();
-  getElementById('goto-lines')!.onclick = () => goToPage('linies', undefined);
 
   return true;
 }

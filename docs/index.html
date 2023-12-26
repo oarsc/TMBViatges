@@ -9,8 +9,10 @@
 <body>
 	<header>
 		<img id="logo" src="./img/Logo-TMB.png"/>
-		<div id="header-content">
-			<button id="goto-lines">Veure línies</button>
+		<div id="header-links">
+			<a href="./index.html" class="here">Gestionar viatges</a>
+			<span class='separator'>|</span>
+			<a href="./linies.html">Veure línies</a>
 		</div>
 	</header>
 
@@ -27,7 +29,7 @@
 				</table>
 			</div>
 			<label><input type="checkbox" name="uni" id="uni">Mostrar targetes unipersonals</label><br/>
-			<label><input type="checkbox" name="jove" id="jove">Incloure T-Jove (per a persones de 24 anys o menys)</label>
+			<label><input type="checkbox" name="jove" id="jove">Incloure T-Jove (per a persones de 30 anys o menys)</label>
 			<br/><br/>
 		</div>
 		<form id="form-submit" action='./resultats.html' method="GET">

@@ -1,5 +1,5 @@
 import { getElementById, querySelector, querySelectorAll, createElement, generateFromTemplate } from '../lib/dom-utils';
-import { PARAMS, diffDays, formatPrice, toDate, fromDate, encData, goToPage } from '../utils';
+import { PARAMS, diffDays, formatPrice, toDate, fromDate, encData } from '../utils';
 
 import { TARGETES, Targeta } from './data';
 import { ParamsModel } from './models';
@@ -31,7 +31,6 @@ export function init(): boolean {
   };
 
   getElementById('logo')!.onclick = _ => location.reload();
-  getElementById('goto-lines')!.onclick = () => goToPage('linies', undefined);
 
   return true;
 }
@@ -100,21 +99,19 @@ export function load() {
     const validDates = checkValidityDates(dateIni);
 
     if (validDates) {
-      const val = parseInt(addDays.value) ?? 0;
+      const diff = parseInt(addDays.value) ?? 0;
       const initDate = toDate(dateIni.value);
-      initDate.setDate(initDate.getDate() + val);
+      initDate.setDate(initDate.getDate() + diff);
       dateEnd.value = fromDate(initDate);
     }
   }
 
   dateEnd.onblur = ev => {
-    const validDates = checkValidityDates(dateEnd);
+    const validDates = checkValidityDates(dateEnd) && checkValidityDates(dateIni);
   
     if (validDates) {
-      const val = parseInt(addDays.value) ?? 0;
-      const endDate = toDate(dateEnd.value);
-      endDate.setDate(endDate.getDate()-val);
-      dateIni.value = fromDate(endDate);
+      const diff = diffDays(toDate(dateIni.value), toDate(dateEnd.value));
+      addDays.value = `${diff}`;
     }
   }
 
