@@ -3,6 +3,7 @@ import { Line, Station } from './models';
 interface Data {
   line: string,
   name: string,
+  logo: string,
   color: string,
   stations: Array<string | number>
 }
@@ -14,6 +15,7 @@ const linesData: Array<Data> = [
   {
     line: 'l1',
     name: 'Línia 1',
+    logo: 'L1',
     color: '#DC0404',
     stations: [
       'Fondo', 860,
@@ -51,6 +53,7 @@ const linesData: Array<Data> = [
   {
     line: 'l2',
     name: 'Línia 2',
+    logo: 'L2',
     color: '#90278E',
     stations: [
       'Badalona Pompeu Fabra', 772,
@@ -76,6 +79,7 @@ const linesData: Array<Data> = [
   {
     line: 'l3',
     name: 'Línia 3',
+    logo: 'L3',
     color: '#2EA83B',
     stations: [
       'Trinitat Nova', 609,
@@ -109,6 +113,7 @@ const linesData: Array<Data> = [
   {
     line: 'l4',
     name: 'Línia 4',
+    logo: 'L4',
     color: '#FFC10E',
     stations: [
       'Trinitat Nova', 704,
@@ -138,6 +143,7 @@ const linesData: Array<Data> = [
   {
     line: 'l5',
     name: 'Línia 5',
+    logo: 'L5',
     color: '#0078BD',
     stations: [
       'Vall d\'Hebron', 453,
@@ -172,6 +178,7 @@ const linesData: Array<Data> = [
   {
     line: 'l9n',
     name: 'Línia 9 Nord',
+    logo: 'L9\nN',
     color: '#FF7800',
     stations: [
       'Can Zam', 917,
@@ -188,6 +195,7 @@ const linesData: Array<Data> = [
   {
     line: 'l9s',
     name: 'Línia 9 Sud',
+    logo: 'L9\nS',
     color: '#FF7800',
     stations: [
       'Zona Universitària', 1190,
@@ -210,6 +218,7 @@ const linesData: Array<Data> = [
   {
     line: 'l10n',
     name: 'Línia 10 Nord',
+    logo: 'L10\nN',
     color: '#01A0C7',
     stations: [
       'Gorg', 862,
@@ -223,6 +232,7 @@ const linesData: Array<Data> = [
   {
     line: 'l10s',
     name: 'Línia 10 Sud',
+    logo: 'L10\nS',
     color: '#01A0C7',
     stations: [
       'Collblanc', 853,
@@ -241,6 +251,7 @@ const linesData: Array<Data> = [
   {
     line: 'l11',
     name: 'Línia 11',
+    logo: 'L11',
     color: '#97D146',
     stations: [
       'Can Cuiàs', 240,
@@ -260,6 +271,7 @@ linesData.forEach(data => {
   const line = lines[data.line] = new Line(
     data.line,
     data.name,
+    data.logo,
     data.color,
     getStation(stationsNames[0]),
     getStation(stationsNames.slice(-1)[0]),

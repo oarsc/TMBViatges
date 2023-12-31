@@ -1,4 +1,4 @@
-import { getElementById, querySelectorAll } from "../lib/dom-utils";
+import { createElement, getElementById, querySelectorAll } from "../lib/dom-utils";
 import { Line } from "./models";
 
 export function openLine(line: Line, closeRest = true): boolean {
@@ -23,4 +23,15 @@ export function toggleLine(line: Line, closeRest = true) {
   if (isOpened) {
     lineElement.classList.remove('open');
   }
+}
+
+export function generateHtmlLogo(line: Line): HTMLSpanElement {
+  const logoWrapper = createElement('span', 'logo-wrapper');
+  logoWrapper.style.display = 'inline-block';
+
+  const logo = createElement('span', 'line-logo', logoWrapper);
+  logo.setAttribute('content', line.logo);
+  logo.style.backgroundColor = line.color;
+
+  return logoWrapper;
 }

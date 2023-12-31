@@ -1,6 +1,6 @@
 import { createElement, getElementById } from '../lib/dom-utils';
 import { GET_PARAMS, updateAllUrls } from '../utils';
-import { openLine, toggleLine } from './common-lines';
+import { generateHtmlLogo, openLine, toggleLine } from './common-lines';
 import { lines, stations } from './data';
 import { Line, Station } from './models';
 
@@ -100,17 +100,6 @@ function generateHtml(line: Line): HTMLElement {
   }
   
   return lineDiv;
-}
-
-function generateHtmlLogo(line: Line): HTMLSpanElement {
-  const logoWrapper = createElement('span', 'logo-wrapper');
-  logoWrapper.style.display = 'inline-block';
-
-  const logo = createElement('span', 'line-logo', logoWrapper);
-  logo.setAttribute('content', line.id.toUpperCase());
-  logo.style.backgroundColor = line.color;
-
-  return logoWrapper;
 }
 
 function getLineName(line: Line): string {

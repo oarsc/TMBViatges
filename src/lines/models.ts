@@ -2,6 +2,7 @@ export class Line {
   constructor(
     public id: string,
     public name: string,
+    public logo: string,
     public color: string,
     public firstStation: Station,
     public lastStation: Station,
