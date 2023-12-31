@@ -1,5 +1,6 @@
 import { createElement, getElementById, querySelectorAll, toggleClass } from '../lib/dom-utils';
 import { GET_PARAMS, goToPage } from '../utils';
+import { openLine, toggleLine } from './common-lines';
 import { stations } from './data';
 import { Line, Station } from './models';
 
@@ -239,7 +240,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
 
   const header = createElement('div', 'line-header', lineDiv);
   const logo = generateHtmlLogo(line);
-  logo.onclick = ev => openLine(line, !ev.shiftKey)
+  logo.onclick = ev => toggleLine(line, !ev.shiftKey)
   header.appendChild(logo);
 
   createElement('label', 'title', header)
@@ -269,7 +270,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
         const html = generateHtmlLogo(l);
 
         if (linesAvailable.indexOf(l) >= 0) {
-          html.onclick = ev => openLine(l, !ev.shiftKey);
+          html.onclick = ev => toggleLine(l, !ev.shiftKey);
         } else {
           html.classList.add('faded');
         }
@@ -277,6 +278,19 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
         other.appendChild(html)
       });
   });
+
+  lineDiv.onclick = ev => {
+    const target = ev.target;
+    if (target && ev.target instanceof HTMLElement) {
+      if (!(target as HTMLElement).classList.contains('line-logo')) {
+        openLine(line, !ev.shiftKey);
+        ev.preventDefault();
+        ev.stopPropagation();
+        return false;
+      }
+    }
+    return true;
+  }
   
   return lineDiv;
 }
@@ -310,21 +324,6 @@ function getLineName(line: Line, stations: Station[]): string {
   }
 
   return `&#x2933; ${name}`
-}
-
-function openLine(line: Line, closeRest = true) {
-  const lineElement = getElementById(line.id)!;
-
-  const isOpened = lineElement.classList.contains('open');
-
-  if (closeRest) {
-    querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
-  } else if (isOpened) {
-    lineElement.classList.remove('open');
-  }
-  if (!isOpened) {
-    lineElement.classList.add('open');
-  }
 }
 
 function changeView(change: boolean) {

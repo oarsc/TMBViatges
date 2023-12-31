@@ -1,4 +1,5 @@
-import { createElement, getElementById, querySelectorAll } from '../lib/dom-utils';
+import { createElement, getElementById } from '../lib/dom-utils';
+import { openLine, toggleLine } from './common-lines';
 import { lines, stations } from './data';
 import { Line, Station } from './models';
 
@@ -36,7 +37,7 @@ function generateHtml(line: Line): HTMLElement {
 
   const header = createElement('div', 'line-header', lineDiv);
   const logo = generateHtmlLogo(line);
-  logo.onclick = ev => openLine(line, !ev.shiftKey)
+  logo.onclick = ev => toggleLine(line, !ev.shiftKey)
   header.appendChild(logo);
 
   createElement('label', 'title', header)
@@ -66,12 +67,25 @@ function generateHtml(line: Line): HTMLElement {
       .filter(l => l != line)
       .forEach(l => {
         const html = generateHtmlLogo(l);
-        html.onclick = ev => openLine(l, !ev.shiftKey)
+        html.onclick = ev => toggleLine(l, !ev.shiftKey)
         other.appendChild(html)
       });
 
     const nextLink = station.nextStationLink(line);
     station = nextLink?.station;
+  }
+
+  lineDiv.onclick = ev => {
+    const target = ev.target;
+    if (target && ev.target instanceof HTMLElement) {
+      if (!(target as HTMLElement).classList.contains('line-logo')) {
+        openLine(line, !ev.shiftKey);
+        ev.preventDefault();
+        ev.stopPropagation();
+        return false;
+      }
+    }
+    return true;
   }
   
   return lineDiv;
@@ -90,20 +104,4 @@ function generateHtmlLogo(line: Line): HTMLSpanElement {
 
 function getLineName(line: Line): string {
   return `${line.firstStation.name} &#x294A; ${line.lastStation.name}`
-}
-
-function openLine(line: Line, closeRest = true) {
-  const lineElement = getElementById(line.id)!;
-
-  const isOpened = lineElement.classList.contains('open');
-
-  if (closeRest) {
-    querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
-  } else if (isOpened) {
-    lineElement.classList.remove('open');
-  }
-
-  if (!isOpened) {
-    lineElement.classList.add('open');
-  }
 }
