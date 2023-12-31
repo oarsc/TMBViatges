@@ -25,73 +25,70 @@
 					<thead>
 						<tr><th>Nom</th><th>Preu</th><th>Dies d'ús a la setmana</th><th>Dates</th></tr>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+						<tr>
+							<td style="text-align:center">
+								<table style="display:inline-block">
+									<tbody>
+										<tr>
+											<td class="week-days-name">Dilluns</td>
+											<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d0" id="dill"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Dimarts</td>
+											<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d1" id="dima"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Dimecres</td>
+											<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d2" id="dime"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Dijous</td>
+											<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d3" id="dijo"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Divendres</td>
+											<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d4" id="dive"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Dissabte</td>
+											<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d5" id="diss"/></td>
+										</tr>
+										<tr>
+											<td class="week-days-name">Diumenge</td>
+											<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d6" id="dium"/></td>
+										</tr>
+
+									</tbody>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tbody>
+										<tr><td class="day-select-label">Día inicial (format AAAA-MM-DD)</td></tr>
+										<tr><td><input placeholder="AAAA-MM-DD" type="text" name="ini" id="dateini" autocomplete="off"></td></tr>
+										<tr><td class="day-add-label"><label>Suma <input type="number" min="0" value="30" id="adddays"> dies</label></td></tr>
+										<tr><td class="day-select-label">Día final (format AAAA-MM-DD)</td></tr>
+										<tr><td><input placeholder="AAAA-MM-DD" type="text" name="end" id="dateend" autocomplete="off"></td></tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+
+					</tbody>
 				</table>
 			</div>
 			<label><input type="checkbox" name="uni" id="uni">Mostrar targetes unipersonals</label><br/>
 			<label><input type="checkbox" name="jove" id="jove">Incloure T-Jove (per a persones de 30 anys o menys)</label>
 			<br/><br/>
 		</div>
-		<form id="form-submit" action='./resultats.html' method="GET">
-			<input type="hidden" name="d" value="e301"/>
-			<div>
-				<button id="calculate-button">Calcular</button>
-				<button id="exceptions-button">Dies excepcionals</button><br/>
-				<button id="reset-fields">Esborrar dades</button>
-			</div>
-		</form>
+		<div>
+			<a class="button update-params" href="./resultats.html">Calcular</a>
+			<a class="button update-params" href="./excepcions.html">Dies excepcionals</a><br/>
+			<a class="button" href="./index.html">Esborrar dades</a>
+		</div>
 	</div>
-
-	<template id="table-extra-columns" style="display:none">
-		<tr>
-			<td style="text-align:center">
-				<table style="display:inline-block">
-					<tbody>
-						<tr>
-							<td class="week-days-name">Dilluns</td>
-							<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d0" id="dill"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Dimarts</td>
-							<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d1" id="dima"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Dimecres</td>
-							<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d2" id="dime"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Dijous</td>
-							<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d3" id="dijo"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Divendres</td>
-							<td style="text-align:center"><input class="week-days" value="2" type="number" min="0" max="99" name="d4" id="dive"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Dissabte</td>
-							<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d5" id="diss"/></td>
-						</tr>
-						<tr>
-							<td class="week-days-name">Diumenge</td>
-							<td style="text-align:center"><input class="week-days" value="0" type="number" min="0" max="99" name="d6" id="dium"/></td>
-						</tr>
-
-					</tbody>
-				</table>
-			</td>
-			<td>
-				<table>
-					<tbody>
-						<tr><td class="day-select-label">Día inicial (format AAAA-MM-DD)</td></tr>
-						<tr><td><input placeholder="AAAA-MM-DD" type="text" name="ini" id="dateini" autocomplete="off"></td></tr>
-						<tr><td class="day-add-label"><label>Suma <input type="number" min="0" value="30" id="adddays"> dies</label></td></tr>
-						<tr><td class="day-select-label">Día final (format AAAA-MM-DD)</td></tr>
-						<tr><td><input placeholder="AAAA-MM-DD" type="text" name="end" id="dateend" autocomplete="off"></td></tr>
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</template>
 
 	<script type="text/javascript" src="./js/bundle.js"></script>
 

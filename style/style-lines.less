@@ -70,6 +70,17 @@ select, button {
   cursor: pointer;
 }
 
+a.button {
+	display: inline-block;
+  text-decoration: none;
+  background-color: #E30613;
+  color: white;
+  font-weight: bold;
+  padding: 7px 15px;
+  border-radius: 5px;
+  margin: 1px;
+}
+
 #journey {
 	margin-bottom: 5px;
 	font-weight: bold;
@@ -139,6 +150,10 @@ select, button {
 		width: 300px;
 	}
 
+	&:not(.open) {
+		cursor: pointer;
+	}
+
 	.line-header {
 		white-space: nowrap;
 
@@ -204,6 +219,7 @@ select, button {
 		display: block;
 		margin: auto;
 		width: 300px;
+		cursor: initial;
 
 		&:not(:first-child){
 			margin-top: 40px;

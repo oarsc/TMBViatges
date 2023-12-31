@@ -1,5 +1,7 @@
-import { addClass, toggleClass, getElementById, getElementsByClassName, querySelectorAll, createElement, generateFromTemplate } from '../lib/dom-utils';
-import { PARAMS, MES_NOMS, toDate, fromDate, encData, goToPage } from '../utils';
+import { addClass, toggleClass, getElementById, querySelectorAll, createElement, generateFromTemplate } from '../lib/dom-utils';
+import { MES_NOMS, toDate, fromDate, updateAllUrls } from '../utils';
+import { DAY_PARAMS, encData } from './common-days';
+import { ParamsModel } from './models';
 
 declare global {
   interface HTMLTableCellElement {
@@ -10,11 +12,14 @@ declare global {
 let initDate: Date;
 let endDate: Date;
 
-//export function init() {}
+export function init(): boolean {
+  updateAllUrls({}, false);
+  return true;
+}
 
 export function load() {
-  initDate = toDate(PARAMS.ini);
-  endDate = toDate(PARAMS.end);
+  initDate = toDate(DAY_PARAMS.ini);
+  endDate = toDate(DAY_PARAMS.end);
 
   const date = new Date(initDate);
 
@@ -25,8 +30,6 @@ export function load() {
   }
 
   querySelectorAll('.dow.visible input').forEach(e => e.onblur = blurEvent);
-  getElementsByClassName('save-button').forEach(a => a.onclick = save);
-  getElementById('logo')!.onclick = save;
 }
 
 function cargarMes(date: Date){
@@ -87,8 +90,8 @@ function fillDay(dayElement: HTMLTableCellElement, date: Date) {
 
 function getUsos(date: Date){
   let usos;
-  if (PARAMS.exceptions) {
-    usos = PARAMS.exceptions[fromDate(date,true)];
+  if (DAY_PARAMS.exceptions) {
+    usos = DAY_PARAMS.exceptions[fromDate(date,true)];
   }
   if (usos === undefined) {
     usos = usosDefault(date);
@@ -97,7 +100,7 @@ function getUsos(date: Date){
 }
 
 function usosDefault(date: Date): number {
-  return PARAMS.dia[(date.getDay()+6)%7];
+  return DAY_PARAMS.dia[(date.getDay()+6)%7];
 }
 
 function blurEvent(ev: any) {
@@ -106,6 +109,7 @@ function blurEvent(ev: any) {
   let usos = ev.target.value;
 
   toggleClass(td, 'def', def == usos);
+  updateAllUrls({d: encData(loadOutputData())});
 }
 
 function addResetButton(td: HTMLTableCellElement) {
@@ -117,6 +121,7 @@ function addResetButton(td: HTMLTableCellElement) {
     button.onclick = ev => {
       td.querySelector('input')!.value = td.getAttribute('def') ?? '';
       addClass(td, 'def');
+      updateAllUrls({d: encData(loadOutputData())});
     }
     div.appendChild(button);
     td.buttonReset = button;
@@ -131,18 +136,15 @@ function removeResetButton(td: HTMLTableCellElement) {
   }
 }
 
-function save() {
+function loadOutputData(): ParamsModel {
   let dows = querySelectorAll('.dow.visible')
     .map<[Date, number]>(d => [toDate(d.getAttribute('date')), parseInt(d.querySelector('input')!.value)])
-    .filter(([date, value])=> PARAMS.dia[(date.getDay()+6)%7] != value)
+    .filter(([date, value])=> DAY_PARAMS.dia[(date.getDay()+6)%7] != value)
     .reduce((obj,[date, value])=>{
       obj[fromDate(date, true)] = value;
       return obj;
     },{} as Record<string, number>);
 
-  PARAMS.exceptions = dows;
-  let data = encData(PARAMS);
-
-  window.history.pushState('', '', location.pathname + '?d=' + data);
-  goToPage('index', data);
+  DAY_PARAMS.exceptions = dows;
+  return DAY_PARAMS;
 }

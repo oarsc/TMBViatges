@@ -1,17 +1,20 @@
 import { createElement, getElementById } from '../lib/dom-utils';
+import { GET_PARAMS, updateAllUrls } from '../utils';
 import { openLine, toggleLine } from './common-lines';
 import { lines, stations } from './data';
 import { Line, Station } from './models';
 
 export function init() {
+  updateAllUrls({}, false);
+  
   const content = getElementById('all-lines')!;
 
   Object.values(lines)
     .map(generateHtml)
     .forEach(element => content.appendChild(element));
 
-  const originSelect = getElementById('origin-select')!;
-  const destinationSelect = getElementById('destination-select')!;
+  const originSelect = getElementById<HTMLSelectElement>('origin-select')!;
+  const destinationSelect = getElementById<HTMLSelectElement>('destination-select')!;
 
   Object.keys(stations).sort().forEach((key, idx) => {
     const opt = createElement('option');
@@ -26,6 +29,14 @@ export function init() {
     opt.value = `${idx}`;
     destinationSelect.appendChild(opt);
   });
+
+  if (GET_PARAMS.i) {
+    originSelect.value = GET_PARAMS.i;
+  }
+
+  if (GET_PARAMS.f) {
+    destinationSelect.value = GET_PARAMS.f;
+  }
 
   getElementById('content')?.show();
 }

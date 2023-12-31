@@ -1,5 +1,5 @@
 import { createElement, getElementById, querySelectorAll, toggleClass } from '../lib/dom-utils';
-import { GET_PARAMS, goToPage } from '../utils';
+import { GET_PARAMS, updateAllUrls } from '../utils';
 import { openLine, toggleLine } from './common-lines';
 import { stations } from './data';
 import { Line, Station } from './models';
@@ -10,6 +10,8 @@ let total = 0;
 let linearView = true;
 
 export function init() {
+  updateAllUrls({}, false);
+
   const invertArrow = getElementById('arrow')!;
   invertArrow.onmouseenter = () => invertArrow.innerHTML = '&#x21E0;';
   invertArrow.onmouseleave = () => invertArrow.innerHTML = '&#x21E2;';
@@ -34,7 +36,6 @@ export function init() {
   drawAlternative(alternatives[page]);
 
   getElementById('change-view')!.onclick = () => changeView(true);
-  getElementById('logo')!.onclick = () => goToPage('linies');
   getElementById('content')?.show();
 }
 
@@ -182,7 +183,7 @@ function drawMenu() {
       page--;
       numPage.textContent = `${page + 1}`;
       drawAlternative(alternatives[page]);
-      updateUrl();
+      updateAllUrls({p: `${page}`});
     }
   };
 
@@ -191,7 +192,7 @@ function drawMenu() {
       page++;
       numPage.textContent = `${page + 1}`;
       drawAlternative(alternatives[page]);
-      updateUrl();
+      updateAllUrls({p: `${page}`});
     }
   };
 }
@@ -340,13 +341,9 @@ function changeView(change: boolean) {
   button.textContent = linear? 'Vista en columnes' : 'Vista lineal';
 
   if (change) {
-    updateUrl();
+    updateAllUrls({v: linearView? '': '0'});
   }
   if (!linear) {
     querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
   }
-}
-
-function updateUrl() {
-  window.history.pushState('', '', `./resultats-linies.html?i=${GET_PARAMS.i}&f=${GET_PARAMS.f}&p=${page}${linearView? '' : '&v=0'}`);
 }

@@ -1,5 +1,6 @@
-import { getElementById, querySelector, querySelectorAll, createElement, generateFromTemplate } from '../lib/dom-utils';
-import { PARAMS, diffDays, formatPrice, toDate, fromDate, encData } from '../utils';
+import { getElementById, querySelector, querySelectorAll, createElement, getElementsByClassName } from '../lib/dom-utils';
+import { diffDays, formatPrice, toDate, fromDate, updateAllUrls, GET_PARAMS } from '../utils';
+import { DAY_PARAMS, encData } from './common-days';
 
 import { TARGETES, Targeta } from './data';
 import { ParamsModel } from './models';
@@ -11,11 +12,7 @@ declare global {
 }
 
 export function init(): boolean {
-  getElementById('form-submit')!.onsubmit = ev => {
-    const form = ev.target as HTMLFormElement; 
-    const data = form.d.value = encData(loadOutputData());
-    window.history.pushState('', '', `${location.origin}${location.pathname}?d=${data}`);
-  }
+  updateAllUrls({}, false);
 
   const uniCheckbox = getElementById<HTMLInputElement>('uni')!;
   uniCheckbox.onchange = () => {
@@ -25,19 +22,12 @@ export function init(): boolean {
       jove.checked = false;
     }
   };
-  getElementById('reset-fields')!.onclick = () => {
-    location.search = '';
-    return false;
-  };
-
-  getElementById('logo')!.onclick = _ => location.reload();
 
   return true;
 }
 
 export function load() {
   const tbodyTargetes = querySelector('#tickets tbody')!;
-  tbodyTargetes.clear();
 
   // CONSTRUIR TAULA DE TARGETES:
   let totalZones = 0;
@@ -62,19 +52,21 @@ export function load() {
 
   }).forEach(t => tbodyTargetes.appendChild(t));
 
-  const clon = generateFromTemplate('table-extra-columns')!;
-  Array.from(clon.children)
-    .map(td => td as HTMLTableCellElement)
-    .forEach(td => {
-      td.rowSpan = TARGETES.length;
-      tbodyTargetes.firstChild!.appendChild(td);
+
+  ([...tbodyTargetes.removeChild(tbodyTargetes.firstElementChild!).children] as HTMLTableCellElement[])
+    .forEach(item => {
+      item.rowSpan = TARGETES.length;
+      tbodyTargetes.firstElementChild!.appendChild(item);
     });
 
   // CONSTUIR COMBO DE ZONES:
   const zonesSelect = getElementById<HTMLSelectElement>('zones-selector')!;
   zonesSelect.clear();
 
-  zonesSelect.onchange = ev => actualitzarPreus(parseInt(zonesSelect.value));
+  zonesSelect.onchange = ev => {
+    actualitzarPreus(parseInt(zonesSelect.value))
+    updateAllUrls({d: encData(loadOutputData())});
+  };
 
   for (let i = 1; i <= totalZones; i++) {
     const option = createElement('option');
@@ -103,6 +95,7 @@ export function load() {
       const initDate = toDate(dateIni.value);
       initDate.setDate(initDate.getDate() + diff);
       dateEnd.value = fromDate(initDate);
+      updateAllUrls({d: encData(loadOutputData())});
     }
   }
 
@@ -112,15 +105,25 @@ export function load() {
     if (validDates) {
       const diff = diffDays(toDate(dateIni.value), toDate(dateEnd.value));
       addDays.value = `${diff}`;
+      updateAllUrls({d: encData(loadOutputData())});
     }
   }
 
-  // BOTÓ EXCEPCIONS
-  getElementById('exceptions-button')!.onclick = ev => {
-    getElementById<HTMLFormElement>('form-submit')!.action = './excepcions.html';
-  }
+  getElementsByClassName('week-days')
+    .forEach(day => day.onchange = () => updateAllUrls({d: encData(loadOutputData())}))
 
   loadEntryData();
+
+  if (!GET_PARAMS.d) {
+    const defaultConfig = encData(loadOutputData());
+
+    const params = location.search.length
+      ? `${location.search}&d=${defaultConfig}`
+      : `?d=${defaultConfig}`;
+
+    ([...querySelectorAll('a.update-params')] as HTMLAnchorElement[])
+      .forEach(a => a.href = a.href.split('?')[0] + params);
+  }
 }
 
 function actualitzarPreus(zona: number) {
@@ -147,34 +150,34 @@ function loadEntryData(){
     }
   }
 
-  if (PARAMS.dia) {
-    ifSetValue('dill', PARAMS.dia[0]);
-    ifSetValue('dima', PARAMS.dia[1]);
-    ifSetValue('dime', PARAMS.dia[2]);
-    ifSetValue('dijo', PARAMS.dia[3]);
-    ifSetValue('dive', PARAMS.dia[4]);
-    ifSetValue('diss', PARAMS.dia[5]);
-    ifSetValue('dium', PARAMS.dia[6]);
+  if (DAY_PARAMS.dia) {
+    ifSetValue('dill', DAY_PARAMS.dia[0]);
+    ifSetValue('dima', DAY_PARAMS.dia[1]);
+    ifSetValue('dime', DAY_PARAMS.dia[2]);
+    ifSetValue('dijo', DAY_PARAMS.dia[3]);
+    ifSetValue('dive', DAY_PARAMS.dia[4]);
+    ifSetValue('diss', DAY_PARAMS.dia[5]);
+    ifSetValue('dium', DAY_PARAMS.dia[6]);
   }
 
-  ifSetValue('dateini', PARAMS.ini);
-  ifSetValue('dateend', PARAMS.end);
+  ifSetValue('dateini', DAY_PARAMS.ini);
+  ifSetValue('dateend', DAY_PARAMS.end);
 
-  if (PARAMS.ini && PARAMS.end) {
-    getElementById<HTMLInputElement>('adddays')!.value = '' + diffDays(PARAMS.ini, PARAMS.end);
+  if (DAY_PARAMS.ini && DAY_PARAMS.end) {
+    getElementById<HTMLInputElement>('adddays')!.value = '' + diffDays(DAY_PARAMS.ini, DAY_PARAMS.end);
   }
 
-  ifSetValue('exceptions', JSON.stringify(PARAMS.exceptions));
-  ifSetValue('zones-selector', PARAMS.z);
+  ifSetValue('exceptions', JSON.stringify(DAY_PARAMS.exceptions));
+  ifSetValue('zones-selector', DAY_PARAMS.z);
 
-  ifSetChecked('jove',PARAMS.jove);
-  ifSetChecked('uni', PARAMS.uni == undefined? 'on' : PARAMS.uni);
+  ifSetChecked('jove',DAY_PARAMS.jove);
+  ifSetChecked('uni', DAY_PARAMS.uni == undefined? 'on' : DAY_PARAMS.uni);
   if (!getElementById<HTMLInputElement>('uni')!.checked) {
     getElementById<HTMLInputElement>('jove')!.disabled = true;
   }
 
-  const zonesSelector = getElementById('zones-selector') as any;
-  zonesSelector.onchange()
+  const zonesSelector = getElementById<HTMLSelectElement>('zones-selector')!;
+  actualitzarPreus(parseInt(zonesSelector.value))
 }
 
 function loadOutputData() : ParamsModel {

@@ -1,15 +1,18 @@
-import { getElementById, getElementsByClassName, addClass, querySelector, generateFromTemplate } from '../lib/dom-utils';
-import { PARAMS, formatPrice, toDate, fromDate, goToPage } from '../utils';
+import { getElementById, addClass, querySelector, generateFromTemplate } from '../lib/dom-utils';
+import { formatPrice, toDate, fromDate, updateAllUrls } from '../utils';
+import { DAY_PARAMS } from './common-days';
 
 import { TARGETES, Targeta } from './data';
 let FILTERED_TARGETES: Array<typeof Targeta>;
 
 export function init(): boolean {
+  updateAllUrls({}, false);
+
   let errorMessage;
-  if (!PARAMS.ini)      errorMessage = '0xae34fa';
-  else if (!PARAMS.end) errorMessage = '0x1e98e9';
-  else if (!PARAMS.z)   errorMessage = '0x681a55';
-  else if (!PARAMS.dia || PARAMS.dia.length != 7) errorMessage = '0x13610f';
+  if (!DAY_PARAMS.ini)      errorMessage = '0xae34fa';
+  else if (!DAY_PARAMS.end) errorMessage = '0x1e98e9';
+  else if (!DAY_PARAMS.z)   errorMessage = '0x681a55';
+  else if (!DAY_PARAMS.dia || DAY_PARAMS.dia.length != 7) errorMessage = '0x13610f';
 
   if (errorMessage) {
     const errorElement = getElementById('error-message')!;
@@ -18,29 +21,24 @@ export function init(): boolean {
     return false;
   }
 
-  getElementsByClassName('back-button')
-    .forEach(element => element.onclick = _ => goToPage());
-
-  getElementById('logo')!.onclick = _ => goToPage();
-
   return true;
 }
 
 export function load() {
   FILTERED_TARGETES = TARGETES;
 
-  if (PARAMS.jove != 'on') {
+  if (DAY_PARAMS.jove != 'on') {
     FILTERED_TARGETES = FILTERED_TARGETES.filter(t => t.cardName != 'T-Jove');
   }
-  if (PARAMS.uni != 'on') {
+  if (DAY_PARAMS.uni != 'on') {
     FILTERED_TARGETES = FILTERED_TARGETES.filter(t => !t.unipersonal);
   }
 
   const count = FILTERED_TARGETES.map(card => 1);
   const instances = FILTERED_TARGETES.map(card => new card());
 
-  const day = toDate(PARAMS.ini);
-  const endDayTime = toDate(PARAMS.end).getTime();
+  const day = toDate(DAY_PARAMS.ini);
+  const endDayTime = toDate(DAY_PARAMS.end).getTime();
 
   while (day.getTime() < endDayTime) {
 
@@ -79,7 +77,7 @@ export function load() {
       count[i]--;
     }
     cost.push(
-      preu(FILTERED_TARGETES[i].preus[PARAMS.z-1], count[i])
+      preu(FILTERED_TARGETES[i].preus[DAY_PARAMS.z-1], count[i])
     )
   }
 
@@ -87,12 +85,12 @@ export function load() {
 }
 
 function getUsos(date: Date): number{
-  const usos = PARAMS.exceptions
-    ? PARAMS.exceptions[fromDate(date,true)]
+  const usos = DAY_PARAMS.exceptions
+    ? DAY_PARAMS.exceptions[fromDate(date,true)]
     : undefined;
 
   return usos === undefined
-    ? PARAMS.dia[(date.getDay()+6)%7]
+    ? DAY_PARAMS.dia[(date.getDay()+6)%7]
     : usos;
 }
 
@@ -104,7 +102,7 @@ function showResults(cardsCount: number[], cost: number[], instances: Targeta[],
     .reduce((min, value) => value < min ? value : min, 9999);
 
   for (let i=0; i<FILTERED_TARGETES.length; i++) {
-    if (FILTERED_TARGETES[i].zones < PARAMS.z){
+    if (FILTERED_TARGETES[i].zones < DAY_PARAMS.z){
       continue;
     }
 
