@@ -56,8 +56,8 @@ export function toDate(value: any): Date {
   if (str.length != 10 && str.length != 6) throw new Error(`Wrong date format ${value}`);
 
   return str.length == 6
-    ? new Date(`20${str.substr(0,2)}-${str.substr(2,2)}-${str.substr(4)}`)
-    : new Date(`${str.substr(0,4)}-${str.substr(5,2)}-${str.substr(8)}`);
+    ? new Date(`20${str.substring(0,2)}-${str.substring(2,4)}-${str.substring(4)}`)
+    : new Date(`${str.substring(0,4)}-${str.substring(5,7)}-${str.substring(8)}`);
 }
 
 export function diffDays(i: Date | string,f: Date | string): number {
