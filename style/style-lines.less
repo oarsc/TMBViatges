@@ -12,7 +12,6 @@ body {
 
 #logo {
 	vertical-align: middle;
-	cursor: pointer;
 }
 
 #header-links{
@@ -26,13 +25,17 @@ body {
 	a {
 		color: #E30613;
 		cursor: pointer;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
 
 		&.here {
-			color: #444;
-			text-decoration: none;
+			color: #888;
 
 			&:hover {
-				text-decoration: underline;
+				text-decoration: none;
 			}
 		}
 	}
@@ -79,9 +82,25 @@ a.button {
   padding: 7px 15px;
   border-radius: 5px;
   margin: 1px;
+
+	&.back{
+		background-color: transparent;
+		color: #E30613;
+		font-size: 1.2em;
+		padding: 4px 10px;
+		line-height: 1.1em;
+		margin-bottom: 10px;
+		z-index: 1;
+		position: relative;
+
+		&:hover {
+			background-color: #eee;
+		}
+	}
 }
 
 #journey {
+	margin-top: -30px;
 	margin-bottom: 5px;
 	font-weight: bold;
 	font-size: 1.3em;
