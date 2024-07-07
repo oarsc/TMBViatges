@@ -1,12 +1,12 @@
-import { createElement, getElementById } from '../lib/dom-utils';
 import { GET_PARAMS, updateAllUrls } from '../utils';
-import { generateHtmlLogo, openLine, toggleLine } from './common-lines';
+import { createElement, getElementById } from '../lib/dom-utils';
+import { fromYyyyMmDd, generateHtmlLogo, openLine, toggleLine } from './common-lines';
 import { lines, stations } from './data';
-import { Line, Station } from './models';
+import { Line } from './models';
 
 export function init() {
   updateAllUrls({}, false);
-  
+
   const content = getElementById('all-lines')!;
 
   Object.values(lines)
@@ -15,6 +15,7 @@ export function init() {
 
   const originSelect = getElementById<HTMLSelectElement>('origin-select')!;
   const destinationSelect = getElementById<HTMLSelectElement>('destination-select')!;
+  const works = getElementById<HTMLInputElement>('works')!;
 
   Object.keys(stations).sort().forEach((key, idx) => {
     const opt = createElement('option');
@@ -38,6 +39,10 @@ export function init() {
     destinationSelect.value = GET_PARAMS.f;
   }
 
+  if (GET_PARAMS.w) {
+    works.value = GET_PARAMS.w;
+  }
+
   getElementById('content')?.show();
 }
 
@@ -59,9 +64,11 @@ function generateHtml(line: Line): HTMLElement {
   createElement('div', 'color-line', stationsDiv)
     .style.backgroundColor = line.color;
 
-  let station: Station | undefined = line.firstStation;
-  while (station) {
+  const stations = GET_PARAMS.w
+    ? line.getOperativeStations(fromYyyyMmDd(GET_PARAMS.w))
+    : line.getStations();
 
+  stations.forEach(station => {
     const stationDiv = createElement('div', 'station', stationsDiv);
 
     const roundIcon = createElement('span', 'circle', stationDiv);
@@ -81,10 +88,7 @@ function generateHtml(line: Line): HTMLElement {
         html.onclick = ev => toggleLine(l, !ev.shiftKey)
         other.appendChild(html)
       });
-
-    const nextLink = station.nextStationLink(line);
-    station = nextLink?.station;
-  }
+  });
 
   lineDiv.onclick = ev => {
     const target = ev.target;
@@ -98,7 +102,7 @@ function generateHtml(line: Line): HTMLElement {
     }
     return true;
   }
-  
+
   return lineDiv;
 }
 

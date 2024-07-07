@@ -8,10 +8,17 @@ interface Data {
   stations: Array<string | number>
 }
 
+export interface Work {
+  start: Date,
+  end: Date,
+  line: string,
+  stations: string[]
+}
+
 export const lines: Record<string, Line> = {};
 export const stations: Record<string, Station> = {};
 
-const linesData: Array<Data> = [
+const linesData: Data[] = [
   {
     line: 'l1',
     name: 'Línia 1',
@@ -66,7 +73,7 @@ const linesData: Array<Data> = [
       'Sant Martí', 596,
       'Bac de Roda', 925,
       'Clot', 544,
-      'Encants', 750, 
+      'Encants', 750,
       'Sagrada Família', 595,
       'Monumental', 792,
       'Tetuan', 816,
@@ -263,7 +270,57 @@ const linesData: Array<Data> = [
   },
 ];
 
+const works: Work[] = [
+  {
+    start: new Date('2024-06-25T00:00:00'),
+    end: new Date('2024-08-25T00:00:00'),
+    line: 'l2',
+    stations: [
+      'Monumental',
+      'Tetuan',
+      'Passeig de Gràcia',
+      'Universitat',
+      'Sant Antoni',
+      'Paral·lel',
+    ]
+  },
+  {
+    start: new Date('2024-08-05T00:00:00'),
+    end: new Date('2024-08-25T00:00:00'),
+    line: 'l10n',
+    stations: [
+      'Gorg',
+    ]
+  },
+  {
+    start: new Date('2024-07-27T00:00:00'),
+    end: new Date('2024-08-22T00:00:00'),
+    line: 'l4',
+    stations: [
+      'El Maresme | Fòrum',
+      'Besòs Mar',
+      'Besòs',
+      'La Pau',
+    ]
+  },
+  {
+    start: new Date('2024-06-25T00:00:00'),
+    end: new Date('2024-09-01T00:00:00'),
+    line: 'l5',
+    stations: [
+      'Ernest Lluch',
+      'Pubilla Cases',
+      'Can Vidalet',
+      'Can Boixeres',
+      'Sant Ildefons',
+      'Gavarra',
+      'Cornellà Centre',
+    ]
+  }
+]
+
 linesData.forEach(data => {
+
   const stationsNames = data.stations
     .filter(content => typeof content === 'string')
     .map(station => station as string);
@@ -275,6 +332,7 @@ linesData.forEach(data => {
     data.color,
     getStation(stationsNames[0]),
     getStation(stationsNames.slice(-1)[0]),
+    works.filter(work => work.line == data.line),
   );
 
   let prevStation: Station | undefined;

@@ -51,7 +51,7 @@ table#stats {
   padding-right: 5px;
 	font-size: .8em;
 	line-height: 1em;
-	
+
 	td:first-child {
 		font-weight: bold;
 		text-align: right;
@@ -63,7 +63,7 @@ table#stats {
 	}
 }
 
-select, button {
+select, button, input.styled {
   border: 0;
   background-color: #E30613;
   color: white;
@@ -73,8 +73,12 @@ select, button {
   cursor: pointer;
 }
 
+input.styled {
+	width: calc(100% - 30px); /* width minus padding */
+}
+
 a.button {
-	display: inline-block;
+  display: inline-block;
   text-decoration: none;
   background-color: #E30613;
   color: white;
@@ -138,7 +142,7 @@ a.button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		
+
 		color: white;
 		font-weight: bold;
 		font-size: 0.85em;
@@ -146,7 +150,7 @@ a.button {
 		height: 23px;
 		padding: 3px;
 		text-align: center;
-		
+
 		&::after {
 			content: attr(content);
 			overflow-wrap: anywhere;

@@ -1,6 +1,6 @@
-import { createElement, getElementById, querySelectorAll, toggleClass } from '../lib/dom-utils';
+import { createElement, getElementById, getElementsByClassName, querySelectorAll, toggleClass } from '../lib/dom-utils';
 import { GET_PARAMS, updateAllUrls } from '../utils';
-import { generateHtmlLogo, openLine, toggleLine } from './common-lines';
+import { fromYyyyMmDd, generateHtmlLogo, openLine, toggleLine, validateYyyyMmDd } from './common-lines';
 import { stations } from './data';
 import { Line, Station } from './models';
 
@@ -12,11 +12,13 @@ let linearView = true;
 export function init() {
   updateAllUrls({}, false);
 
+  validateWorksFormat()
+
   const invertArrow = getElementById('arrow')!;
   invertArrow.onmouseenter = () => invertArrow.innerHTML = '&#x21E0;';
   invertArrow.onmouseleave = () => invertArrow.innerHTML = '&#x21E2;';
   invertArrow.onclick = () => {
-    location.search = `?i=${GET_PARAMS.f}&f=${GET_PARAMS.i}&p=${page}${linearView? '' : '&v=0'}`;
+    location.search = `?i=${GET_PARAMS.f}&f=${GET_PARAMS.i}&p=${page}${linearView? '' : '&v=0'}${GET_PARAMS.w? `&w=${GET_PARAMS.w}` : ''}`;
   }
 
   const allStations = Object.keys(stations).sort();
@@ -31,7 +33,11 @@ export function init() {
   getElementById('origin')!.textContent = origin.name;
   getElementById('destination')!.textContent = dest.name;
 
-  alternatives = findAlternatives(origin, dest);
+  const workDateFiltering = GET_PARAMS.w
+    ? fromYyyyMmDd(GET_PARAMS.w)
+    : undefined;
+
+  alternatives = findAlternatives(origin, dest, workDateFiltering);
   drawMenu();
   drawAlternative(alternatives[page]);
 
@@ -50,7 +56,7 @@ interface Step {
   done: boolean
 }
 
-function findAlternatives(origin: Station, destination: Station): Step[] {
+function findAlternatives(origin: Station, destination: Station, date: Date | undefined): Step[] {
   if (origin == destination) {
     return [{
       line: origin.lines[0],
@@ -64,7 +70,7 @@ function findAlternatives(origin: Station, destination: Station): Step[] {
   }
 
   const finalSteps: Step[] = []
-  let pendingSteps = origin.lines
+  let pendingSteps = origin.getOperativeLines(date)
     .flatMap<Step>(line => [
       {
         line,
@@ -88,7 +94,7 @@ function findAlternatives(origin: Station, destination: Station): Step[] {
 
   while (pendingSteps.length) {
     pendingSteps = pendingSteps
-      .flatMap(step => nextSteps(step, destination))
+      .flatMap(step => nextSteps(step, destination, date))
       .filter(step => {
         if (step.done) {
           finalSteps.push(step);
@@ -102,12 +108,21 @@ function findAlternatives(origin: Station, destination: Station): Step[] {
     .sort((a,b) => a.transshipments - b.transshipments);
 }
 
-function nextSteps(step: Step, destination: Station): Step[] {
+function nextSteps(step: Step, destination: Station, date: Date | undefined): Step[] {
   const [ currentStation ] = step.stations.slice(-1);
 
-  const next = step.forward
-    ? currentStation.nextStationLink(step.line)
-    : currentStation.prevStationLink(step.line);
+  const next = date
+    ? (
+      step.forward
+        ? currentStation.nextOperativeStationLink(step.line, date)
+        : currentStation.prevOperativeStationLink(step.line, date)
+    )
+    : (
+      step.forward
+        ? currentStation.nextStationLink(step.line)
+        : currentStation.prevStationLink(step.line)
+    );
+
 
   if (!next) return [];
 
@@ -126,7 +141,7 @@ function nextSteps(step: Step, destination: Station): Step[] {
     }];
   }
 
-  const steps = station.lines
+  const steps = station.getOperativeLines(date)
     .filter(line => step.lines.indexOf(line) < 0)
     .flatMap<Step>(line => [
       {
@@ -251,7 +266,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
 
   createElement('div', 'color-line', stationsDiv)
     .style.backgroundColor = line.color;
-  
+
   stations.forEach(station => {
     const stationDiv = createElement('div', 'station', stationsDiv);
 
@@ -292,7 +307,7 @@ function generateHtml(line: Line, stations: Station[], linesAvailable: Line[]): 
     }
     return true;
   }
-  
+
   return lineDiv;
 }
 
@@ -334,5 +349,12 @@ function changeView(change: boolean) {
   }
   if (!linear) {
     querySelectorAll('.line.open').forEach(a => a.classList.remove('open'));
+  }
+}
+
+function validateWorksFormat() {
+  if (!validateYyyyMmDd(GET_PARAMS.w)) {
+    const [backBtn] = getElementsByClassName('button back update-params') as HTMLAnchorElement[];
+    location.href = backBtn.href;
   }
 }
