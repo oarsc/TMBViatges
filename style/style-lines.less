@@ -73,6 +73,33 @@ select, button, input.styled {
   cursor: pointer;
 }
 
+button {
+	transition: background-color .2s;
+	&:hover {
+		background-color: #f53a46;
+	}
+	&:disabled {
+		opacity: 0.4;
+	}
+}
+
+button.secondary {
+	background-color: inherit;
+	color: #E30613;
+	padding: 5px 13px;
+	border: 2px solid #E30613;
+
+	transition: border-color .2s, color .2s;
+	&:hover {
+		border-color: #f53a46;
+		color: #f53a46;
+	}
+}
+
+select {
+	width: 100%;
+}
+
 input.styled {
 	width: calc(100% - 30px); /* width minus padding */
 }
@@ -204,8 +231,12 @@ a.button {
 .station {
 	height: 38px;
 	display: flex;
-  align-items: center;
+  	align-items: center;
 	margin-left: 5px;
+
+	&.hide {
+		display: none;
+	}
 
 	* {
 		vertical-align: middle;
@@ -250,6 +281,28 @@ a.button {
 	}
 	.logo-wrapper {
 		opacity: 1;
+	}
+}
+
+.work {
+	display: inline-block;
+	text-align: left;
+	vertical-align: top;
+	margin: 0 20px 20px;
+
+	.line-header {
+		font-weight: bold;
+	}
+
+	.start-header {
+		padding-left: 10px;
+	}
+	.end-header {
+		padding-right: 10px;
+
+		&::before {
+			content: " - ";
+		}
 	}
 }
 

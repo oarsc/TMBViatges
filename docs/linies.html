@@ -16,23 +16,25 @@
 		</div>
 	</header>
 
-	<form action="./resultats-linies.html" method="GET">
+	<form id="form" action="./resultats-linies.html" method="GET">
 		<table  style="margin: auto;">
 			<tr>
 				<td>Origen</td>
-				<td><select id="origin-select" name="i"></select></td>
+				<td colspan="2"><select id="origin-select" name="i"></select></td>
 			</tr>
 			<tr>
 				<td>Destí</td>
-				<td><select id="destination-select" name="f"></select></td>
+				<td colspan="2"><select id="destination-select" name="f"></select></td>
 			</tr>
 			<tr>
 				<td>Día</td>
-				<td><input id="works" class="styled" name="w" placeholder="AAAA-MM-DD" autocomplete="false"/></td>
+				<td><input id="works" class="styled" name="w" placeholder="AAAA-MM-DD" autocomplete="off"/></td>
+				<td><button id="today">Avui</button></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="text-align: center;">
+				<td colspan="3" style="text-align: center;position: relative;">
 					<button>Cercar</button>
+					<button id="obres" class="secondary" style="right: 0; position: absolute;">Veure obres</button>
 				</td>
 			</tr>
 		</table>

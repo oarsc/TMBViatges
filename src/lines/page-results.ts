@@ -38,10 +38,20 @@ export function init() {
     : undefined;
 
   alternatives = findAlternatives(origin, dest, workDateFiltering);
-  drawMenu();
-  drawAlternative(alternatives[page]);
+  if (alternatives.length) {
+    drawMenu();
+    drawAlternative(alternatives[page]);
+  
+    getElementById('change-view')!.onclick = () => changeView(true);
+  } else {
 
-  getElementById('change-view')!.onclick = () => changeView(true);
+    getElementById('menu')?.hide();
+    getElementById('alternative')?.hide();
+
+    const text = createElement('h3', undefined, getElementById('content'));
+    text.textContent = "No hi ha opcions disponibles";
+  }
+
   getElementById('content')?.show();
 }
 

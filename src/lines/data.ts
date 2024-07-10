@@ -270,7 +270,7 @@ const linesData: Data[] = [
   },
 ];
 
-const works: Work[] = [
+export const works: Work[] = [
   {
     start: new Date('2024-06-25T00:00:00'),
     end: new Date('2024-08-25T00:00:00'),

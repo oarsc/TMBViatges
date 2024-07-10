@@ -68,10 +68,9 @@ function generateParams(newData: Record<string, string> = {}): string {
   const currentParams = (search => search.length == 0
     ? {}
     : search.substring(1).split('&')
-        .reduce((acc, param) => {
+        .red((obj, param) => {
           const [key, value] = param.split('=');
-          acc[key] = value ? decodeURIComponent(value) : '';
-          return acc;
+          obj[key] = value ? decodeURIComponent(value) : '';
         }, {} as Record<string, string>)
   )(location.search);
 
@@ -80,11 +79,8 @@ function generateParams(newData: Record<string, string> = {}): string {
     ... newData
   };
 
-  return Object.entries(data).reduce((str, [key, value]) => !value? str :
-    str.length > 0
-      ? `${str}&${key}=${encodeURIComponent(value)}`
-      : `${str}?${key}=${encodeURIComponent(value)}`
-    , '');
+  const params = new URLSearchParams(data).toString();
+  return params? `?${params}` : '';
 }
 
 export function updateAllUrls(newData: Record<string, string> = {}, updateUrl = true): string {
@@ -95,7 +91,7 @@ export function updateAllUrls(newData: Record<string, string> = {}, updateUrl = 
 
   if (updateUrl) {
     const baseUrl = location.href.replace(location.search, '');
-    window.history.pushState('', '', `${baseUrl}${params}`);
+    window.history.replaceState('', '', `${baseUrl}${params}`);
   }
 
   return params;
