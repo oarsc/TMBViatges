@@ -27,7 +27,7 @@ class Senzill extends Targeta {
 
   static override unipersonal = false;
   static override cardName = 'Bitllet Senzill';
-  static override preus = [2.55, 3.65, 4.80, 6.15, 7.85, 9.15];
+  static override preus = [2.65, 3.80, 4.95, 6.35, 8.10, 9.45];
   usada = false;
 
   override us(dia: Date): boolean {
@@ -48,7 +48,7 @@ class Senzill extends Targeta {
 class TCasual extends Targeta {
 
   static override cardName = 'T-Casual';
-  static override preus = [12.15, 23.90, 32.55, 41.85, 48.10, 51.15];
+  static override preus = [12.55, 24.65, 33.55, 43.15, 49.55, 52.70];
   usos = 10;
 
   override us(dia: Date): boolean {
@@ -69,7 +69,7 @@ class TCasual extends Targeta {
 class TUsual extends Targeta {
 
   static override cardName = 'T-Usual';
-  static override preus = [21.35, 28.75, 40.35, 49.40, 56.65, 60.70];
+  static override preus = [22.00, 29.65, 41.60, 50.90, 58.35, 62.55];
   dataFinal!: Date;
 
   override diaValidacio(data: Date) {
@@ -98,7 +98,7 @@ class TUsual extends Targeta {
 class TJove extends TUsual {
 
   static override cardName = 'T-Jove';
-  static override preus = [42.70, 57.50, 80.70, 98.80, 113.30, 121.40];
+  static override preus = [44.00, 44.00, 44.00, 44.00, 44.00, 44.00];
 
   override diaValidacio(data: Date) {
     super.diaValidacio(data);
@@ -120,7 +120,7 @@ class TJove extends TUsual {
 class TDia extends TUsual {
 
   static override cardName = 'T-Dia';
-  static override preus = [11.20, 17.10, 21.50, 24.00, 26.85, 30.05];
+  static override preus = [11.55, 17.65, 22.15, 24.75, 27.70, 31.00];
 
   override diaValidacio(data: Date) {
     super.diaValidacio(data);
@@ -143,7 +143,7 @@ class TGrup extends TUsual {
 
   static override unipersonal = false;
   static override cardName = 'T-Grup';
-  static override preus = [84.80, 167.40, 227.90, 292.90, 336.65, 357.95];
+  static override preus = [87.35, 172.45, 234.75, 301.70, 346.75, 368.70];
   usos = 70;
 
   override us(dia: Date): boolean {
@@ -165,7 +165,7 @@ class TFamiliar extends TUsual {
 
   static override unipersonal = false;
   static override cardName = 'T-Familiar';
-  static override preus = [10.70, 20.30, 28.80, 37.35, 42.70, 44.85];
+  static override preus = [11.05, 20.95, 29.70, 38.50, 44.00, 46.20];
   usos = 8;
 
   override us(dia: Date): boolean {
