@@ -1,0 +1,38 @@
+package org.oar.tmb.viatges.ui.support
+
+import org.oar.tmb.viatges.lib.HTMLBlock
+import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.INPUT
+import org.oar.tmb.viatges.lib.style
+import org.w3c.dom.HTMLInputElement
+import kotlin.reflect.KMutableProperty1
+
+class HTMLCheckboxEditBind<T: Any>(
+    private val obj: T,
+    private val accessor: KMutableProperty1<T, Boolean?>,
+    private val default: Boolean = false
+): HTMLBlock<HTMLInputElement>(INPUT, className = CLASS_NAME) {
+
+    var onchange: (() -> Unit)? = null
+
+    init {
+        element.apply {
+            type = "checkbox"
+            checked = accessor.get(obj) ?: default
+            onchange = {
+                this@HTMLCheckboxEditBind.accessor.set(obj, checked)
+                this@HTMLCheckboxEditBind.onchange?.invoke()
+            }
+        }
+    }
+
+    companion object {
+        const val CLASS_NAME = "checkbox"
+        init {
+            style {
+                ".$CLASS_NAME" {
+
+                }
+            }
+        }
+    }
+}

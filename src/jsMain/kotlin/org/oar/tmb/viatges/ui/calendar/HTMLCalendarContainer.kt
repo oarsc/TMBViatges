@@ -1,0 +1,35 @@
+package org.oar.tmb.viatges.ui.calendar
+
+
+import org.oar.tmb.viatges.lib.HTMLBlock
+import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
+import org.oar.tmb.viatges.lib.style
+import org.oar.tmb.viatges.ui.calendar.v1.HTMLTrainingSummary
+import org.oar.tmb.viatges.utils.Export
+import org.w3c.dom.HTMLDivElement
+
+class HTMLCalendarContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
+    init {
+        val version =  read(Export.output)!!.version
+
+        if (version == 1) {
+            +HTMLTrainingSummary()
+        }
+    }
+
+    companion object {
+        const val ID = "calendar-container"
+        init {
+            style {
+                "#$ID" {
+                    "margin" to "50px auto"
+                    "width" to "750px"
+                    "padding" to "20px"
+                    "background-color" to "#f5f5f5"
+                    "border" to "1px solid black"
+                    "position" to "relative"
+                }
+            }
+        }
+    }
+}
