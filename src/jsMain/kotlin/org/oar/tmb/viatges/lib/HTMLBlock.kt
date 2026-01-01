@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.lib
 
-import io.nacular.doodle.utils.observable
 import kotlinx.browser.document
 import kotlinx.dom.clear
 import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.HTMLDefinition
+import org.oar.tmb.viatges.lib.ObservableProperty.Companion.observable
 import org.w3c.dom.HTMLBodyElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadElement
