@@ -11,11 +11,16 @@ import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TD
 import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TR
 import org.oar.tmb.viatges.lib.HashController.params
 import org.oar.tmb.viatges.lib.HashController.updateUrl
+import org.oar.tmb.viatges.lib.Locale.translate
 import org.oar.tmb.viatges.lib.style
+import org.oar.tmb.viatges.model.Line
 import org.oar.tmb.viatges.model.Station
+import org.oar.tmb.viatges.model.StationLink
 import org.oar.tmb.viatges.ui.lines.results.model.Route
 import org.oar.tmb.viatges.ui.lines.results.model.Step
+import org.oar.tmb.viatges.utils.extensions.DateExt.compareTo
 import org.oar.tmb.viatges.utils.extensions.EventExt.onClick
+import org.oar.tmb.viatges.utils.maintenanceWorks
 import org.oar.tmb.viatges.utils.stationsData
 import org.w3c.dom.HTMLDivElement
 import kotlin.js.Date
@@ -59,30 +64,30 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                     onClick {
                         journeyViewer.linearView = !journeyViewer.linearView
                         if (journeyViewer.linearView) {
-                            -"Vista en columnes"
+                            -"column-view".translate
                         } else {
-                            -"Vista lineal"
+                            -"lineal-view".translate
                         }
                     }
                 }
-                -if (params["v"] == "1") "Vista lineal" else "Vista en columnes"
+                -if (params["v"] == "1") "lineal-view".translate else "column-view".translate
             }
 
             +TABLE("stats") {
                 +TBODY {
                     +TR {
-                        +TD { -"Distància total:" }
+                        +TD { -"${"total-distance".translate}:" }
                         +TD {
                             +distance
                             +"km"
                         }
                     }
                     +TR {
-                        +TD { -"Parades:" }
+                        +TD { -"${"stops".translate}:" }
                         +TD { +stops }
                     }
                     +TR {
-                        +TD { -"Transbords:" }
+                        +TD { -"${"transfers".translate}:" }
                         +TD { +transfers }
                     }
                 }
@@ -113,7 +118,7 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
         val stations = stationsData.values.toList()
         val origin = stations[params["i"]!!.toInt()]
         val destination = stations[params["f"]!!.toInt()]
-        val date: Date? = null
+        val date: Date? = params["w"]?.let(::Date)
 
         if (origin == destination) {
             return Step(
@@ -130,9 +135,7 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
             ).let(::listOf)
         }
 
-
-        //let pendingSteps = origin.getOperativeLines(date)
-        var pendingSteps = origin.lines
+        var pendingSteps = origin.getOperativeLines(date)
             .flatMap { line ->
                 listOf(
                     Step(
@@ -189,10 +192,9 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                 if (forward) currentStation.nextStations.find { it.line == currentRoute.line }
                 else currentStation.prevStations.find { it.line == currentRoute.line }
             } else {
-                // TODO
                 val forward = currentRoute.forward
-                if (forward) currentStation.nextStations.find { it.line == currentRoute.line }
-                else currentStation.prevStations.find { it.line == currentRoute.line }
+                if (forward) currentStation.nextOperativeStationLink(currentRoute.line, date)
+                else currentStation.prevOperativeStationLink(currentRoute.line, date)
             }
             ?: return emptyList()
 
@@ -216,8 +218,7 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
             )
         }
 
-        //const steps = station.getOperativeLines(date)
-        val steps = station.lines
+        val steps = station.getOperativeLines(date)
             .filter { line -> step.route.map { it.line }.indexOf(line) < 0 }
             .flatMap { line ->
                 listOf(
@@ -251,6 +252,45 @@ class BlockJourneyContainer: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                 route = updateRoute
             )
         ) + steps
+    }
+
+    private fun Station.getOperativeLines(date: Date?): List<Line> =
+        if (date == null) lines
+        else lines.filter { name in it.getOperativeStations(date) }
+
+    private fun Line.getOperativeStations(date: Date = Date()): List<String> {
+        val lineWorks = maintenanceWorks.filter { it.line == this }
+        if (lineWorks.isEmpty()) {
+            return stations
+        }
+
+        val stationsToRemove = lineWorks.filter { it.start <= date && date < it.end }
+            .flatMap { it.stations }
+            .map { it.name }
+
+        return stations.filterNot { it in stationsToRemove }
+    }
+
+    private fun Station.nextOperativeStationLink(line: Line, date: Date): StationLink? =
+        nextOperativeStationLink(line, date, Station::nextStations)
+
+
+    private fun Station.prevOperativeStationLink(line: Line, date: Date): StationLink? =
+        nextOperativeStationLink(line, date, Station::prevStations)
+
+
+    private fun Station.nextOperativeStationLink(line: Line, date: Date, next: Station.() -> List<StationLink>): StationLink? {
+        val operativeStations = line.getOperativeStations(date)
+
+        var station: Station? = this
+        var stationLink: StationLink?
+
+        do {
+            stationLink = station?.next()?.firstOrNull { it.line == line }
+            station = stationLink?.station
+        } while (station != null && station.name !in operativeStations)
+
+        return stationLink
     }
 
     companion object {

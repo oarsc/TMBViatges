@@ -1,8 +1,30 @@
 package org.oar.tmb.viatges.utils
 
 import org.oar.tmb.viatges.model.Line
+import org.oar.tmb.viatges.model.MaintenanceWork
 import org.oar.tmb.viatges.model.Station
 import org.oar.tmb.viatges.model.StationLink
+import org.oar.tmb.viatges.model.cards.CasualCard
+import org.oar.tmb.viatges.model.cards.DayCard
+import org.oar.tmb.viatges.model.cards.FamiliarCard
+import org.oar.tmb.viatges.model.cards.GroupCard
+import org.oar.tmb.viatges.model.cards.SimpleCard
+import org.oar.tmb.viatges.model.cards.UsualCard
+import org.oar.tmb.viatges.model.cards.YoungCard
+import kotlin.js.Date
+
+val zones = 7
+
+fun generateCards() = listOf(
+    SimpleCard(prices = listOf(2.90, 4.15, 5.40, 6.90, 8.80, 10.25, 11.60)),
+    FamiliarCard(prices = listOf(11.50, 21.75, 30.80, 39.95, 45.65, 47.95, 49.70)),
+    DayCard(prices = listOf(12.00, 18.30, 22.95, 25.65, 28.70, 32.10, 34.70)),
+    CasualCard(prices = listOf(13.00, 25.50, 34.70, 44.65, 51.20, 54.45, 57.60)),
+    UsualCard(prices = listOf(22.80, 30.55, 42.70, 52.15, 59.60, 63.85, 67.65)),
+    YoungCard(prices = listOf(45.50, 45.50, 45.50, 45.50, 45.50, 45.50, 45.50)),
+    GroupCard(prices = listOf(91.00, 178.50, 242.90, 312.55, 358.40, 381.15, 403.20))
+    //air 2.35, 4.60, 6.25, 8.05, 9.25, 9.80, 10.65
+)
 
 val linesData = listOf(
     Line(
@@ -304,3 +326,52 @@ val stationsData = linesData
                 station.nextStations = stationLinks.mapNotNull { it.second }
             }
         }
+
+val maintenanceWorks = listOf(
+    MaintenanceWork(
+        start = Date("2024-06-25T00:00:00"),
+        end = Date("2024-08-25T00:00:00"),
+        line = linesData.first { it.id == "l2" },
+        stations = listOfNotNull(
+            stationsData["Monumental"],
+            stationsData["Tetuan"],
+            stationsData["Passeig de Gràcia"],
+            stationsData["Universitat"],
+            stationsData["Sant Antoni"],
+            stationsData["Paral·lel"],
+        )
+    ),
+    MaintenanceWork(
+        start = Date("2024-08-05T00:00:00"),
+        end = Date("2024-08-25T00:00:00"),
+        line = linesData.first { it.id == "l10n" },
+        stations = listOfNotNull(
+            stationsData["Gorg"],
+        )
+    ),
+    MaintenanceWork(
+        start = Date("2024-07-27T00:00:00"),
+        end = Date("2024-08-22T00:00:00"),
+        line = linesData.first { it.id == "l4" },
+        stations = listOfNotNull(
+            stationsData["El Maresme | Fòrum"],
+            stationsData["Besòs Mar"],
+            stationsData["Besòs"],
+            stationsData["La Pau"],
+        )
+    ),
+    MaintenanceWork(
+        start = Date("2024-06-25T00:00:00"),
+        end = Date("2024-09-01T00:00:00"),
+        line = linesData.first { it.id == "l5" },
+        stations = listOfNotNull(
+            stationsData["Ernest Lluch"],
+            stationsData["Pubilla Cases"],
+            stationsData["Can Vidalet"],
+            stationsData["Can Boixeres"],
+            stationsData["Sant Ildefons"],
+            stationsData["Gavarra"],
+            stationsData["Cornellà Centre"],
+        )
+    )
+)

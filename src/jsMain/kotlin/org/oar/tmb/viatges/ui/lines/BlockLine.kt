@@ -14,7 +14,11 @@ import org.w3c.dom.HTMLDivElement
 
 class BlockLine(
     val line: Line,
-    title: String? = null
+    title: String? = null,
+    private val hideConnections: Boolean = false,
+    private val clickable: Boolean = true,
+    open: Boolean = false
+
 ) : HTMLBlock<HTMLDivElement>(DIV, className = CLASS_NAME) {
     private val isOpen: Boolean get() = classList.contains("open")
     private val isLinearView: Boolean get() = classList.contains("linear-view")
@@ -26,16 +30,18 @@ class BlockLine(
     }
 
     init {
+        classList.toggle("open", open)
+
         stationsBlock.element {
-            onClick { ev ->
-                toggleOpen(true)
+            onClick {
+                if (clickable) toggleOpen(true)
             }
         }
 
         +DIV("line-header") {
             +BlockLineLogoWrapper(line).element {
-                onClick { ev ->
-                    toggleOpen()
+                onClick {
+                    if (clickable) toggleOpen(!isOpen)
                 }
             }
             +LABEL("title") {
@@ -55,7 +61,7 @@ class BlockLine(
         line.stations.forEach(::addStation)
     }
 
-    fun addStation(stationName: String, focusLines: List<Line> = emptyList()): HTMLBlock<HTMLDivElement> = addStation(stationsData[stationName]!!)
+    fun addStation(stationName: String, focusLines: List<Line> = emptyList()): HTMLBlock<HTMLDivElement> = addStation(stationsData[stationName]!!, focusLines)
     fun addStation(station: Station, focusLines: List<Line> = emptyList()) = stationsBlock.apply {
         +DIV("station") {
             +SPAN("circle").element {
@@ -65,16 +71,20 @@ class BlockLine(
                 +LABEL("title") {
                     -station.name
                 }
-                +SPAN("other-lines") {
-                    station.lines.filter { it != line }.forEach { otherLine ->
-                        +BlockLineLogoWrapper(otherLine).element {
-                            if (focusLines.isNotEmpty()) {
-                                classList.toggle("faded", !focusLines.contains(otherLine))
-                            }
+                if (!hideConnections) {
+                    +SPAN("other-lines") {
+                        station.lines.filter { it != line }.forEach { otherLine ->
+                            +BlockLineLogoWrapper(otherLine).element {
+                                if (focusLines.isNotEmpty()) {
+                                    classList.toggle("faded", !focusLines.contains(otherLine))
+                                }
 
-                            onClick { ev ->
-                                notify(Notifier.openLine, otherLine)
-                                ev.stopPropagation()
+                                onClick { ev ->
+                                    if (clickable) {
+                                        notify(Notifier.openLine, otherLine)
+                                        ev.stopPropagation()
+                                    }
+                                }
                             }
                         }
                     }

@@ -13,11 +13,6 @@ object Style {
                 "font-size" to "15px"
             }
 
-            // Might not always be correct??
-            "select.$TMB_STYLE" {
-                "width" to "100%"
-            }
-
             "button.$TMB_STYLE" {
                 "transition" to "background-color 0.2s"
 

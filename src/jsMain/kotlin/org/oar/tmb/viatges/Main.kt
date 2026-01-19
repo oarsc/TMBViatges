@@ -5,6 +5,7 @@ import org.oar.tmb.viatges.lib.HTMLBlock.Companion.HTMLBodyBlock
 import org.oar.tmb.viatges.lib.HTMLBlock.DetachMode
 import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
 import org.oar.tmb.viatges.lib.HashController
+import org.oar.tmb.viatges.lib.Locale
 import org.oar.tmb.viatges.lib.model.StrPathParam
 import org.oar.tmb.viatges.ui.calc.BlockCalcPage
 import org.oar.tmb.viatges.ui.lines.BlockLinesPage
@@ -25,13 +26,16 @@ fun main() {
             StrPathParam("subsection")
         ),
         onPageChange = {
-            loadContent(container, it)
+            Locale.loadLanguage(it["lang"]!!) {
+                loadContent(container, it)
+            }
         }
     )
 
-    loadContent(container)
-
-    HTMLBodyBlock.append(container)
+    Locale.loadLanguage(HashController.path["lang"]!!) {
+        loadContent(container)
+        HTMLBodyBlock.append(container)
+    }
 }
 
 fun loadContent(container: HTMLBlock<HTMLDivElement>, path: Map<String, String> = HashController.path) {

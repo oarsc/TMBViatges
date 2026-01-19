@@ -7,6 +7,7 @@ import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.IMG
 import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.SPAN
 import org.oar.tmb.viatges.lib.HashController.path
 import org.oar.tmb.viatges.lib.HashController.updateUrl
+import org.oar.tmb.viatges.lib.Locale.translate
 import org.oar.tmb.viatges.lib.style
 import org.oar.tmb.viatges.utils.Page.CALC_PAGE
 import org.oar.tmb.viatges.utils.Page.LINES_PAGE
@@ -17,8 +18,8 @@ class BlockMenu: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
     private var selectedPage: String by renderProperty(LINES_PAGE, 1)
 
     private var menuItems = mapOf(
-        LINES_PAGE to BlockMenuLink("Veure linies"),
-        CALC_PAGE to BlockMenuLink("Gestionar viatges")
+        LINES_PAGE to BlockMenuLink("title.lines".translate),
+        CALC_PAGE to BlockMenuLink("title.calc".translate),
     )
 
     init {

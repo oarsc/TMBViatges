@@ -12,6 +12,7 @@ import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TR
 import org.oar.tmb.viatges.lib.HashController.params
 import org.oar.tmb.viatges.lib.HashController.path
 import org.oar.tmb.viatges.lib.HashController.updateUrl
+import org.oar.tmb.viatges.lib.Locale.translate
 import org.oar.tmb.viatges.lib.style
 import org.oar.tmb.viatges.ui.support.BlockInput
 import org.oar.tmb.viatges.ui.support.BlockSelect
@@ -44,22 +45,21 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
         +TABLE {
             +TBODY {
                 +TR {
-                    +TD { -"Origen" }
+                    +TD { -"origin".translate }
                     +TD {
                         element.colSpan = 2
                         +originSelect
                     }
                 }
                 +TR {
-                    +TD { -"Destí" }
+                    +TD { -"destination".translate }
                     +TD {
                         element.colSpan = 2
                         +destinationSelect
                     }
                 }
                 +TR {
-                    element { style.display = "none" }
-                    +TD { -"Día" }
+                    +TD { -"day".translate }
                     +TD { +dayInput }
                     +TD {
                         +BUTTON(TMB_STYLE) {
@@ -71,7 +71,7 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                                     }
                                 }
                             }
-                            -"Avui"
+                            -"today".translate
                         }
                     }
                 }
@@ -81,8 +81,12 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                         element.colSpan = 2
 
                         +BUTTON("$TMB_STYLE secondary") {
-                            element { style.display = "none" }
-                            -"Obres de manteniment"
+                            element.onClick {
+                                path["subsection"] = "maintenance"
+                                updateUrl(pushHistory = true)
+                            }
+                            -"maintenance-works".translate
+
                         }
                         +BUTTON(TMB_STYLE) {
                             element.onClick {
@@ -93,7 +97,7 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                                 dayInput.setParamValue()
                                 updateUrl(pushHistory = true)
                             }
-                            -"Cercar"
+                            -"search".translate
                         }
                     }
                 }
@@ -118,10 +122,14 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                 "#$ID" {
                     "> table" {
                         "margin" to "auto"
+
+                        "select.$TMB_STYLE" {
+                            "width" to "100%"
+                        }
                     }
 
                     ".submit-buttons" {
-                        "text-align" to "center" // "right"
+                        "text-align" to "right"
                         "position" to "relative"
 
                         ".secondary" {
