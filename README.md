@@ -2,4 +2,4 @@
 - Check metro lines
 - Plan a metro journey from one station to another
 
-This is the [website](http://scopz.github.io/TMBViatges/) project.
+This is the [website](http://github.oarsc.es/TMBViatges/#en) project.

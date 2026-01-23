@@ -11,6 +11,7 @@ import org.oar.tmb.viatges.model.cards.GroupCard
 import org.oar.tmb.viatges.model.cards.SimpleCard
 import org.oar.tmb.viatges.model.cards.UsualCard
 import org.oar.tmb.viatges.model.cards.YoungCard
+import org.oar.tmb.viatges.utils.extensions.DateExt.compareTo
 import kotlin.js.Date
 
 val zones = 7
@@ -374,4 +375,4 @@ val maintenanceWorks = listOf(
             stationsData["Cornellà Centre"],
         )
     )
-)
+).filter { it.end > Date() }
