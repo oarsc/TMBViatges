@@ -32,6 +32,8 @@ fun main() {
         }
     )
 
+    Locale.availableLanguages("ca", "es", "en")
+
     Locale.loadLanguage(HashController.path["lang"]!!) {
         loadContent(container)
         HTMLBodyBlock.append(container)

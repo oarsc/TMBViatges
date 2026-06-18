@@ -330,49 +330,57 @@ val stationsData = linesData
 
 val maintenanceWorks = listOf(
     MaintenanceWork(
-        start = Date("2024-06-25T00:00:00"),
-        end = Date("2024-08-25T00:00:00"),
-        line = linesData.first { it.id == "l2" },
+        start = Date("2026-07-17T00:00:00"),
+        end = Date("2026-08-28T00:00:00"),
+        line = linesData.first { it.id == "l1" },
         stations = listOfNotNull(
-            stationsData["Monumental"],
-            stationsData["Tetuan"],
-            stationsData["Passeig de Gràcia"],
-            stationsData["Universitat"],
-            stationsData["Sant Antoni"],
-            stationsData["Paral·lel"],
+            stationsData["Torrassa"],
+            stationsData["Santa Eulàlia"],
+            stationsData["Mercat Nou"],
         )
     ),
     MaintenanceWork(
-        start = Date("2024-08-05T00:00:00"),
-        end = Date("2024-08-25T00:00:00"),
-        line = linesData.first { it.id == "l10n" },
-        stations = listOfNotNull(
-            stationsData["Gorg"],
-        )
-    ),
-    MaintenanceWork(
-        start = Date("2024-07-27T00:00:00"),
-        end = Date("2024-08-22T00:00:00"),
+        start = Date("2026-07-06T00:00:00"),
+        end = Date("2026-08-30T00:00:00"),
         line = linesData.first { it.id == "l4" },
         stations = listOfNotNull(
-            stationsData["El Maresme | Fòrum"],
-            stationsData["Besòs Mar"],
-            stationsData["Besòs"],
-            stationsData["La Pau"],
+            stationsData["Verdaguer"],
         )
     ),
     MaintenanceWork(
-        start = Date("2024-06-25T00:00:00"),
-        end = Date("2024-09-01T00:00:00"),
-        line = linesData.first { it.id == "l5" },
+        start = Date("2026-06-25T00:00:00"),
+        end = Date("2026-08-30T00:00:00"),
+        line = linesData.first { it.id == "l9n" },
         stations = listOfNotNull(
-            stationsData["Ernest Lluch"],
-            stationsData["Pubilla Cases"],
-            stationsData["Can Vidalet"],
-            stationsData["Can Boixeres"],
-            stationsData["Sant Ildefons"],
-            stationsData["Gavarra"],
-            stationsData["Cornellà Centre"],
+            stationsData["La Sagrera"],
         )
-    )
-).filter { it.end > Date() }
+    ),
+    MaintenanceWork(
+        start = Date("2026-06-25T00:00:00"),
+        end = Date("2026-08-30T00:00:00"),
+        line = linesData.first { it.id == "l10n" },
+        stations = listOfNotNull(
+            stationsData["La Sagrera"],
+        )
+    ),
+    MaintenanceWork(
+        start = Date("2026-08-31T00:00:00"),
+        end = Date("2026-09-06T00:00:00"),
+        line = linesData.first { it.id == "l9n" },
+        stations = listOfNotNull(
+            stationsData["La Sagrera"],
+            stationsData["Onze de Setembre"],
+        )
+    ),
+    MaintenanceWork(
+        start = Date("2026-08-31T00:00:00"),
+        end = Date("2026-09-06T00:00:00"),
+        line = linesData.first { it.id == "l10n" },
+        stations = listOfNotNull(
+            stationsData["La Sagrera"],
+            stationsData["Onze de Setembre"],
+        )
+    ),
+)
+    .filter { it.end > Date() }
+    .sortedBy { it.start.getTime() }

@@ -20,6 +20,10 @@ object Style {
                     "color" to PRIMARY_FOCUS_COLOR
                 }
 
+                "&.tertiary:hover" {
+                    "text-decoration" to "underline"
+                }
+
                 "&:hover" {
                     "background-color" to PRIMARY_FOCUS_COLOR
                 }
@@ -39,6 +43,14 @@ object Style {
                     "color" to PRIMARY_COLOR
                     "padding" to "5px 13px"
                     "border" to "2px solid $PRIMARY_COLOR"
+                    "transition" to "border-color 0.2s, color 0.2s"
+                }
+
+                "&.tertiary" {
+                    "background-color" to "inherit"
+                    "color" to PRIMARY_COLOR
+                    "padding" to "8px 0px"
+                    "border" to "0px"
                     "transition" to "border-color 0.2s, color 0.2s"
                 }
             }

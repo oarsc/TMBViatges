@@ -80,7 +80,7 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                     +TD("submit-buttons") {
                         element.colSpan = 2
 
-                        +BUTTON("$TMB_STYLE secondary") {
+                        +BUTTON("$TMB_STYLE tertiary see-maintenance") {
                             element.onClick {
                                 path["subsection"] = "maintenance"
                                 updateUrl(pushHistory = true)
@@ -88,7 +88,7 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                             -"maintenance-works".translate
 
                         }
-                        +BUTTON(TMB_STYLE) {
+                        +BUTTON("$TMB_STYLE submit") {
                             element.onClick {
                                 path["subsection"] = "results"
                                 params.remove("p") // go to first page
@@ -132,9 +132,16 @@ class BlockJourneyFilter: HTMLBlock<HTMLDivElement>(DIV, id = ID) {
                         "text-align" to "right"
                         "position" to "relative"
 
-                        ".secondary" {
+                        ".submit" {
+                            "padding" to "5px 40px"
+                            "font-size" to "1em"
+                        }
+
+                        ".see-maintenance" {
                             "left" to "0"
                             "position" to "absolute"
+                            "font-weight" to "normal"
+                            "font-size" to "0.95em"
                         }
                     }
                 }

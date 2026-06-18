@@ -28,7 +28,7 @@ kotlin {
     sourceSets {
         val jsMain by getting {
             dependencies {
-                implementation("com.github.oarsc:kotlin-js-blocks:v1.0.0")
+                implementation("com.github.oarsc:kotlin-js-blocks:v1.0.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
 //                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
             }
