@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.ui.support
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.SELECT
-import org.oar.tmb.viatges.lib.HashController.params
-import org.oar.tmb.viatges.lib.HashController.updateUrl
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.SELECT
+import org.oar.lib.HashController.params
+import org.oar.lib.HashController.updateUrl
 import org.oar.tmb.viatges.utils.extensions.EventExt.onChange
 import org.w3c.dom.HTMLSelectElement
 

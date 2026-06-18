@@ -1,10 +1,10 @@
 package org.oar.tmb.viatges.ui.lines.results
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HashController.params
-import org.oar.tmb.viatges.lib.HashController.updateUrl
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HashController.params
+import org.oar.lib.HashController.updateUrl
+import org.oar.lib.style
 import org.oar.tmb.viatges.model.Station
 import org.oar.tmb.viatges.ui.lines.BlockLine
 import org.oar.tmb.viatges.ui.lines.results.model.Route

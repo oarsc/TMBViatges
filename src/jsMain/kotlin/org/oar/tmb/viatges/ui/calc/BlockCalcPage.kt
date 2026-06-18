@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.ui.calc
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HashController.path
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HashController.path
+import org.oar.lib.style
 import org.oar.tmb.viatges.ui.calc.exceptions.BlockCalcDays
 import org.oar.tmb.viatges.ui.calc.results.BlockCalcResults
 import org.w3c.dom.HTMLDivElement

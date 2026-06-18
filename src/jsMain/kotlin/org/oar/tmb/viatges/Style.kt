@@ -1,6 +1,6 @@
 package org.oar.tmb.viatges
 
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.style
 
 object Style {
     fun load() {

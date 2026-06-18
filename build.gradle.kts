@@ -8,12 +8,17 @@ group = "org.oar.tmb.viatges"
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 kotlin {
-    js {
+    js(IR) {
         browser {
             binaries.executable()
+
+            commonWebpackConfig {
+                outputFileName = "tmb-viatges.js"
+            }
             runTask {
                 sourceMaps = false
             }
@@ -21,11 +26,11 @@ kotlin {
     }
 
     sourceSets {
-        val serializationVersion = "1.8.1"
-
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                implementation("com.github.oarsc:kotlin-js-blocks:v1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
             }
         }
     }

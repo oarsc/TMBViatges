@@ -1,11 +1,11 @@
 package org.oar.tmb.viatges.ui.lines.results
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.SPAN
-import org.oar.tmb.viatges.lib.HashController.params
-import org.oar.tmb.viatges.lib.HashController.updateUrl
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HTMLDefinitionConstants.SPAN
+import org.oar.lib.HashController.params
+import org.oar.lib.HashController.updateUrl
+import org.oar.lib.style
 import org.oar.tmb.viatges.utils.extensions.EventExt.onClick
 import org.oar.tmb.viatges.utils.stationsData
 import org.w3c.dom.HTMLDivElement

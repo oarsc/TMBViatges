@@ -1,10 +1,10 @@
 package org.oar.tmb.viatges.ui.lines
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.LABEL
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.SPAN
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HTMLDefinitionConstants.LABEL
+import org.oar.lib.HTMLDefinitionConstants.SPAN
+import org.oar.lib.style
 import org.oar.tmb.viatges.model.Line
 import org.oar.tmb.viatges.model.Station
 import org.oar.tmb.viatges.utils.Notifier

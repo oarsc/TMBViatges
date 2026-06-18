@@ -1,13 +1,13 @@
 package org.oar.tmb.viatges.ui.calc.results
 
 import kotlinx.browser.window
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.SPAN
-import org.oar.tmb.viatges.lib.HashController.path
-import org.oar.tmb.viatges.lib.HashController.updateUrl
-import org.oar.tmb.viatges.lib.Locale.translate
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HTMLDefinitionConstants.SPAN
+import org.oar.lib.HashController.path
+import org.oar.lib.HashController.updateUrl
+import org.oar.lib.Locale.translate
+import org.oar.lib.style
 import org.oar.tmb.viatges.model.Card
 import org.oar.tmb.viatges.model.cards.YoungCard
 import org.oar.tmb.viatges.ui._common.BlockBackButton

@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.ui.lines
 
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.style
 import org.oar.tmb.viatges.Style.PRIMARY_COLOR
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.style
 import org.oar.tmb.viatges.utils.Notifier
 import org.oar.tmb.viatges.utils.linesData
 import org.w3c.dom.HTMLDivElement

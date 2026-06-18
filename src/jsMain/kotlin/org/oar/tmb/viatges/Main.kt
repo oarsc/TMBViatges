@@ -1,12 +1,12 @@
 package org.oar.tmb.viatges
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLBlock.Companion.HTMLBodyBlock
-import org.oar.tmb.viatges.lib.HTMLBlock.DetachMode
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HashController
-import org.oar.tmb.viatges.lib.Locale
-import org.oar.tmb.viatges.lib.model.StrPathParam
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLBlock.Companion.HTMLBodyBlock
+import org.oar.lib.HTMLBlock.DetachMode
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HashController
+import org.oar.lib.Locale
+import org.oar.lib.model.StrPathParam
 import org.oar.tmb.viatges.ui.calc.BlockCalcPage
 import org.oar.tmb.viatges.ui.lines.BlockLinesPage
 import org.oar.tmb.viatges.ui.menu.BlockMenu

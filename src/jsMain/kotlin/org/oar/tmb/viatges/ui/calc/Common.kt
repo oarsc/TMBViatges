@@ -1,7 +1,7 @@
 package org.oar.tmb.viatges.ui.calc
 
 import kotlinx.browser.window
-import org.oar.tmb.viatges.lib.HashController.params
+import org.oar.lib.HashController.params
 import org.oar.tmb.viatges.ui.calc.model.CalculationData
 import org.oar.tmb.viatges.utils.extensions.DateExt.plusDays
 import org.oar.tmb.viatges.utils.extensions.DateExt.startOfTheDay

@@ -1,14 +1,14 @@
 package org.oar.tmb.viatges.ui.calc.exceptions
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TABLE
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TBODY
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TH
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.THEAD
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TR
-import org.oar.tmb.viatges.lib.Locale.translate
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HTMLDefinitionConstants.TABLE
+import org.oar.lib.HTMLDefinitionConstants.TBODY
+import org.oar.lib.HTMLDefinitionConstants.TH
+import org.oar.lib.HTMLDefinitionConstants.THEAD
+import org.oar.lib.HTMLDefinitionConstants.TR
+import org.oar.lib.Locale.translate
+import org.oar.lib.style
 import org.oar.tmb.viatges.utils.Constants.MONTHS
 import org.oar.tmb.viatges.utils.Constants.WEEK_DAYS
 import org.w3c.dom.HTMLDivElement

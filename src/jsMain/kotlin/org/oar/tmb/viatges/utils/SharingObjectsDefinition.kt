@@ -1,6 +1,6 @@
 package org.oar.tmb.viatges.utils
 
-import org.oar.tmb.viatges.lib.NotifierId
+import org.oar.lib.NotifierId
 import org.oar.tmb.viatges.model.Line
 
 object Page {

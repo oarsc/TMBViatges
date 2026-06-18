@@ -1,15 +1,15 @@
 package org.oar.tmb.viatges.ui.calc.exceptions
 
 import kotlinx.browser.window
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.BUTTON
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.INPUT
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TD
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.TR
-import org.oar.tmb.viatges.lib.HashController.params
-import org.oar.tmb.viatges.lib.HashController.updateUrl
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.BUTTON
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HTMLDefinitionConstants.INPUT
+import org.oar.lib.HTMLDefinitionConstants.TD
+import org.oar.lib.HTMLDefinitionConstants.TR
+import org.oar.lib.HashController.params
+import org.oar.lib.HashController.updateUrl
+import org.oar.lib.style
 import org.oar.tmb.viatges.ui.calc.Common.getData
 import org.oar.tmb.viatges.ui.calc.model.CalculationData
 import org.oar.tmb.viatges.utils.extensions.DateExt.toLocaleISODateString

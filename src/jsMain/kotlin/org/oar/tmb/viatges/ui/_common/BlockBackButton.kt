@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.ui._common
 
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.BUTTON
+import org.oar.lib.style
 import org.oar.tmb.viatges.Style.PRIMARY_COLOR
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.BUTTON
-import org.oar.tmb.viatges.lib.style
 import org.w3c.dom.HTMLButtonElement
 
 class BlockBackButton: HTMLBlock<HTMLButtonElement>(BUTTON, className = CLASS_NAME) {

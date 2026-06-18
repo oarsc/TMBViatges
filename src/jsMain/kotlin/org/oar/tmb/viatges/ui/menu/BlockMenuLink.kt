@@ -1,9 +1,9 @@
 package org.oar.tmb.viatges.ui.menu
 
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.A
+import org.oar.lib.style
 import org.oar.tmb.viatges.Style.PRIMARY_COLOR
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.A
-import org.oar.tmb.viatges.lib.style
 import org.w3c.dom.HTMLAnchorElement
 
 class BlockMenuLink(

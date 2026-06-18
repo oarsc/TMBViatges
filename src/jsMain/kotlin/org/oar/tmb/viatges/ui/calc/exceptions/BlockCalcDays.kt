@@ -1,10 +1,10 @@
 package org.oar.tmb.viatges.ui.calc.exceptions
 
-import org.oar.tmb.viatges.lib.HTMLBlock
-import org.oar.tmb.viatges.lib.HTMLDefinitionConstants.DIV
-import org.oar.tmb.viatges.lib.HashController.path
-import org.oar.tmb.viatges.lib.HashController.updateUrl
-import org.oar.tmb.viatges.lib.style
+import org.oar.lib.HTMLBlock
+import org.oar.lib.HTMLDefinitionConstants.DIV
+import org.oar.lib.HashController.path
+import org.oar.lib.HashController.updateUrl
+import org.oar.lib.style
 import org.oar.tmb.viatges.ui._common.BlockBackButton
 import org.oar.tmb.viatges.ui.calc.Common.getData
 import org.oar.tmb.viatges.utils.extensions.DateExt.compareTo
